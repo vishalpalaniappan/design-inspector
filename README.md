@@ -15,6 +15,6 @@ When the instrumented program is executed, it will generate a compressed log fil
 
 From this description it is clear that the trace viewer and this workbench will share common functions for how to interact with the design. So I will be specifying those functions as a [library][dal-core-js] that is maintained separately and imported into both these applications. 
 
-Finally, the design workbench, the instrumentation and trace viewer all being separate tools is one possible configuration. I could merge all of them into a single tool to make it convenient for the user. There are benefits to keeping it separate as well but I will decide on the best approach later. For now, I am working with separate tools and implement all the functionality.
+Finally, the design workbench, the instrumentation and trace viewer all being separate tools is one possible configuration. I could merge all of them into a single tool to make them convenient to access for the user. There are benefits to keeping it separate as well but I will decide on the best approach later. For now, I am working with separate tools and will implement all the functionality separately.
 
 [dal-core-js]: https://github.com/vishalpalaniappan/dal-core-js
