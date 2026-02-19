@@ -15,7 +15,7 @@ export function StatusBar () {
             <div className="status-bar">
                 <div className="status-left">
                 </div>
-                <div className="status-right ">
+                <div className="status-right">
                 </div>
             </div>
         </div>

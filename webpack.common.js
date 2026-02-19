@@ -11,7 +11,7 @@ module.exports = {
         }),
         new MiniCssExtractPlugin(),
         new MonacoWebpackPlugin({
-            languages: ["ascii", "ini"],
+            languages: ["ini"],
         }),
     ],
     output: {

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 GlobalProviders.propTypes = {
-    children: PropTypes.object,
+    children: PropTypes.node,
 };
 
 /**

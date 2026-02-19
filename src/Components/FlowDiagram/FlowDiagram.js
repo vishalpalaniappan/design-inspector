@@ -11,13 +11,14 @@ import {
 import PropTypes from "prop-types";
 
 import "@xyflow/react/dist/style.css";
+import "./FlowDiagram.scss";
 
 Flow.propTypes = {
     tree: PropTypes.object,
 };
 
 /**
- * Flow component which reners the dependency graph.
+ * Flow component which renders the dependency graph.
  * @param {Object} tree
  * @return {JSX.Element}
  */
@@ -30,7 +31,7 @@ export function Flow ({tree}) {
         if (tree) {
             fitView();
         }
-    }, [tree]);
+    }, [tree, fitView]);
 
     return (
         <ReactFlow
