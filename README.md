@@ -1,7 +1,20 @@
-# Design Generator
+# Design Workbench
 
-This repo contains a tool that will allow users to genenerate a design specification written in the Design Abstraction Language (DAL). It will serve as the official specification for the language as it generates the expected structure of the instrumentation. It will also validate the design to ensure consistency while it is being specified in the tool (e.g. referenced participant is defined, expected sections are available etc). 
+The repo contains a tool that serves as a workbench for working with design specifications. 
 
-The end goal is to allow users to map the design onto the implementation so that the execution can be transformed, so I will allow users to import their source code and perform the mapping. This will generate a package that can be imported into the ADLI tool for log injection and execution. The execution will generate a compressed log file that can be used to observe the designs behavior and automatically debug it.
+It provides an interface to do the following:
 
-I think it will be best to create a library that both of these applications (design generator and trace viewer) can use to work with the design specification. I will settle on an approach for that as I proceed. Also, I think it is clear from reading this that there is one larger tool that needs to be developed that encompasses everything, there are too many steps, I want it to all be in one place and I want to call that tool the Unified Development Environment (UDE). However, I will start with this.
+- Create a design specification with state transition and control flow graph.
+- Define its participants and specify initial world state.
+- Specify how the world state is modified by behaviors.
+- Specify the semantic invariants that define the correctness of behaviors.
+- Specify the mapping from design to implementation by importing source code.
+- Generate a JSON file that will be added in the instrumentation performed by the ADLI tool. 
+
+When the instrumented program is executed, it will generate a compressed log file that contains the execution of the program. This execution can be transformed into the behavior of the design and it can be automatically debugged in the trace viewer.
+
+From this description it is clear that the trace viewer and this workbench will share common functions for how to interact with the design. So I will be specifying those functions as a [library][dal-core-js] that is maintained separately and imported into both these applications. 
+
+Finally, the design workbench, the instrumentation and trace viewer all being separate tools is one possible configuration. I could merge all of them into a single tool to make them convenient to access for the user. There are benefits to keeping it separate as well but I will decide on the best approach later. For now, I am working with separate tools and will implement all the functionality separately.
+
+[dal-core-js]: https://github.com/vishalpalaniappan/dal-core-js
