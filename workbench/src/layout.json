@@ -63,10 +63,10 @@
                 {
                     "type": "handleBar",
                     "sibling1": "content",
-                    "sibling2": "timeline"
+                    "sibling2": "terminal"
                 },
                 {
-                    "containerId": "timeline",
+                    "containerId": "terminal",
                     "type": "container",
                     "size": { 
                         "initial": { "value": 200, "unit": "px", "type": "fixed" },
@@ -76,8 +76,8 @@
                 }
             ]
         },
-        "timeline": {
-            "id": "timeline",
+        "terminal": {
+            "id": "terminal",
             "component": "MapSample",
             "background": "#252526"
         },
