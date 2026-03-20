@@ -17,7 +17,7 @@ const loadDir = async function (folderPath) {
         if (entry.isDirectory()) {
             return {
                 name: entry.name,
-                type: 'directory',
+                type: 'folder',
                 children: await loadDir(fullPath),
             };
         } else {

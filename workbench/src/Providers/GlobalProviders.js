@@ -15,6 +15,8 @@ GlobalProviders.propTypes = {
  * @return {JSX}
  */
 function GlobalProviders ({children}) {
+    const [workspace, setWorkspace] = useState();
+
     // Connect and setup auto reconnect
     const socketUrl = "ws://localhost:3002";
     const {
@@ -52,6 +54,7 @@ function GlobalProviders ({children}) {
         switch (msg.type) {
             case "workspaces":
                 console.log("Loaded workspace:", msg.data);
+                setWorkspace(msg.data);
                 break;
             default:
                 break;
@@ -73,7 +76,7 @@ function GlobalProviders ({children}) {
     }, [readyState]);
 
     return (
-        <ServerContext.Provider value={{sendJsonMessage}}>
+        <ServerContext.Provider value={{sendJsonMessage, workspace}}>
             {children}
         </ServerContext.Provider>
     );
