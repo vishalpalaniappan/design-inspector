@@ -1,7 +1,7 @@
 import express from "express";
 import path from "node:path";
 import http from "node:http";
-import handleWSConnection from "./websocket.js";
+import handleWSConnection from "./src/websocket.js";
 import { server as WebSocketServer } from "websocket";
 
 //Port on which the http and websocket connections are established

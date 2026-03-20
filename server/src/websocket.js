@@ -1,23 +1,6 @@
 import { readdir } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-// ESM doesn't set these by default
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-/**
- * Get the workspaces in the server
- * @returns {Array}
- */
-async function getWorkspaces() {
-    const workspacePath = path.join(__dirname, "workspace");
-    const entries = await readdir(workspacePath, { withFileTypes: true });
-    const folders = entries
-        .filter(entry => entry.isDirectory())
-        .map(entry => entry.name);
-    return folders; 
-}
+import loadDir from "./loadDir.js";
 
 const handleWSConnection = async function(request) {
     // TODO: can rewrite this to accept only the requests from allowed origin
@@ -34,7 +17,8 @@ const handleWSConnection = async function(request) {
 
         switch (msg["type"]) {
             case "workspaces":
-                getWorkspaces().then((folders) => {
+                const workspacePath = path.join(process.cwd(), 'workspace');
+                loadDir(workspacePath).then((folders) => {
                     msg.data = folders;
                     wsConn.send(JSON.stringify(msg));
                 });
