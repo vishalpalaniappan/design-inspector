@@ -13,7 +13,7 @@ import "./EditorContainer.scss";
  * @return {JSX.Element}
  */
 export function EditorContainer () {
-    const {workspace} = useContext(ServerContext);
+    const {workspace, connectionStatus} = useContext(ServerContext);
     const editorRef = useRef(null);
     const parentIdRef = useRef(null);
 
@@ -58,6 +58,7 @@ export function EditorContainer () {
     });
 
     useEffect(() => {
+        if (!workspace) return;
         parentIdRef.current = crypto.randomUUID();
         editorRef.current.setTabGroupId(parentIdRef.current);
 
@@ -66,7 +67,7 @@ export function EditorContainer () {
         for (let i = 0; i < 4; i++) {
             editorRef.current.addTab(files[Math.floor(Math.random() * 2) + 1]);
         }
-    }, [workspace]);
+    }, [workspace, connectionStatus]);
 
     return (
         <Editor ref={editorRef} />
