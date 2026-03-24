@@ -16,14 +16,14 @@ Terminal.propTypes = {
  * @return {JSX.Element}
  */
 export function PtyTerminal () {
-    const {sendJsonMessage, setTermWriter} = useContext(ServerContext);
+    const {sendJsonMessage, setTermWriter, connectionStatus} = useContext(ServerContext);
 
     const containerRef = useRef(null);
     const termRef = useRef(null);
     const fitRef = useRef(null);
 
     useEffect(() => {
-        if (!containerRef.current) return;
+        if (!containerRef.current || connectionStatus !== "Connected") return;
 
         const term = new Terminal({
             theme: {
@@ -97,7 +97,7 @@ export function PtyTerminal () {
             termRef.current = null;
             fitRef.current = null;
         };
-    }, []);
+    }, [connectionStatus]);
 
     return (
         <div className="terminal-wrapper">
