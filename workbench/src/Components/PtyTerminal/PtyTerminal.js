@@ -61,6 +61,11 @@ export function PtyTerminal () {
         term.loadAddon(fitAddon);
         term.open(containerRef.current);
 
+        sendJsonMessage({
+            type: "terminal_input",
+            data: "clear\n",
+        });
+
         termRef.current = term;
         fitRef.current = fitAddon;
 
