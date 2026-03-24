@@ -31,6 +31,10 @@ export function App () {
             import("./Components/PtyTerminal/PtyTerminal").then((m) => ({
                 default: m.default || m.PtyTerminal,
             })),
+        ToolBar: () =>
+            import("./Components/ToolBar/ToolBar").then((m) => ({
+                default: m.default || m.ToolBar,
+            })),
     }), []);
 
     return (

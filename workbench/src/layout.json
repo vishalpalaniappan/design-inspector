@@ -123,16 +123,16 @@
                 {
                     "type": "handleBar",
                     "sibling1": "editorContainer",
-                    "sibling2": "editorContainer2"
+                    "sibling2": "designLayoutContainer"
                 },
                 {
-                    "containerId": "editorContainer2",
+                    "containerId": "designLayoutContainer",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 },
                 {
                     "type": "handleBar",
-                    "sibling1": "editorContainer2",
+                    "sibling1": "designLayoutContainer",
                     "sibling2": "rightMenuContainer"
                 },
                 {
@@ -243,6 +243,25 @@
             "component": "Flow",
             "background": "#1e1e1e"
         },
+        "designLayoutContainer": {
+            "id": "designLayoutContainer",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                {
+                    "containerId": "toolbarContainer",
+                    "type": "container",
+                    "size": { "initial": { "value": 40, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 100, "condition": "lessThan", "relative": "parent" }
+                },
+                {
+                    "containerId": "editorContainer2",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ],
+            "background": "#1e1e1e"
+        },
         "leftMenuContainer2": {
             "id": "leftMenuContainer2",
             "menuBar": {
@@ -273,6 +292,11 @@
                 "showClose": false,
                 "title": "Invariants"
             },
+            "background": "#1e1e1e"
+        },
+        "toolbarContainer": {
+            "id": "toolbarContainer",
+            "component": "ToolBar",
             "background": "#1e1e1e"
         }
     }
