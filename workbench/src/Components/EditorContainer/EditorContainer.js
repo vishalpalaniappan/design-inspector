@@ -1,11 +1,10 @@
 import React, {useContext, useEffect, useRef} from "react";
 
 import {Editor} from "sample-ui-component-library";
+import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import ServerContext from "../../Providers/ServerContext";
 import {flattenTree} from "./helper";
-
-import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import "./EditorContainer.scss";
 
@@ -70,6 +69,6 @@ export function EditorContainer () {
     }, [workspace]);
 
     return (
-            <Editor ref={editorRef} />
+        <Editor ref={editorRef} />
     );
 }

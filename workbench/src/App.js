@@ -15,9 +15,9 @@ import "./App.scss";
  */
 export function App () {
     const registry = useMemo(() => ({
-        Flow: () =>
-            import("./Components/FlowDiagram/FlowDiagram").then((m) => ({
-                default: m.default || m.FlowDiagram,
+        BehavioralControlGraph: () =>
+            import("./Components/BehavioralControlGraph/BehavioralControlGraph").then((m) => ({
+                default: m.default || m.BehavioralControlGraph,
             })),
         EditorContainer: () =>
             import("./Components/EditorContainer/EditorContainer").then((m) => ({

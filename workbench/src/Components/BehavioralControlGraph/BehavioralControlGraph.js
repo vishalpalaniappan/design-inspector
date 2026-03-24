@@ -3,16 +3,16 @@ import React, {useState} from "react";
 import {BehavioralGraphBuilder} from "sample-ui-component-library";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
-import "./FlowDiagram.scss";
+import "./BehavioralControlGraph.scss";
 
-FlowDiagram.propTypes = {
+BehavioralControlGraph.propTypes = {
 };
 
 /**
  * Behavioral Control Graph Creator
  * @return {JSX.Element}
  */
-export function FlowDiagram () {
+export function BehavioralControlGraph () {
     const [activeTool, setActiveTool] = useState();
 
     useLayoutEventSubscription("tool:selected", (event) => {

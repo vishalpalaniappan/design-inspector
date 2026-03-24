@@ -236,7 +236,7 @@
         },
         "FlowContainer": {
             "id": "FlowContainer",
-            "component": "Flow",
+            "component": "BehavioralControlGraph",
             "background": "#1e1e1e"
         },
         "designLayoutContainer": {
