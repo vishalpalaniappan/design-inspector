@@ -1,6 +1,7 @@
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef} from "react";
 
 import {FileBrowser} from "sample-ui-component-library";
+import {useLayoutEventPublisher} from "ui-layout-manager-dev";
 
 import ServerContext from "../../Providers/ServerContext";
 
@@ -17,8 +18,7 @@ export function DesignMetadata () {
     const {workspace} = useContext(ServerContext);
 
     const fileBrowserRef = useRef();
-
-    const [dirTree, setDirTree] = useState([]);
+    const publish = useLayoutEventPublisher();
 
     useEffect(() => {
         if (workspace) {
@@ -27,9 +27,14 @@ export function DesignMetadata () {
     }, [workspace]);
 
 
-    const onSelectFile = (selectedFile) => {
-        console.log("Selected file", selectedFile);
+    const onSelectFile = (node) => {
+        publish({
+            type: "file:selected",
+            payload: node,
+            source: "file-tree",
+        });
     };
+
 
     return (
         <div className="filebrowser-container">

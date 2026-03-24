@@ -1,10 +1,11 @@
 import React, {useContext, useEffect, useRef} from "react";
 
 import {Editor} from "sample-ui-component-library";
-import {useDragState} from "ui-layout-manager-dev";
 
 import ServerContext from "../../Providers/ServerContext";
 import {flattenTree} from "./helper";
+
+import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import "./EditorContainer.scss";
 
@@ -14,12 +15,15 @@ import "./EditorContainer.scss";
  */
 export function EditorContainer () {
     const {workspace} = useContext(ServerContext);
-    const editorRef = useRef();
+    const editorRef = useRef(null);
     const parentIdRef = useRef(null);
 
-    const {drop} = useDragState();
+    useLayoutEventSubscription("file:selected", (event) => {
+        editorRef.current.addTab(event.payload);
+    });
 
-    useEffect(() => {
+    useLayoutEventSubscription("drag:drop", (event) => {
+        const drop = event.payload;
         if (!drop?.overId) {
             return;
         }
@@ -34,7 +38,6 @@ export function EditorContainer () {
             return;
         }
 
-        // TODO: This is a temp solution while I switch to event based arch.
         if (activeType === "EditorTab" && overType === "EditorTabGutter") {
             if (activeParent === overParent) {
                 // Moving within same editor
@@ -49,25 +52,20 @@ export function EditorContainer () {
                     editorRef.current.closeTab(drop.activeData.node.uid);
                 }
             }
-        } else if (activeType === "FileTreeNode" && overType === "EditorTabGutter"
-            && overParent === parentIdRef.current) {
+        } else if (activeType === "FileTreeNode" && overType === "EditorTabGutter" && overParent === parentIdRef.current) {
             // Moving from fileTree to editor
             editorRef.current.addTab(drop.activeData.node, drop.overData.index);
         }
-    }, [drop]);
+    });
 
     useEffect(() => {
         parentIdRef.current = crypto.randomUUID();
         editorRef.current.setTabGroupId(parentIdRef.current);
-    }, []);
 
-    useEffect(() => {
-        if (workspace) {
-            // This is only for demo purposes, I am randomly loading 2 files.
-            const files = flattenTree(workspace).filter((node) => node.type === "file");
-            for (let i = 0; i < 4; i++) {
-                editorRef.current.addTab(files[Math.floor(Math.random() * 2) + 1]);
-            }
+        // This is only for demo purposes, I am randomly loading 2 files.
+        const files = flattenTree(workspace).filter((node) => node.type === "file");
+        for (let i = 0; i < 4; i++) {
+            editorRef.current.addTab(files[Math.floor(Math.random() * 2) + 1]);
         }
     }, [workspace]);
 
