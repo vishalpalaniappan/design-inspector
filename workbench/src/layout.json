@@ -10,7 +10,7 @@
                 {
                     "containerId": "header",
                     "type": "container",
-                    "size": { "initial": { "value": 25, "unit": "px", "type": "fixed" }}
+                    "size": { "initial": { "value": 0, "unit": "px", "type": "fixed" }}
                 },
                 {
                     "containerId": "mainBody",
@@ -38,7 +38,7 @@
                 {
                     "containerId": "sidebar",
                     "type": "container",
-                    "size": { "initial": { "value": 50, "unit": "px", "type": "fixed" }},
+                    "size": { "initial": { "value": 0, "unit": "px", "type": "fixed" }},
                     "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" },
                     "showHandlebar": true
                 },
@@ -119,6 +119,31 @@
                     "containerId": "editorContainer",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "editorContainer",
+                    "sibling2": "editorContainer2"
+                },
+                {
+                    "containerId": "editorContainer2",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "editorContainer2",
+                    "sibling2": "rightMenuContainer"
+                },
+                {
+                    "containerId": "rightMenuContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 270, "unit": "px", "type": "fixed" },
+                        "min": { "value": 170, "unit": "px"},
+                        "max": { "value": 320, "unit": "px"}
+                    },
+                    "collapse": { "value": 700, "condition": "lessThan", "relative": "parent" }
                 }
             ]
         },
@@ -139,7 +164,62 @@
                 {
                     "containerId": "fileTabsContainer",
                     "type": "container",
+                    "size": { 
+                        "initial": { "value": 350, "unit": "px", "type": "fixed" },
+                        "min": { "value": 51, "unit": "px"}
+                    },
+                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "fileTabsContainer",
+                    "sibling2": "leftMenuContainer2"
+                },
+                {
+                    "containerId": "leftMenuContainer2",
+                    "type": "container",
                     "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "rightMenuContainer": {
+            "id": "rightMenuContainer",
+            "background": "#252526",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "rightMenuContainer1",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 200, "unit": "px", "type": "fixed" },
+                        "min": { "value": 51, "unit": "px"}
+                    },
+                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "rightMenuContainer1",
+                    "sibling2": "rightMenuContainer3"
+                },
+                {
+                    "containerId": "rightMenuContainer2",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "rightMenuContainer2",
+                    "sibling2": "rightMenuContainer3"
+                },
+                {
+                    "containerId": "rightMenuContainer3",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 200, "unit": "px", "type": "fixed" },
+                        "min": { "value": 51, "unit": "px"}
+                    },
+                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
                 }
             ]
         },
@@ -156,6 +236,43 @@
         "editorContainer": {
             "id": "editorContainer",
             "component": "EditorContainer",
+            "background": "#1e1e1e"
+        },
+        "editorContainer2": {
+            "id": "editorContainer2",
+            "component": "Flow",
+            "background": "#1e1e1e"
+        },
+        "leftMenuContainer2": {
+            "id": "leftMenuContainer2",
+            "menuBar": {
+                "showClose": false,
+                "title": "File Browser3"
+            },
+            "background": "#1e1e1e"
+        },
+        "rightMenuContainer1": {
+            "id": "rightMenuContainer1",
+            "menuBar": {
+                "showClose": false,
+                "title": "Behaviors"
+            },
+            "background": "#1e1e1e"
+        },
+        "rightMenuContainer2": {
+            "id": "rightMenuContainer2",
+            "menuBar": {
+                "showClose": false,
+                "title": "Participants"
+            },
+            "background": "#1e1e1e"
+        },
+        "rightMenuContainer3": {
+            "id": "rightMenuContainer3",
+            "menuBar": {
+                "showClose": false,
+                "title": "Invariants"
+            },
             "background": "#1e1e1e"
         }
     }
