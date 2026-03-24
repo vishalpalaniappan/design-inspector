@@ -238,8 +238,8 @@
             "component": "EditorContainer",
             "background": "#1e1e1e"
         },
-        "editorContainer2": {
-            "id": "editorContainer2",
+        "FlowContainer": {
+            "id": "FlowContainer",
             "component": "Flow",
             "background": "#1e1e1e"
         },
@@ -255,7 +255,7 @@
                     "collapse": { "value": 100, "condition": "lessThan", "relative": "parent" }
                 },
                 {
-                    "containerId": "editorContainer2",
+                    "containerId": "FlowContainer",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 }
