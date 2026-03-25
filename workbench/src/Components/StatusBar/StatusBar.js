@@ -16,7 +16,7 @@ StatusBar.propTypes = {
 export function StatusBar () {
     const {connectionStatus} = useContext(ServerContext);
 
-    const [connectionColor, setConnectionColor] = useState({color:"green"});
+    const [connectionColor, setConnectionColor] = useState({color: "green"});
 
     useEffect(() => {
         if (connectionStatus) {
