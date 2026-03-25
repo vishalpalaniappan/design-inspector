@@ -17,14 +17,41 @@ In this framework, the design is the central actor...[ongoing]
 
 ## Development
 
+There are two components in this application, the server and the workbench. You can run each component independently by following the readme in each folder, or you can use the npm scripts in the root folder of the repo.
 
+### Install Libraries
 
-## Providing Feedback
+```
+npm run install:all
+```
 
+### Run Both Components
+```
+npm run dev
+```
 
+The workbench will now be available at `http://localhost:3011/`.
 
+### Running Components Separately
 
+To run the components separately from root folder.
+```
+npm run server
+```
+```
+npm run workbench
+``` 
+
+### Workspace
+
+The workspace folder contains the files that will be loaded into the workbench. Currently, the application is configured to only load one design. I will extend this to multiple workspaces in an upcoming PR after making some changes to the layout manager. At that point, you will be able to create multiple workspaces, new workspaces etc.
+
+# Providing feedback
+
+You can use GitHub issues to [report a bug][bug-report] or [request a feature][feature-req].
 
 
 [dal-engine-core-js]: https://github.com/vishalpalaniappan/dal-engine-core-js
 [automation]: https://vishalpalaniappan.github.io/asp-adli-python/Automating%20the%20Management%20of%20Software%20Systems.pdf
+[bug-report]: https://github.com/vishalpalaniappan/design-workbench/issues
+[feature-req]: https://github.com/vishalpalaniappan/design-workbench/issues
