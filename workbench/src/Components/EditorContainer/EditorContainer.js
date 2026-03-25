@@ -51,7 +51,8 @@ export function EditorContainer () {
                     editorRef.current.closeTab(drop.activeData.node.uid);
                 }
             }
-        } else if (activeType === "FileTreeNode" && overType === "EditorTabGutter" && overParent === parentIdRef.current) {
+        } else if (activeType === "FileTreeNode" && overType === "EditorTabGutter"
+            && overParent === parentIdRef.current) {
             // Moving from fileTree to editor
             editorRef.current.addTab(drop.activeData.node, drop.overData.index);
         }
