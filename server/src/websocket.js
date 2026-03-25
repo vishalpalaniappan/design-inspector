@@ -1,6 +1,6 @@
-import { readdir } from "node:fs/promises";
 import path from "node:path";
 import loadDir from "./loadDir.js";
+import saveFile from "./saveFIle.js";
 import { TerminalSession } from "./terminal.js";
 
 const handleWSConnection = async function (request) {
@@ -75,6 +75,12 @@ const handleWSConnection = async function (request) {
             }
             case "terminal_restart": {
                 terminal.restart();
+                break;
+            }
+            case "save-engine": {
+                saveFile(msg.payload.fileName, "workspace", msg.payload.data).then(() => {
+                    // Send confirmation that file was saved
+                });
                 break;
             }
             default: {
