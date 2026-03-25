@@ -106,6 +106,14 @@ function GlobalProviders ({children}) {
         return e;
     }, []);
 
+
+    useEffect(() => {
+        if (workspace) {
+            const file = workspace.find((file)=>file.name === "engine.dal");
+            engine.deserialize(file.content);
+        }
+    }, [workspace]);
+
     return (
         // eslint-disable-next-line max-len
         <WorkspaceContext.Provider value={{workspace}}>
