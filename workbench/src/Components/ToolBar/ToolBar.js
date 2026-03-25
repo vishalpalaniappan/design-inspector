@@ -1,11 +1,14 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 
 import {
     Cursor,
+    Floppy,
     Square,
     Trash
 } from "react-bootstrap-icons";
 import {useLayoutEventPublisher} from "ui-layout-manager-dev";
+
+import {useDalEngine} from "../../Providers/GlobalProviders";
 
 import "./ToolBar.scss";
 
@@ -20,6 +23,13 @@ export function ToolBar () {
     const [selectedTool, setSelectedTool] = useState("select");
 
     const publish = useLayoutEventPublisher();
+    const {engine} = useDalEngine();
+
+    const saveGraph = useCallback(() => {
+        if (engine) {
+            engine.save();
+        }
+    }, [engine]);
 
     const selectTool = (tool) => {
         setSelectedTool(tool);
@@ -53,7 +63,11 @@ export function ToolBar () {
                 />
             </div>
             <div className="toolbarContainer bottom">
-
+                <Floppy
+                    onClick={(e) => saveGraph()}
+                    title="Save Graph"
+                    className="icon"
+                />
             </div>
 
         </div>
