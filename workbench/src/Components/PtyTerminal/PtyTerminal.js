@@ -85,10 +85,17 @@ export function PtyTerminal () {
             });
         });
 
+        let resizeTimer;
         const resizeObserver = new ResizeObserver(() => {
-            requestAnimationFrame(() => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
                 fitAddon.fit();
-            });
+                sendJsonMessage({
+                    type: "terminal_resize",
+                    cols: term.cols,
+                    rows: term.rows,
+                });
+            }, 10);
         });
 
         resizeObserver.observe(containerRef.current);
