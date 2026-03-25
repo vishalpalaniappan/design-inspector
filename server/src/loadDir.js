@@ -33,7 +33,7 @@ const loadDir = async function (rootPath, folderPath) {
             return {
                 name: entry.name,
                 type: 'file',
-                uid: "dir-" + randomUUID(),
+                uid: "file-" + randomUUID(),
                 path: relativePath,
                 content: await fs.readFile(fullPath, 'utf-8'),
             };
