@@ -1,7 +1,7 @@
 # Design Workbench
 
 > [!NOTE]  
-> This repo is in development and the features listed below are in the pipeline. Currently the application ony supports a single workspace (workspace folder in server) but this will be extended to multiple workspaces after they layout manager is migrated to event driven structure.
+> This repo is in development and the features listed below are in the pipeline. Currently the application only supports a single workspace (workspace folder in server) but this will be extended to multiple workspaces after they layout manager is migrated to event driven structure.
 
 The Design Workbench is a Unified Development Environment (UDE) powered by design-driven [automation][automation]. At its core is an [engine][dal-engine-core-js] that enables users to formally specify designs in a Design Abstraction Language (DAL) through behaviors, participants, and semantic invariants. By mapping an implementation onto those behaviors, instrumented execution can be transformed back into the behavior defined by the design, a process known as the Semantic Transform (ST). The result is a fully automated, end-to-end diagnostic solution for software systems that is seamlessly integrated into the development process. 
 
@@ -15,11 +15,20 @@ The traces which motivated the invariants are assigned to the invariant and serv
 
 The workbench also provides an interface to unambiguously define the domain structure of the design data. This will be leveraged by CLP to apply domain specific compression to the data, achieving true automation by enabling the design's behavior to be retained losslessly.
 
+This means that the workbench will contain a few unique modes:
+- Design Definition
+- Implementation
+- Mapping
+- Instrumentation and Execution
+- Automated Debugging
+- Learning
+- Automated Testing
+
+All of these modes are intrinsic to the design feedback loop shown below and the workbench participates in this entire cycle. 
+
 ![alt text](docs/design_feedback_loop.jpg)
 
-By leveraging design driven automation, the feedback loop shown in the image above establishes the ability to automatically manage software systems. The design workbench establishes the structure need to practically realize this feedback loop.
-
-Ultimately, this marks the shift away from the inherent uncertainty of traditional observability platforms and marks the arrival of deterministic understanding and automation enabled by the Design Learning Platform (DLP).
+By leveraging design-driven automation, the design workbench establishes the structure needed to practically enable the automatic management of software systems. Ultimately, this marks the shift away from the inherent uncertainty of traditional observability platforms and marks the arrival of deterministic understanding and complete automation enabled by the Design Learning Platform (DLP).
 
 ## Development
 
