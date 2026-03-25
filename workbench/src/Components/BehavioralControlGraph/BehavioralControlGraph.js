@@ -20,9 +20,7 @@ export function BehavioralControlGraph () {
     const {engine} = useDalEngine();
 
     useEffect(() => {
-        console.log(engine);
         if (engine) {
-            engine.save();
         }
     }, [engine]);
 
