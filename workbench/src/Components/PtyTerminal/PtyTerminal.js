@@ -8,7 +8,7 @@ import ServerContext from "../../Providers/ServerContext";
 import "xterm/css/xterm.css";
 import "./PtyTerminal.scss";
 
-Terminal.propTypes = {
+PtyTerminal.propTypes = {
 };
 
 /**
@@ -102,6 +102,7 @@ export function PtyTerminal () {
 
         return () => {
             resizeObserver.disconnect();
+            setTermWriter(null);
             term.dispose();
             disposable.dispose();
             termRef.current = null;
