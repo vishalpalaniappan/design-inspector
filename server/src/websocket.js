@@ -9,31 +9,30 @@ const handleWSConnection = async function(request) {
 
     const terminal = new TerminalSession();
 
-    const onData = (data) => {
+    const onTerminalData = (data) => {
         if (ws.readyState === ws.OPEN) {
             ws.send(JSON.stringify({ type: "terminal_output", data }));
         }
     };
 
-    const onExit = (exit) => {
+    const onTerminalExit = (exit) => {
         if (ws.readyState === ws.OPEN) {
-            ws.send(JSON.stringify({ type: "exit", data: exit }));
+            ws.send(JSON.stringify({ type: "terminal_exit", data: exit }));
         }
     };
 
-    const onStart = () => {
-        ws.send(JSON.stringify({ type: "started" }));
+    const onTerminalStart = () => {
+        ws.send(JSON.stringify({ type: "terminal_started" }));
     };
 
-    const onStop = () => {
-        ws.send(JSON.stringify({ type: "stopped" }));
+    const onTerminalStop = () => {
+        ws.send(JSON.stringify({ type: "terminal_stopped" }));
     };
 
-    terminal.on("data", onData);
-    terminal.on("exit", onExit);
-    terminal.on("start", onStart);
-    terminal.on("stop", onStop);
-
+    terminal.on("data", onTerminalData);
+    terminal.on("exit", onTerminalExit);
+    terminal.on("start", onTerminalStart);
+    terminal.on("stop", onTerminalStop);
     terminal.start();
 
     ws.on('message', function (data) {
@@ -76,10 +75,10 @@ const handleWSConnection = async function(request) {
 
     ws.on("close", () => {
         terminal.stop();
-        terminal.off("data", onData);
-        terminal.off("exit", onExit);
-        terminal.off("start", onStart);
-        terminal.off("stop", onStop);
+        terminal.off("data", onTerminalData);
+        terminal.off("exit", onTerminalExit);
+        terminal.off("start", onTerminalStart);
+        terminal.off("stop", onTerminalStop);
     });
 }
 
