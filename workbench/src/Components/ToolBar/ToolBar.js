@@ -46,32 +46,25 @@ export function ToolBar () {
 
 
     const addBehavior = () => {
-        const {id, closeModal} = openModal({
-            title: "Add Behavior",
-            render: ({close}) => {
-                return <AddBehavior close={close} />;
-            },
+        // const {id, closeModal} = openModal({
+        //     title: "Add Behavior",
+        //     render: ({close}) => {
+        //         return <AddBehavior close={close} />;
+        //     },
+        // });
+        publish({
+            type: "add:behavior",
+            payload: "test",
+            source: "tool-bar",
         });
     };
 
     return (
         <div className="toolbarWrapper">
             <div className="toolbarContainer">
-                <Cursor
-                    onClick={(e) => selectTool("select")}
-                    style={{color: selectedTool === "select" ? "white": "grey"}}
-                    title="Select"
-                    className="icon"
-                />
                 <PlusSquare
                     onClick={(e) => addBehavior()}
                     title="Add Node"
-                    className="icon"
-                />
-                <Trash
-                    onClick={(e) => selectTool("delete")}
-                    style={{color: selectedTool === "delete" ? "white": "grey"}}
-                    title="Delete Node"
                     className="icon"
                 />
             </div>
