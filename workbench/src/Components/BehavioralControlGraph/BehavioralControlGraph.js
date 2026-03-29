@@ -40,6 +40,12 @@ export function BehavioralControlGraph () {
         }
     }, [engine]);
 
+    useLayoutEventSubscription("graph:selected", (event) => {
+        if (graphRef.current) {
+            graphRef.current.updateEngine(engine);
+        }
+    }, [engine, graphRef]);
+
     const connectBehaviors = useCallback(
         (from, to) => {
             if (!to) return;
