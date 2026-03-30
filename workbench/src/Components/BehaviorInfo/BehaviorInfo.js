@@ -32,7 +32,7 @@ export function BehaviorInfo ({close}) {
 
     return (
         <div className="behavior-info-container">
-            <div className="title">Behavior:</div>
+            <div className="title">Selected Behavior:</div>
             {node && <div className="name">{node.getBehavior().name}</div>}
         </div>
     );
