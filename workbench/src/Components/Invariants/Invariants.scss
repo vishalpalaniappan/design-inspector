@@ -1,0 +1,41 @@
+
+.invariantsContainer {
+    display:flex;
+    flex-direction: column;
+    height:100%;
+}
+
+.invariantsContainer > .invariantsRow {
+    height: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0;
+}
+
+.invariantsContainer > .invariantsRow > .selectInvariants {
+    flex:1;
+    margin:0 10px;
+    background-color: #333;
+    color: rgb(184, 184, 184);
+    border: none;
+}
+
+.invariantsContainer > .invariantsRow > .icon {
+    color:grey;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.invariantsContainer > .invariantsRow > .icon:hover {
+    color: white;
+}
+
+.invariantsContainer > .invariantsContent {
+    display:flex;
+    flex:1;
+    padding:10px;
+}
+
+
+

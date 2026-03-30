@@ -1,0 +1,41 @@
+
+.participantsContainer {
+    display:flex;
+    flex-direction: column;
+    height:100%;
+}
+
+.participantsContainer > .participantsRow {
+    height: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0;
+}
+
+.participantsContainer > .participantsRow > .selectParticipants {
+    flex:1;
+    margin:0 10px;
+    background-color: #333;
+    color: rgb(184, 184, 184);
+    border: none;
+}
+
+.participantsContainer > .participantsRow > .icon {
+    color:grey;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.participantsContainer > .participantsRow > .icon:hover {
+    color: white;
+}
+
+.participantsContainer > .participantsContent {
+    display:flex;
+    flex:1;
+    padding:10px;
+}
+
+
+

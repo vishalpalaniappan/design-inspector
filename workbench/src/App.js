@@ -47,6 +47,14 @@ export function App () {
             import("./Components/GraphMenuBar/GraphMenuBar").then((m) => ({
                 default: m.default || m.GraphMenuBar,
             })),
+        Participants: () =>
+            import("./Components/Participants/Participants").then((m) => ({
+                default: m.default || m.Participants,
+            })),
+        Invariants: () =>
+            import("./Components/Invariants/Invariants").then((m) => ({
+                default: m.default || m.Invariants,
+            })),
     }), []);
 
     return (

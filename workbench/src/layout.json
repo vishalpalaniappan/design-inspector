@@ -191,18 +191,16 @@
                     "size": { 
                         "initial": { "value": 80, "unit": "px", "type": "fixed" },
                         "min": { "value": 51, "unit": "px"}
-                    },
-                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }
-                },
-                {
-                    "type": "handleBar",
-                    "sibling1": "rightMenuContainer1",
-                    "sibling2": "rightMenuContainer3"
+                    }
                 },
                 {
                     "containerId": "rightMenuContainer2",
                     "type": "container",
-                    "size": { "initial": { "type": "fill" }}
+                    "size": { 
+                        "initial": { "value": 250, "unit": "px", "type": "fixed" },
+                        "min": { "value": 51, "unit": "px"}
+                    },
+                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
                 },
                 {
                     "type": "handleBar",
@@ -212,11 +210,8 @@
                 {
                     "containerId": "rightMenuContainer3",
                     "type": "container",
-                    "size": { 
-                        "initial": { "value": 200, "unit": "px", "type": "fixed" },
-                        "min": { "value": 51, "unit": "px"}
-                    },
-                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
+                    "size": { "initial": { "type": "fill" }},
+                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }
                 }
             ]
         },
@@ -292,6 +287,7 @@
         },
         "rightMenuContainer2": {
             "id": "rightMenuContainer2",
+            "component": "Participants",
             "menuBar": {
                 "showClose": false,
                 "title": "Participants"
@@ -300,6 +296,7 @@
         },
         "rightMenuContainer3": {
             "id": "rightMenuContainer3",
+            "component": "Invariants",
             "menuBar": {
                 "showClose": false,
                 "title": "Invariants"
