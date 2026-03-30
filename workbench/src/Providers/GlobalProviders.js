@@ -3,6 +3,7 @@ import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
 import {DALEngine} from "dal-engine-core-js-lib-dev";
 import PropTypes from "prop-types";
 import useWebSocket, {ReadyState} from "react-use-websocket";
+import {useLayoutEventPublisher} from "ui-layout-manager-dev";
 
 import DalEngineContext from "./DalEngineContext";
 import ServerContext from "./ServerContext";
@@ -22,6 +23,8 @@ function GlobalProviders ({children}) {
     const [selectedBehavior, setSelectedBehavior] = useState();
     const termWriteRef = useRef(null);
     const sendJsonMessageRef = useRef(null);
+
+    const publish = useLayoutEventPublisher();
 
     // Connect and setup auto reconnect
     const socketUrl = "ws://localhost:3002";
@@ -67,6 +70,20 @@ function GlobalProviders ({children}) {
                 break;
             case "terminal_output":
                 termWriteRef.current?.(msg.data);
+                break;
+            case "design_save_successful":
+                publish({
+                    type: "status:set",
+                    payload: "Design saved successfully!",
+                    source: "tool-bar",
+                });
+                break;
+            case "design_save_failed":
+                publish({
+                    type: "status:set",
+                    payload: "Failed to save design.",
+                    source: "tool-bar",
+                });
                 break;
             default:
                 break;

@@ -59,7 +59,9 @@ export class  WSMessageHandler {
 
     saveEngine = (msg) => {
         saveFile(msg.payload.fileName, "workspace", msg.payload.data).then(() => {
-            // Send confirmation that file was saved
+            this.ws.send(JSON.stringify({ type: "design_save_successful" }));
+        }).catch((err) => {
+            this.ws.send(JSON.stringify({ type: "design_save_failed" }));
         });
     }
 
