@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 
 import PropTypes from "prop-types";
-import {PlusSquare, Trash} from "react-bootstrap-icons";
+import {Plus, PlusSquare, Trash} from "react-bootstrap-icons";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import WorkspaceContext from "../../Providers/WorkspaceContext";
@@ -36,6 +36,10 @@ export function Participants ({close}) {
                 <Trash title={"Delete Participant"} onClick={deleteParticipant} className="icon"/>
             </div>
             <div className="participantsContent">
+                <div className="addParticipantPlaceholder">
+                    <Plus title={"Add Participant"} className="icon"/>
+                    Add Invariant
+                </div>
             </div>
         </div>
     );

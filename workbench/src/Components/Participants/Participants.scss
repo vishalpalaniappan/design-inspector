@@ -34,7 +34,30 @@
 .participantsContainer > .participantsContent {
     display:flex;
     flex:1;
-    padding:10px;
+}
+
+.participantsContainer > .participantsContent  > .addParticipantPlaceholder {
+    margin:10px 20px;
+    height: 35px;
+    width:100%;
+    color:grey;
+    border-radius: 5px;
+    border: dashed 1px grey;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-size:13px;
+    cursor: pointer;
+
+    .icon {
+        font-size:20px;
+        display: flex;
+        align-self: center;
+    }
+}
+
+.participantsContainer > .participantsContent  > .addParticipantPlaceholder:hover {
+    color:white;
 }
 
 
