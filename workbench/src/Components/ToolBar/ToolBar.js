@@ -26,7 +26,7 @@ export function ToolBar () {
             engine.save();
             publish({
                 type: "status:set",
-                payload: "Graph saved successfully!",
+                payload: "Saving design...",
                 source: "tool-bar",
             });
         }
