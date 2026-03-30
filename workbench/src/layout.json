@@ -287,19 +287,19 @@
         },
         "rightMenuContainer2": {
             "id": "rightMenuContainer2",
-            "component": "Participants",
+            "component": "Behaviors",
             "menuBar": {
                 "showClose": false,
-                "title": "Participants"
+                "title": "Behaviors"
             },
             "background": "#1e1e1e"
         },
         "rightMenuContainer3": {
             "id": "rightMenuContainer3",
-            "component": "Invariants",
+            "component": "Participants",
             "menuBar": {
                 "showClose": false,
-                "title": "Invariants"
+                "title": "Participants"
             },
             "background": "#1e1e1e"
         },

@@ -1,11 +1,11 @@
 
-.invariantsContainer {
+.behaviorsContainer {
     display:flex;
     flex-direction: column;
     height:100%;
 }
 
-.invariantsContainer > .invariantsRow {
+.behaviorsContainer > .behaviorsRow {
     height: 20px;
     width: 100%;
     display: flex;
@@ -13,7 +13,7 @@
     margin: 10px 0;
 }
 
-.invariantsContainer > .invariantsRow > .selectInvariants {
+.behaviorsContainer > .behaviorsRow > .selectBehaviors {
     flex:1;
     margin:0 10px;
     background-color: #333;
@@ -21,17 +21,17 @@
     border: none;
 }
 
-.invariantsContainer > .invariantsRow > .icon {
+.behaviorsContainer > .behaviorsRow > .icon {
     color:grey;
     cursor: pointer;
     margin: 0 5px;
 }
 
-.invariantsContainer > .invariantsRow > .icon:hover {
+.behaviorsContainer > .behaviorsRow > .icon:hover {
     color: white;
 }
 
-.invariantsContainer > .invariantsContent {
+.behaviorsContainer > .behaviorsContent {
     display:flex;
     flex:1;
     padding:10px;

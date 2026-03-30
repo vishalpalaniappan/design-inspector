@@ -1,8 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 
 import PropTypes from "prop-types";
-
-import { PlusSquare, Trash } from "react-bootstrap-icons";
+import {PlusSquare, Trash} from "react-bootstrap-icons";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import WorkspaceContext from "../../Providers/WorkspaceContext";
@@ -21,13 +20,12 @@ export function Participants ({close}) {
     const {engine} = useDalEngine();
     const {selectedBehavior} = useContext(WorkspaceContext);
 
-
     const addParticipant = () => {
 
     };
 
     const deleteParticipant = () => {
-        
+
     };
 
     return (
@@ -37,7 +35,8 @@ export function Participants ({close}) {
                 <PlusSquare title={"Add Participant"} onClick={addParticipant} className="icon"/>
                 <Trash title={"Delete Participant"} onClick={deleteParticipant} className="icon"/>
             </div>
-            <div className="participantsContent"></div>
+            <div className="participantsContent">
+            </div>
         </div>
     );
 }
