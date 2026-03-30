@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 
 import PropTypes from "prop-types";
-import {Plus, PlusSquare, Trash} from "react-bootstrap-icons";
+import {Geo, Plus, PlusSquare, Trash} from "react-bootstrap-icons";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import WorkspaceContext from "../../Providers/WorkspaceContext";
@@ -34,6 +34,7 @@ export function Participants ({close}) {
                 <select className="selectParticipants"></select>
                 <PlusSquare title={"Add Participant"} onClick={addParticipant} className="icon"/>
                 <Trash title={"Delete Participant"} onClick={deleteParticipant} className="icon"/>
+                <Geo title={"Participant Mapping"} className="icon"/>
             </div>
             <div className="participantsContent">
                 <div className="addParticipantPlaceholder">
