@@ -189,7 +189,7 @@
                     "containerId": "rightMenuContainer1",
                     "type": "container",
                     "size": { 
-                        "initial": { "value": 100, "unit": "px", "type": "fixed" },
+                        "initial": { "value": 80, "unit": "px", "type": "fixed" },
                         "min": { "value": 51, "unit": "px"}
                     },
                     "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }

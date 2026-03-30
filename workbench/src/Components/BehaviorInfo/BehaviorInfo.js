@@ -30,10 +30,18 @@ export function BehaviorInfo ({close}) {
         }
     }, [engine, selectedBehavior]);
 
+
     return (
         <div className="behavior-info-container">
-            <div className="title">Selected Behavior:</div>
-            {node && <div className="name">{node.getBehavior().name}</div>}
+            <div className="behavior-info-wrapper">
+                {node ?
+                    <>
+                        <div className="title">Selected Behavior</div>
+                        <div className="name">{node.getBehavior().name}</div>
+                    </>:
+                    <div className="title">No Behavior Selected</div>
+                }
+            </div>
         </div>
     );
 }
