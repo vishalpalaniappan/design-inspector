@@ -75,14 +75,14 @@ function GlobalProviders ({children}) {
                 publish({
                     type: "status:set",
                     payload: "Design saved successfully!",
-                    source: "tool-bar",
+                    source: "websocket-handler",
                 });
                 break;
             case "design_save_failed":
                 publish({
                     type: "status:set",
                     payload: "Failed to save design.",
-                    source: "tool-bar",
+                    source: "websocket-handler",
                 });
                 break;
             default:
