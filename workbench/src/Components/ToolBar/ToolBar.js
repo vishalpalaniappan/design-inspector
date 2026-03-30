@@ -1,21 +1,13 @@
 import React, {useCallback, useState} from "react";
 
-import {
-    Cursor,
-    Floppy,
-    PlusSquare,
-    Trash
-} from "react-bootstrap-icons";
+import {Floppy, PlusSquare} from "react-bootstrap-icons";
 import {useLayoutEventPublisher} from "ui-layout-manager-dev";
 import {useModalManager} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
-import {AddBehavior} from "../Modals/AddBehavior/AddBehavior";
+import {AddBehavior} from "../Modals/AddBehavior";
 
 import "./ToolBar.scss";
-
-ToolBar.propTypes = {
-};
 
 /**
  * Toolbar Component

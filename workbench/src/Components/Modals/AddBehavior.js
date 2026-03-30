@@ -3,21 +3,21 @@ import React, {useCallback, useContext, useEffect, useRef, useState} from "react
 import PropTypes from "prop-types";
 import {useLayoutEventPublisher} from "ui-layout-manager-dev";
 
-import {useDalEngine} from "../../../Providers/GlobalProviders";
+import {useDalEngine} from "../../Providers/GlobalProviders";
 
 import "./AddValue.scss";
 
-AddGraph.propTypes = {
+AddBehavior.propTypes = {
     close: PropTypes.func.isRequired,
 };
 
 /**
- * Add AddGraph modal body component.
+ * Add Behavior modal body component.
  * @return {JSX.Element}
  */
-export function AddGraph ({close}) {
+export function AddBehavior ({close}) {
     const {engine} = useDalEngine();
-    const [graph, setGraph] = useState("");
+    const [behavior, setBehavior] = useState("");
     const [error, setError] = useState(null);
     const inputRef = useRef(null);
 
@@ -31,38 +31,37 @@ export function AddGraph ({close}) {
 
     const handleSubmit = useCallback((event) => {
         event.preventDefault();
-        if (graph.trim() === "") {
-            setError("Graph name must not be empty.");
+        if (behavior.trim() === "") {
+            setError("Behavior name must not be empty.");
             return;
         }
-        // If graph already exists, show error.
-        // Otherwise, add graph and close modal.
+        // If behavior already exists, show error.
+        // Otherwise, add behavior and close modal.
         try {
-            engine.graphs.getGraph(graph);
-            setError(`Graph with name "${graph}" already exists.`);
-        } catch (UnknownGraph) {
-            engine.createGraph(graph);
-            engine.selectGraph(graph);
+            engine.getNode(behavior);
+            setError(`Behavior with name "${behavior}" already exists.`);
+        } catch (BehaviorNotFoundError) {
+            engine.addNode(behavior, []);
             publish({
                 type: "engine:update",
-                source: "add-graph-modal",
+                source: "add-behavior-modal",
             });
             close();
         }
-    }, [engine, graph, publish, close]);
+    }, [engine, behavior, publish, close]);
 
     return (
         <div className="add-value-modal">
             <div className="value-name-label">
-                <span>Graph Name:</span>
+                <span>Behavior Name:</span>
             </div>
             <form className="value-name-input" onSubmit={handleSubmit}>
                 <input
                     ref={inputRef}
-                    value={graph}
-                    onChange={(e) => setGraph(e.target.value)}/>
+                    value={behavior}
+                    onChange={(e) => setBehavior(e.target.value)}/>
                 <div className="value-name-submit">
-                    <button type="submit">Add Graph</button>
+                    <button type="submit">Add Behavior</button>
                 </div>
             </form>
             {error &&

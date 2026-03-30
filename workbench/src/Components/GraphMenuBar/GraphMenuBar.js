@@ -6,7 +6,7 @@ import {useModalManager} from "ui-layout-manager-dev";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
-import {AddGraph} from "../Modals/AddBehavior/AddGraph";
+import {AddGraph} from "../Modals/AddGraph";
 
 import "./GraphMenuBar.scss";
 
