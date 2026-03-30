@@ -32,10 +32,8 @@ export function BehaviorInfo ({close}) {
 
     return (
         <div className="behavior-info-container">
-            {node && <span>
-                <div>Selected Behavior:</div>
-                <div>{node.getBehavior().name}</div>
-            </span>}
+            <div className="title">Behavior:</div>
+            {node && <div className="name">{node.getBehavior().name}</div>}
         </div>
     );
 }
