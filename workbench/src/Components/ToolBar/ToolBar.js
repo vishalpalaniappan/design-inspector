@@ -51,7 +51,7 @@ export function ToolBar () {
             <div className="toolbarContainer">
                 <PlusSquare
                     onClick={(e) => addBehavior()}
-                    title="Add Node"
+                    title="Add Behavior"
                     className="icon"
                 />
             </div>

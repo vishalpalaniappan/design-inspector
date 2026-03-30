@@ -72,8 +72,8 @@ export function GraphMenuBar () {
                         </option>
                     ))}
                 </select>
-                <PlusSquare onClick={addgraph} className="icon"/>
-                <Trash onClick={deleteGraph} className="icon"/>
+                <PlusSquare title={"Add Graph"} onClick={addgraph} className="icon"/>
+                <Trash title={"Delete Graph"} onClick={deleteGraph} className="icon"/>
             </div>
         </div>
     );
