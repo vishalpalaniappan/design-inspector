@@ -24,7 +24,6 @@ export function BehaviorInfo ({close}) {
 
     useEffect(() => {
         if (selectedBehavior) {
-            console.log("Behavior selected:", selectedBehavior);
             const selectedNode = engine.getNode(selectedBehavior);
             setNode(selectedNode);
         } else {
