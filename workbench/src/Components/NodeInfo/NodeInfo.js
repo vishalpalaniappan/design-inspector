@@ -143,21 +143,14 @@ export function NodeInfo ({close}) {
 
                             <div className="participantsContent">
 
-                                <Invariant invariant={"test"}></Invariant>
+                                <Invariant invariant={"MinLength"}></Invariant>
 
-                                <Invariant invariant={"test"}></Invariant>
+                                <Invariant invariant={"MaxLength"}></Invariant>
 
-                                <Invariant invariant={"test"}></Invariant>
+                                <Invariant invariant={"Pattern"}></Invariant>
 
-                                <Invariant invariant={"test"}></Invariant>
+                                <Invariant invariant={"NoNull"}></Invariant>
 
-                                <Invariant invariant={"test"}></Invariant>
-
-                                <Invariant invariant={"test"}></Invariant>
-
-                                <Invariant invariant={"test"}></Invariant>
-
-                                <Invariant invariant={"test"}></Invariant>
 
                             </div>
 
