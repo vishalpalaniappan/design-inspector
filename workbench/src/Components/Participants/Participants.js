@@ -63,15 +63,15 @@ export function Participants ({close}) {
      * selects the last participant in the list. If there are no
      * participants, it sets the selected participant to null.
      */
-    const updateParticipants = useCallback((participant) => {
+    const updateParticipants = useCallback((participantName) => {
         if (selectedBehavior) {
             const behavior = engine.getNode(selectedBehavior).getBehavior();
             const _participants = behavior.getParticipants();
             setParticipants([..._participants]);
-            if (_participants.length > 0 && participant) {
-                setParticipant(participant);
+            if (_participants.length > 0 && participantName) {
+                setParticipant(participantName);
             } else if (_participants.length > 0) {
-                setParticipant(_participants[_participants.length - 1]);
+                setParticipant(_participants[_participants.length - 1].getName());
             } else {
                 setParticipant(null);
             }
