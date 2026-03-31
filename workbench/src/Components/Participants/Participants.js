@@ -101,7 +101,9 @@ export function Participants ({close}) {
                             participants.map((participant, index) => (
                                 <option key={index}>{participant.getName()}</option>
                             ))}
-                                <option>Add a participant...</option>
+                                {(participants.length === 0 || !participant) &&
+                                    <option>Add a participant...</option>
+                                }
                             </select>
                             <PlusSquare title={"Add Participant"}
                                 onClick={addParticipant}
