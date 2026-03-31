@@ -95,11 +95,13 @@ export function Participants ({close}) {
                         <div className="participantsRow">
                             <select id="car-select" className="selectParticipants"
                                 value={participant}
+                                disabled={participants.length === 0 || !participant}
                                 onChange={(e) => setParticipant(e.target.value)}>
                                 {(participants && participants.length > 0) &&
                             participants.map((participant, index) => (
                                 <option key={index}>{participant.getName()}</option>
                             ))}
+                                <option>Add a participant...</option>
                             </select>
                             <PlusSquare title={"Add Participant"}
                                 onClick={addParticipant}
