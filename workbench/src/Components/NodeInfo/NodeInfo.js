@@ -10,17 +10,17 @@ import WorkspaceContext from "../../Providers/WorkspaceContext";
 import {AddParticipant} from "../Modals/AddParticipant";
 import {Invariant} from "./Invariant/Invariant";
 
-import "./Participants.scss";
+import "./NodeInfo.scss";
 
-Participants.propTypes = {
+NodeInfo.propTypes = {
     close: PropTypes.func.isRequired,
 };
 
 /**
- * Participants Info component.
+ * NodeInfo Info component.
  * @return {JSX.Element}
  */
-export function Participants ({close}) {
+export function NodeInfo ({close}) {
     const {engine} = useDalEngine();
     const {selectedBehavior} = useContext(WorkspaceContext);
     const [participants, setParticipants] = useState([]);

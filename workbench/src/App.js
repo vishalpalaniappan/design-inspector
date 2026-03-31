@@ -47,9 +47,9 @@ export function App () {
             import("./Components/GraphMenuBar/GraphMenuBar").then((m) => ({
                 default: m.default || m.GraphMenuBar,
             })),
-        Participants: () =>
-            import("./Components/Participants/Participants").then((m) => ({
-                default: m.default || m.Participants,
+        NodeInfo: () =>
+            import("./Components/NodeInfo/NodeInfo").then((m) => ({
+                default: m.default || m.NodeInfo,
             })),
     }), []);
 
