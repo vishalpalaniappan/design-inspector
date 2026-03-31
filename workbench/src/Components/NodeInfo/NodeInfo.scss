@@ -25,7 +25,11 @@
 }
 
 .nodeInfoContainer > .participantInfo {
+    display:flex;
+    flex-direction: column;
     padding: 10px;
+    flex:1;
+
 
     .participantsLabel {
         font-size:16px;
@@ -35,10 +39,10 @@
 
 .nodeInfoContainer > .participantInfo > .participantsRow {
     width: 100%;
-    display: flex;
+    display:flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 
     .selectParticipants {
         flex:1;
@@ -59,34 +63,9 @@
     }
 }
 
- 
 .nodeInfoContainer > .participantInfo > .participantsContent {
-    display:flex;
     flex:1;
-    flex-direction: column;
-    gap:10px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    scrollbar-gutter: stable;
-    scrollbar-color: #47474766 #252526;
-    scrollbar-width: thin;
-    font-size:14px;
-
-    .addInvariantPlaceholder {
-        height: 25px;
-        width:100%;
-        color:grey;
-        display:flex;
-        justify-content: left;
-        align-items: center;
-        font-size:13px;
-        cursor: pointer;
-        .icon {
-            font-size:20px;
-            display: flex;
-            align-self: center;
-        }
-    }
+    background-color: rgb(124, 2, 2);
 }
 
 .noSelect {

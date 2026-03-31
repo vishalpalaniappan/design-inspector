@@ -71,6 +71,10 @@ export function NodeInfo ({close}) {
         }
     }, [engine, selectedBehavior, participant]);
 
+    const editParticipant = useCallback(() => {
+        // TODO: Implement edit participant functionality here.
+    }, [engine, selectedBehavior, participant]);
+
     /**
      * Given the selected behavior, it sets the participants and
      * selects the last participant in the list.
@@ -111,6 +115,11 @@ export function NodeInfo ({close}) {
                         <div className="participantInfo">
                             <div className="participantsRow">
 
+                                <PlusSquare title={"Add Participant"}
+                                    onClick={addParticipant}
+                                    style={{marginRight: "5px", marginLeft: "0px"}}
+                                    className="icon"/>
+
                                 <select id="car-select" className="selectParticipants"
                                     value={participant}
                                     disabled={participants.length === 0 || !participant}
@@ -123,9 +132,8 @@ export function NodeInfo ({close}) {
                                         <option>Add a participant...</option>
                                     }
                                 </select>
-
-                                <PlusSquare title={"Add Participant"}
-                                    onClick={addParticipant}
+                                <Pencil title={"Edit Participant"}
+                                    onClick={editParticipant}
                                     className="icon"/>
                                 <Trash title={"Delete Participant"}
                                     onClick={deleteParticipant}
@@ -133,15 +141,10 @@ export function NodeInfo ({close}) {
 
                             </div>
 
-                            {
-                                (participant && participant.length > 0) &&
-                                <div className="participantsContent">
-                                    <div className="addInvariantPlaceholder">
-                                        <Plus title={"Add Invariant"} className="icon"/>
-                                    Add Invariant
-                                    </div>
-                                </div>
-                            }
+                            <div className="participantsContent">
+
+                            </div>
+
                         </div>
                     </div>:
                     <span className="noSelect">No Node Selected</span>
