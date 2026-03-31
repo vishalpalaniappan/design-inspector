@@ -24,19 +24,18 @@ export function Participants ({close}) {
     const {engine} = useDalEngine();
     const {selectedBehavior} = useContext(WorkspaceContext);
     const [participants, setParticipants] = useState([]);
+    const [participant, setParticipant] = useState(null);
     const {openModal} = useModalManager();
 
     useLayoutEventSubscription("participants:update", (event) => {
         if (selectedBehavior) {
-            const behavior = engine.getNode(selectedBehavior).getBehavior();
-            setParticipants([...behavior.getParticipants()]);
+            updateParticipants(event.payload);
         }
     }, [engine, participants, setParticipants, selectedBehavior]);
 
     useEffect(() => {
         if (engine && selectedBehavior) {
-            const behavior = engine.getNode(selectedBehavior).getBehavior();
-            setParticipants([...behavior.getParticipants()]);
+            updateParticipants();
         }
     }, [selectedBehavior, engine]);
 
@@ -51,9 +50,33 @@ export function Participants ({close}) {
         }
     }, [engine, selectedBehavior]);
 
-    const deleteParticipant = () => {
+    const deleteParticipant = useCallback(() => {
+        if (engine && selectedBehavior && participant) {
+            const behavior = engine.getNode(selectedBehavior).getBehavior();
+            behavior.removeParticipant(participant);
+            updateParticipants();
+        }
+    }, [engine, selectedBehavior, participant]);
 
-    };
+    /**
+     * Given the selected behavior, it sets the participants and
+     * selects the last participant in the list. If there are no
+     * participants, it sets the selected participant to null.
+     */
+    const updateParticipants = useCallback((participant) => {
+        if (selectedBehavior) {
+            const behavior = engine.getNode(selectedBehavior).getBehavior();
+            const _participants = behavior.getParticipants();
+            setParticipants([..._participants]);
+            if (_participants.length > 0 && participant) {
+                setParticipant(participant);
+            } else if (_participants.length > 0) {
+                setParticipant(_participants[_participants.length - 1]);
+            } else {
+                setParticipant(null);
+            }
+        }
+    }, [engine, participants, setParticipants, selectedBehavior]);
 
     return (
         <>
@@ -64,7 +87,9 @@ export function Participants ({close}) {
                         Participants
                     </div>
                     <div className="participantsRow">
-                        <select className="selectParticipants">
+                        <select className="selectParticipants" 
+                            value={participant}
+                            onChange={(e) => setParticipant(e.target.value)}>
                             {(participants && participants.length > 0) && 
                             participants.map((participant, index) => (
                                 <option key={index}>{participant.getName()}</option>
@@ -76,7 +101,6 @@ export function Participants ({close}) {
                         <Trash title={"Delete Participant"}
                             onClick={deleteParticipant}
                             className="icon"/>
-                        <Geo title={"Participant Mapping"} className="icon"/>
                     </div>
                     <div className="participantsContent">
                         <Invariant invariant={"Min String Length"}/>

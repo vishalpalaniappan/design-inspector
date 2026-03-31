@@ -44,6 +44,7 @@ export function AddParticipant ({close}) {
             engine.getNode(selectedBehavior).getBehavior().addParticipant(participantInstance);
             publish({
                 type: "participants:update",
+                payload: participant,
                 source: "add-participant-modal",
             });
             close();
