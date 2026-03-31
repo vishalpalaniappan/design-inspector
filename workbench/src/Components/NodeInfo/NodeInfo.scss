@@ -27,7 +27,7 @@
 .nodeInfoContainer > .participantInfo {
     display:flex;
     flex-direction: column;
-    padding: 10px;
+    padding: 10px 10px 0 10px;
     flex:1;
     min-height: 0;
 
@@ -75,6 +75,24 @@
     scrollbar-color: #47474766 #252526;
     scrollbar-width: thin;
     font-size:14px;
+    
+}
+
+.nodeInfoContainer > .participantInfo > .participantBottomMenu {
+    display:flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 35px;
+       font-size:14px;
+
+    .addInvariant {
+        cursor: pointer;
+        color:grey;
+    }
+    .addInvariant:hover {
+        cursor: pointer;
+        color:white;
+    }
 }
 
 .noSelect {

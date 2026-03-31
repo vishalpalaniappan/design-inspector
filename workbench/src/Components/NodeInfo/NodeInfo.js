@@ -161,6 +161,12 @@ export function NodeInfo ({close}) {
 
                             </div>
 
+                            <div className="participantBottomMenu">
+                                <span className="addInvariant">
+                                    + Add Invariant
+                                </span>
+                            </div>
+
                         </div>
                     </div>:
                     <span className="noSelect">No Node Selected</span>
