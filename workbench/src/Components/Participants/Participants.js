@@ -2,9 +2,12 @@ import React, {useCallback, useContext, useEffect, useState} from "react";
 
 import PropTypes from "prop-types";
 import {Geo, Pencil, Plus, PlusSquare, Trash} from "react-bootstrap-icons";
+import {useModalManager} from "ui-layout-manager-dev";
+import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import WorkspaceContext from "../../Providers/WorkspaceContext";
+import {AddParticipant} from "../Modals/AddParticipant";
 import {Invariant} from "./Invariant/Invariant";
 
 import "./Participants.scss";
@@ -20,22 +23,31 @@ Participants.propTypes = {
 export function Participants ({close}) {
     const {engine} = useDalEngine();
     const {selectedBehavior} = useContext(WorkspaceContext);
+    const [participants, setParticipants] = useState([]);
+    const {openModal} = useModalManager();
+
+    useLayoutEventSubscription("engine:update", (event) => {
+        if (selectedBehavior) {
+            const behavior = engine.getNode(selectedBehavior).getBehavior();
+            setParticipants([...behavior.participants]);
+        }
+    }, [engine, participants, setParticipants, selectedBehavior]);
 
     useEffect(() => {
-        if (selectedBehavior) {}
-    }, [selectedBehavior]);
-
-    const getParticipants = useCallback(() => {
-        if (selectedBehavior) {
-            return engine.getNode(selectedBehavior).getBehavior().participants;
+        if (engine && selectedBehavior) {
+            const behavior = engine.getNode(selectedBehavior).getBehavior();
+            setParticipants(behavior.participants);
         }
-        return [];
     }, [selectedBehavior, engine]);
 
     const addParticipant = useCallback(() => {
         if (selectedBehavior) {
-            const node = engine.getNode(selectedBehavior);
-            node.getBehavior().addParticipant("test");
+            openModal({
+                title: "Add Participant",
+                render: ({close}) => {
+                    return <AddParticipant close={close} />;
+                },
+            });
         }
     }, [engine, selectedBehavior]);
 
@@ -47,7 +59,7 @@ export function Participants ({close}) {
         <div className="participantsContainer">
             <div className="participantsRow">
                 <select className="selectParticipants">
-                    {getParticipants().map((participant, index) => (
+                    {participants.map((participant, index) => (
                         <option key={index}>{participant.name}</option>
                     ))}
                 </select>
