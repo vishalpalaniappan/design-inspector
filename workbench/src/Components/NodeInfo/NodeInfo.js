@@ -122,12 +122,15 @@ export function NodeInfo ({close}) {
                                     onClick={deleteParticipant}
                                     className="icon"/>
                             </div>
-                            <div className="participantsContent">
-                                <div className="addInvariantPlaceholder">
-                                    <Plus title={"Add Invariant"} className="icon"/>
-                                Add Invariant
+                            {
+                                (participant && participant.length > 0) &&
+                                <div className="participantsContent">
+                                    <div className="addInvariantPlaceholder">
+                                        <Plus title={"Add Invariant"} className="icon"/>
+                                    Add Invariant
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                     </div>:
                     <span className="noSelect">No Node Selected</span>
