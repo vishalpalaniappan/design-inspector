@@ -37,12 +37,11 @@ export function AddParticipant ({close}) {
             setError("Participant name must not be empty.");
             return;
         }
-        // If participant already exists, show error.
+        // If participant with provided name already exists, show error.
         // Otherwise, add participant and close modal.
         try {
-            console.log("Participant:", participant);
-            const behavior = engine.getNode(selectedBehavior).getBehavior();
-            behavior.addParticipant(participant);
+            const participantInstance = engine.createParticipant({name: participant});
+            engine.getNode(selectedBehavior).getBehavior().addParticipant(participantInstance);
             publish({
                 type: "engine:update",
                 source: "add-participant-modal",

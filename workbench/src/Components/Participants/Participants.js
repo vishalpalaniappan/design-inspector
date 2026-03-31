@@ -29,14 +29,14 @@ export function Participants ({close}) {
     useLayoutEventSubscription("engine:update", (event) => {
         if (selectedBehavior) {
             const behavior = engine.getNode(selectedBehavior).getBehavior();
-            setParticipants([...behavior.participants]);
+            setParticipants([...behavior.getParticipants()]);
         }
     }, [engine, participants, setParticipants, selectedBehavior]);
 
     useEffect(() => {
         if (engine && selectedBehavior) {
             const behavior = engine.getNode(selectedBehavior).getBehavior();
-            setParticipants(behavior.participants);
+            setParticipants([...behavior.getParticipants()]);
         }
     }, [selectedBehavior, engine]);
 
@@ -59,8 +59,9 @@ export function Participants ({close}) {
         <div className="participantsContainer">
             <div className="participantsRow">
                 <select className="selectParticipants">
-                    {participants.map((participant, index) => (
-                        <option key={index}>{participant.name}</option>
+                    {(participants && participants.length > 0) && 
+                    participants.map((participant, index) => (
+                        <option key={index}>{participant.getName()}</option>
                     ))}
                 </select>
                 <PlusSquare title={"Add Participant"} onClick={addParticipant} className="icon"/>
