@@ -56,26 +56,35 @@ export function Participants ({close}) {
     };
 
     return (
-        <div className="participantsContainer">
-            <div className="participantsRow">
-                <select className="selectParticipants">
-                    {(participants && participants.length > 0) && 
-                    participants.map((participant, index) => (
-                        <option key={index}>{participant.getName()}</option>
-                    ))}
-                </select>
-                <PlusSquare title={"Add Participant"} onClick={addParticipant} className="icon"/>
-                <Trash title={"Delete Participant"} onClick={deleteParticipant} className="icon"/>
-                <Geo title={"Participant Mapping"} className="icon"/>
-            </div>
-            <div className="participantsContent">
-                <Invariant invariant={"Min String Length"}/>
-                <Invariant invariant={"Max Size"}/>
-                <div className="addInvariantPlaceholder">
-                    <Plus title={"Add Invariant"} className="icon"/>
-                    Add Invariant
+        <>
+            {
+                selectedBehavior &&
+                <div className="participantsContainer">
+                    <div className="participantsRow">
+                        <select className="selectParticipants">
+                            {(participants && participants.length > 0) && 
+                            participants.map((participant, index) => (
+                                <option key={index}>{participant.getName()}</option>
+                            ))}
+                        </select>
+                        <PlusSquare title={"Add Participant"}
+                            onClick={addParticipant}
+                            className="icon"/>
+                        <Trash title={"Delete Participant"}
+                            onClick={deleteParticipant}
+                            className="icon"/>
+                        <Geo title={"Participant Mapping"} className="icon"/>
+                    </div>
+                    <div className="participantsContent">
+                        <Invariant invariant={"Min String Length"}/>
+                        <Invariant invariant={"Max Size"}/>
+                        <div className="addInvariantPlaceholder">
+                            <Plus title={"Add Invariant"} className="icon"/>
+                            Add Invariant
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            }
+        </>
     );
 }

@@ -274,10 +274,6 @@
         "rightMenuContainer3": {
             "id": "rightMenuContainer3",
             "component": "Participants",
-            "menuBar": {
-                "showClose": false,
-                "title": "Participants"
-            },
             "background": "#1e1e1e"
         },
         "toolbarContainer": {
