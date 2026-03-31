@@ -81,36 +81,43 @@ export function Participants ({close}) {
     return (
         <>
             {
-                selectedBehavior &&
-                <div className="participantsContainer">
-                    <div className="participantsTitle">
-                        Participants
-                    </div>
-                    <div className="participantsRow">
-                        <select className="selectParticipants" 
-                            value={participant}
-                            onChange={(e) => setParticipant(e.target.value)}>
-                            {(participants && participants.length > 0) && 
+                selectedBehavior ?
+                    <div className="participantsContainer">
+                        <div className="participantsTitle">
+                        Node Info
+                        </div>
+                        <div className="nodeBehaviorInfo">
+                        Behavior: {selectedBehavior}
+                        </div>
+                        <div className="participantsLabel">
+                        Participants:
+                        </div>
+                        <div className="participantsRow">
+                            <select id="car-select" className="selectParticipants"
+                                value={participant}
+                                onChange={(e) => setParticipant(e.target.value)}>
+                                {(participants && participants.length > 0) &&
                             participants.map((participant, index) => (
                                 <option key={index}>{participant.getName()}</option>
                             ))}
-                        </select>
-                        <PlusSquare title={"Add Participant"}
-                            onClick={addParticipant}
-                            className="icon"/>
-                        <Trash title={"Delete Participant"}
-                            onClick={deleteParticipant}
-                            className="icon"/>
-                    </div>
-                    <div className="participantsContent">
-                        <Invariant invariant={"Min String Length"}/>
-                        <Invariant invariant={"Max Size"}/>
-                        <div className="addInvariantPlaceholder">
-                            <Plus title={"Add Invariant"} className="icon"/>
-                            Add Invariant
+                            </select>
+                            <PlusSquare title={"Add Participant"}
+                                onClick={addParticipant}
+                                className="icon"/>
+                            <Trash title={"Delete Participant"}
+                                onClick={deleteParticipant}
+                                className="icon"/>
                         </div>
-                    </div>
-                </div>
+                        <div className="participantsContent">
+                            <Invariant invariant={"Min String Length"}/>
+                            <Invariant invariant={"Max Size"}/>
+                            <div className="addInvariantPlaceholder">
+                                <Plus title={"Add Invariant"} className="icon"/>
+                            Add Invariant
+                            </div>
+                        </div>
+                    </div>:
+                    <span className="noSelect">No Node Selected</span>
             }
         </>
     );
