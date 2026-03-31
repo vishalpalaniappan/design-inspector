@@ -18,6 +18,12 @@ NodeInfo.propTypes = {
 
 /**
  * NodeInfo Info component.
+ *
+ * TODO: The layout of this component will be entirely redone with
+ * components from the library manager. I am not working to settle
+ * on a style that I will keep, it will change when I dedeicate time
+ * to improving the component library with UI/UX in mind.
+ *
  * @return {JSX.Element}
  */
 export function NodeInfo ({close}) {
