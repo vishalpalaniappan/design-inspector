@@ -47,10 +47,6 @@ export function App () {
             import("./Components/GraphMenuBar/GraphMenuBar").then((m) => ({
                 default: m.default || m.GraphMenuBar,
             })),
-        Behaviors: () =>
-            import("./Components/Behaviors/Behaviors").then((m) => ({
-                default: m.default || m.Behaviors,
-            })),
         Participants: () =>
             import("./Components/Participants/Participants").then((m) => ({
                 default: m.default || m.Participants,
