@@ -6,6 +6,8 @@ import {Geo, Pencil, Plus, PlusSquare, Trash} from "react-bootstrap-icons";
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import WorkspaceContext from "../../Providers/WorkspaceContext";
 
+import {Invariant} from "./Invariant/Invariant";
+
 import "./Participants.scss";
 
 Participants.propTypes = {
@@ -39,17 +41,10 @@ export function Participants ({close}) {
                 <Geo title={"Participant Mapping"} className="icon"/>
             </div>
             <div className="participantsContent">
-
-                <div className="participantCard">
-                    <span>Min String Length</span>
-                    <Pencil title={"Edit Participant"} className="icon"/>
-                </div>
-                <div className="participantCard selected">
-                    <span>Max Size</span>
-                    <Pencil title={"Edit Participant"} className="icon"/>
-                </div>
-                <div className="addParticipantPlaceholder">
-                    <Plus title={"Add Participant"} className="icon"/>
+                <Invariant invariant={"Min String Length"}/>
+                <Invariant invariant={"Max Size"}/>
+                <div className="addInvariantPlaceholder">
+                    <Plus title={"Add Invariant"} className="icon"/>
                     Add Invariant
                 </div>
             </div>

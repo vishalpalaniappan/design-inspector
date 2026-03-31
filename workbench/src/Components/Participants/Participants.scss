@@ -31,6 +31,7 @@
     color: white;
 }
 
+ 
 .participantsContainer > .participantsContent {
     display:flex;
     flex:1;
@@ -45,49 +46,19 @@
     font-size:14px;
 }
 
-.participantsContainer > .participantsContent  > .addParticipantPlaceholder {
+
+.participantsContainer > .participantsContent  > .addInvariantPlaceholder {
     height: 25px;
     width:100%;
     color:grey;
-    border-radius: 5px;
-    border: dashed 1px grey;
     display:flex;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
     font-size:13px;
     cursor: pointer;
-
     .icon {
         font-size:20px;
         display: flex;
         align-self: center;
     }
 }
-
-.participantsContainer > .participantsContent  > .addParticipantPlaceholder:hover {
-    color:white;
-}
-
-
-
-.participantsContainer > .participantsContent  > .participantCard {
-    height: 30px;
-    color:rgb(161, 161, 161);
-    border: solid 1px grey;
-    display:flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    font-size:13px;
-    padding:0 10px;
-}
-
-.participantsContainer > .participantsContent  > .selected  {
-    color:rgb(255, 255, 255);
-    border: solid 1px rgb(255, 208, 121);
-}
-
-
-
-
-
