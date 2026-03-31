@@ -7,6 +7,7 @@ import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import WorkspaceContext from "../../Providers/WorkspaceContext";
+import {AddInvariant} from "../Modals/AddInvariant";
 import {AddParticipant} from "../Modals/AddParticipant";
 import {Invariant} from "./Invariant/Invariant";
 
@@ -96,6 +97,19 @@ export function NodeInfo ({close}) {
         }
     }, [engine, participants, setParticipants, selectedBehavior]);
 
+
+    /**
+     * Adds an invariant to current participant.
+     */
+    const addInvariant = useCallback(() => {
+        openModal({
+            title: "Add Invariant",
+            render: ({close}) => {
+                return <AddInvariant close={close} />;
+            },
+        });
+    }, [engine, selectedBehavior, participant]);
+
     return (
         <>
             {
@@ -143,19 +157,10 @@ export function NodeInfo ({close}) {
 
                             <div className="participantsContent">
 
-                                <Invariant invariant={"MinLength"}></Invariant>
-
-                                <Invariant invariant={"MaxLength"}></Invariant>
-
-                                <Invariant invariant={"Pattern"}></Invariant>
-
-                                <Invariant invariant={"NoNull"}></Invariant>
-
-
                             </div>
 
                             <div className="participantBottomMenu">
-                                <span className="addInvariant">
+                                <span className="addInvariant" onClick={addInvariant}>
                                     + Add Invariant
                                 </span>
                             </div>
