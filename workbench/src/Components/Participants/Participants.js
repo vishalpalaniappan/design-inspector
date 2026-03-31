@@ -113,8 +113,8 @@ export function Participants ({close}) {
                                 className="icon"/>
                         </div>
                         <div className="participantsContent">
-                            <Invariant invariant={"Min String Length"}/>
-                            <Invariant invariant={"Max Size"}/>
+                            {/* <Invariant invariant={"Min String Length"}/>
+                            <Invariant invariant={"Max Size"}/> */}
                             <div className="addInvariantPlaceholder">
                                 <Plus title={"Add Invariant"} className="icon"/>
                             Add Invariant
