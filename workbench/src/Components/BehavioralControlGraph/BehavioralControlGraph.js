@@ -2,7 +2,6 @@ import React, {useCallback, useContext, useEffect, useRef, useState} from "react
 
 import {useDispatch} from "react-redux";
 import {BehavioralGraphBuilder} from "sample-ui-component-library";
-import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import {setSelectedBehavior, setSelectedParticipant} from "../../Store/appSlice";
@@ -32,10 +31,6 @@ export function BehavioralControlGraph () {
             graphRef.current.updateEngine(engine);
         }
     }, [selectedGraph, selectedBehavior, engine]);
-
-    useLayoutEventSubscription("tool:selected", (event) => {
-        setActiveTool(event.payload);
-    });
 
     const connectBehaviors = useCallback((from, to) => {
         if (!to) return;
