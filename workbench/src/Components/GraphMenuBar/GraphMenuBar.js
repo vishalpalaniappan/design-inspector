@@ -1,12 +1,15 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
 
 import {PlusSquare, Trash} from "react-bootstrap-icons";
+import {useDispatch} from "react-redux";
 import {useLayoutEventPublisher} from "ui-layout-manager-dev";
 import {useModalManager} from "ui-layout-manager-dev";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import WorkspaceContext from "../../Providers/WorkspaceContext";
+import {setSelectedGraph} from "../../Store/appSlice";
+import {useGraphs, useSelectedGraph} from "../../Store/useAppSelection";
 import {AddGraph} from "../Modals/AddGraph";
 
 import "./GraphMenuBar.scss";
@@ -16,28 +19,26 @@ import "./GraphMenuBar.scss";
  * @return {JSX.Element}
  */
 export function GraphMenuBar () {
+    const {engine} = useDalEngine();
     const {openModal} = useModalManager();
-
+    const publish = useLayoutEventPublisher();
+    const dispatch = useDispatch();
     const {setSelectedBehavior} = useContext(WorkspaceContext);
 
-    const publish = useLayoutEventPublisher();
-    const {engine} = useDalEngine();
 
-    const [graphs, setGraphs] = useState([]);
-    const [selectedGraph, setSelectedGraph] = useState("");
+    const graphs = useGraphs();
+    const selectedGraph = useSelectedGraph();
 
     useLayoutEventSubscription("add:graph", (event) => {
-        setGraphs(engine.graphs.getGraphNames());
-        setSelectedGraph(engine.graphs.getActiveGraph().name);
+        dispatch(setSelectedGraph(engine.graphs.getActiveGraph().name));
         publish({type: "engine:update"});
-    }, [engine]);
+    }, [engine, dispatch]);
 
     useEffect(() => {
         if (engine) {
-            setGraphs(engine.graphs.getGraphNames());
-            setSelectedGraph(engine.graphs.getActiveGraph().name);
+            dispatch(setSelectedGraph(engine.graphs.getActiveGraph().name));
         }
-    }, [engine]);
+    }, [engine, dispatch]);
 
     const addgraph = () => {
         openModal({
@@ -49,8 +50,9 @@ export function GraphMenuBar () {
     };
 
     const selectGraph = (graphName) => {
+        console.log(graphName);
+        dispatch(setSelectedGraph(graphName));
         engine.selectGraph(graphName);
-        setSelectedGraph(engine.graphs.getActiveGraph().name);
         setSelectedBehavior(null);
         publish({type: "engine:update"});
     };
@@ -58,10 +60,9 @@ export function GraphMenuBar () {
     const deleteGraph = useCallback(() => {
         if (!selectedGraph) return;
         engine.removeGraph(selectedGraph);
-        setGraphs(engine.graphs.getGraphNames());
-        setSelectedGraph(engine.graphs.getActiveGraph().name);
+        dispatch(setSelectedGraph(engine.graphs.getActiveGraph().name));
         publish({type: "engine:update"});
-    }, [engine, selectedGraph, publish]);
+    }, [engine, selectedGraph, publish, dispatch]);
 
     return (
         <div className="graphMenuBar">

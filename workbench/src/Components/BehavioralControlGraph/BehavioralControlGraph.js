@@ -3,6 +3,8 @@ import React, {useCallback, useContext, useEffect, useRef, useState} from "react
 import {BehavioralGraphBuilder} from "sample-ui-component-library";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
+import { useSelectedGraph } from "../../Store/useAppSelection";
+
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import WorkspaceContext from "../../Providers/WorkspaceContext";
 
@@ -21,6 +23,13 @@ export function BehavioralControlGraph () {
     const graphRef = useRef(null);
 
     const {engine} = useDalEngine();
+    const selectedGraph = useSelectedGraph();
+
+    useEffect(() => {
+        if (selectedGraph) {
+            graphRef.current.updateEngine(engine);
+        }
+    }, [selectedGraph, engine]);
 
     useEffect(() => {
         if (engine) {
