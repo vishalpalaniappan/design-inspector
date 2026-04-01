@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from "react";
+import React, {useCallback, useEffect} from "react";
 
 import PropTypes from "prop-types";
 import {Pencil, PlusSquare, Trash} from "react-bootstrap-icons";
@@ -27,20 +27,18 @@ NodeInfo.propTypes = {
 export function NodeInfo ({close}) {
     const {engine} = useDalEngine();
     const {openModal} = useModalManager();
-    const dispatch = useDispatch();
 
+    const dispatch = useDispatch();
     const invariants = useInvariants();
     const participants = useParticipants();
     const participant = useSelectedParticipant();
     const selectedBehavior = useSelectedBehavior();
 
     useEffect(() => {
-        console.log("asfasdf", participant, participants);
         if (participants && participants.length > 0 && participant === null) {
             dispatch(setSelectedParticipant(participants[0].getName()));
-            console.log("DISAPTCHED");
         }
-    }, [participant, participants]);
+    }, [participant, participants, dispatch]);
 
     const addInvariant = useCallback(() => {
         participant && openModal({
@@ -125,7 +123,6 @@ export function NodeInfo ({close}) {
                                         <Invariant key={index} invariant={invariant.name} />
                                     ))
                                 }
-
                             </div>
 
                             <div className="participantBottomMenu">
