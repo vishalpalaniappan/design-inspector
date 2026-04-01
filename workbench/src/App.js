@@ -2,9 +2,11 @@ import React, {useMemo} from "react";
 
 import {LayoutManager} from "ui-layout-manager-dev";
 import {LayoutEventProvider} from "ui-layout-manager-dev";
+import { Provider } from 'react-redux'
 
 import layout from "./layout.json";
 import GlobalProviders from "./Providers/GlobalProviders";
+import {store} from "./Store/store";
 
 import "./App.scss";
 
@@ -50,12 +52,14 @@ export function App () {
     }), []);
 
     return (
-        <LayoutEventProvider>
-            <GlobalProviders>
-                <div className="app-container">
-                    <LayoutManager registry={registry} ldf={layout}/>
-                </div>
-            </GlobalProviders>
-        </LayoutEventProvider>
+        <Provider store={store}>
+            <LayoutEventProvider>
+                <GlobalProviders>
+                    <div className="app-container">
+                        <LayoutManager registry={registry} ldf={layout}/>
+                    </div>
+                </GlobalProviders>
+            </LayoutEventProvider>
+        </Provider>
     );
 }
