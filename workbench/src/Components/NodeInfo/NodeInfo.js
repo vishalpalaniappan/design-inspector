@@ -2,11 +2,14 @@ import React, {useCallback, useContext, useEffect, useState} from "react";
 
 import PropTypes from "prop-types";
 import {Pencil, PlusSquare, Trash} from "react-bootstrap-icons";
+import {useDispatch} from "react-redux";
 import {useModalManager} from "ui-layout-manager-dev";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
-import WorkspaceContext from "../../Providers/WorkspaceContext";
+import {setSelectedParticipant} from "../../Store/appSlice";
+import {useSelectedBehavior, useSelectedParticipant} from "../../Store/useAppSelection";
+import {useParticipants} from "../../Store/useAppSelection";
 import {AddInvariant} from "../Modals/AddInvariant";
 import {AddParticipant} from "../Modals/AddParticipant";
 import {Invariant} from "./Invariant/Invariant";
@@ -25,33 +28,13 @@ NodeInfo.propTypes = {
 export function NodeInfo ({close}) {
     const {engine} = useDalEngine();
     const {openModal} = useModalManager();
-    const {selectedBehavior, selectedParticipant,
-        setSelectedParticipant} = useContext(WorkspaceContext);
-    const [participants, setParticipants] = useState([]);
-    const [participant, setParticipant] = useState(null);
-    const [invariants, setInvariants] = useState([]);
-
-    useLayoutEventSubscription("participants:update", (event) => {
-        selectedBehavior && updateParticipants(event.payload);
-    }, [engine, selectedBehavior]);
-
-    useLayoutEventSubscription("invariants:update", (event) => {
-        selectedParticipant && setInvariants([...selectedParticipant.getInvariants()]);
-    }, [engine, selectedParticipant]);
-
-    useEffect(() => {
-        (engine && selectedBehavior) && updateParticipants();
-    }, [selectedBehavior, engine]);
-
-    useEffect(() => {
-        if (participants && participant) {
-            setSelectedParticipant(selectedBehavior.getParticipant(participant));
-            setInvariants([...selectedBehavior.getParticipant(participant).getInvariants()]);
-        }
-    }, [participant, setSelectedParticipant]);
+    const dispatch = useDispatch();
+    const selectedBehavior = useSelectedBehavior();
+    const participants = useParticipants();
+    const participant = useSelectedParticipant();
 
     const addInvariant = useCallback(() => {
-        selectedParticipant && openModal({
+        participant && openModal({
             title: "Add Invariant",
             render: ({close}) => {return <AddInvariant close={close} />;},
         });
@@ -75,19 +58,17 @@ export function NodeInfo ({close}) {
         // TODO: Implement edit participant functionality here.
     }, [engine, selectedBehavior, participant]);
 
-    // Update participants and select participant based on args
     const updateParticipants = useCallback((participantName) => {
-        if (!selectedBehavior) return;
-        const _participants = selectedBehavior.getParticipants();
-        setParticipants([..._participants]);
-        if (_participants.length > 0 && participantName) {
-            setParticipant(participantName);
-        } else if (_participants.length > 0) {
-            setParticipant(_participants[_participants.length - 1].getName());
+        if (!participants) return;
+        if (participants.length > 0 && participantName) {
+            dispatch(setSelectedParticipant(participantName));
+        } else if (participants.length > 0) {
+            const lastParticipantName = participants[participants.length - 1].getName();
+            dispatch(setSelectedParticipant(lastParticipantName));
         } else {
-            setParticipant(null);
+            dispatch(setSelectedParticipant(null));
         }
-    }, [engine, participants, setParticipants, selectedBehavior]);
+    }, [engine, participants]);
 
     return (
         <>
@@ -107,13 +88,15 @@ export function NodeInfo ({close}) {
 
                                 <select id="car-select" className="selectParticipants"
                                     value={participant}
-                                    disabled={participants.length === 0 || !participant}
-                                    onChange={(e) => setParticipant(e.target.value)}>
+                                    disabled={!participants || participants.length === 0}
+                                    onChange={(e) => dispatch(
+                                        setSelectedParticipant(e.target.value)
+                                    )}>
                                     {(participants && participants.length > 0) &&
                                         participants.map((participant, index) => (
                                             <option key={index}>{participant.getName()}</option>
                                         ))}
-                                    {(participants.length === 0 || !participant) &&
+                                    {(!participants || participants.length === 0 || !participant) &&
                                         <option>Add a participant...</option>
                                     }
                                 </select>
@@ -127,12 +110,12 @@ export function NodeInfo ({close}) {
                             </div>
 
                             <div className="participantsContent">
-                                {
+                                {/* {
                                     invariants &&
                                     invariants.map((invariant, index) => (
                                         <Invariant key={index} invariant={invariant.name} />
                                     ))
-                                }
+                                } */}
 
                             </div>
 

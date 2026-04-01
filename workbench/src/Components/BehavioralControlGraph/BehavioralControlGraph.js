@@ -1,12 +1,12 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 
+import {useDispatch} from "react-redux";
 import {BehavioralGraphBuilder} from "sample-ui-component-library";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
-import { useSelectedGraph } from "../../Store/useAppSelection";
-
 import {useDalEngine} from "../../Providers/GlobalProviders";
-import WorkspaceContext from "../../Providers/WorkspaceContext";
+import {setSelectedBehavior} from "../../Store/appSlice";
+import {useSelectedGraph} from "../../Store/useAppSelection";
 
 import "./BehavioralControlGraph.scss";
 
@@ -19,11 +19,11 @@ BehavioralControlGraph.propTypes = {
  */
 export function BehavioralControlGraph () {
     const [activeTool, setActiveTool] = useState();
-    const {setSelectedBehavior} = useContext(WorkspaceContext);
     const graphRef = useRef(null);
 
     const {engine} = useDalEngine();
     const selectedGraph = useSelectedGraph();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (selectedGraph) {
@@ -60,19 +60,19 @@ export function BehavioralControlGraph () {
     const deleteBehavior = useCallback((node) => {
         engine.removeNode(node.id);
         graphRef.current.updateEngine(engine);
-        setSelectedBehavior(null);
-    }, [engine, graphRef, setSelectedBehavior]);
+        dispatch(setSelectedBehavior(null));
+    }, [engine, graphRef, dispatch]);
 
     const deleteTransition = useCallback((edge) => {
         const fromNode = engine.getNode(edge.from);
         fromNode.removeGoToBehavior(edge.to);
         graphRef.current.updateEngine(engine);
-        setSelectedBehavior(null);
-    }, [engine, graphRef, setSelectedBehavior]);
+        dispatch(setSelectedBehavior(null));
+    }, [engine, graphRef, dispatch]);
 
     const selectBehavior = useCallback((id) => {
-        setSelectedBehavior(id ? engine.getNode(id).getBehavior() : null);
-    }, [setSelectedBehavior]);
+        dispatch(setSelectedBehavior(id ? engine.getNode(id).getBehavior().name : null));
+    }, [dispatch, engine]);
 
     return (
         <div className="flow-wrapper">

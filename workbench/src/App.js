@@ -1,8 +1,8 @@
 import React, {useMemo} from "react";
 
+import {Provider} from "react-redux";
 import {LayoutManager} from "ui-layout-manager-dev";
 import {LayoutEventProvider} from "ui-layout-manager-dev";
-import { Provider } from 'react-redux'
 
 import layout from "./layout.json";
 import GlobalProviders from "./Providers/GlobalProviders";

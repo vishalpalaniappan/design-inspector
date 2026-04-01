@@ -9,12 +9,16 @@ const appSlice = createSlice({
     },
     reducers: {
         setSelectedBehavior(state, action) {
+            console.log("Setting selected behavior to:", action.payload);
             state.selectedBehavior = action.payload;
+            state.selectedParticipant = null;
         },
         setSelectedParticipant(state, action) {
+            console.log("Setting selected participant to:", action.payload);
             state.selectedParticipant = action.payload;
         },
         setSelectedGraph(state, action) {
+            console.log("Setting selected graph to:", action.payload);
             state.selectedGraph = action.payload;
         },
     },
