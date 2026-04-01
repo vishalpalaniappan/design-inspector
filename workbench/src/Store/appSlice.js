@@ -28,6 +28,16 @@ const appSlice = createSlice({
             state.selectedInvariant = action.payload;
         },
         incrementCounter (state) {
+            /**
+             * TODO:
+             * Using a counter like this typically indicates that there is a
+             * better way to do this. In this case, the reason for this is,
+             * when I add an invariant to a participant, the reference does
+             * not change, so it doesn't react. The better way to do this would
+             * be to save the invariant ids to a store when participant is
+             * selected or if the invariant list has changed. This is a quick
+             * fix for now but I will refactor this later to be more efficient.
+             **/
             state.counter += 1;
         },
     },
