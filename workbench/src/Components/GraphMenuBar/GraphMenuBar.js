@@ -5,8 +5,7 @@ import {useDispatch} from "react-redux";
 import {useModalManager} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
-import WorkspaceContext from "../../Providers/WorkspaceContext";
-import {setSelectedGraph} from "../../Store/appSlice";
+import {setSelectedBehavior, setSelectedGraph} from "../../Store/appSlice";
 import {useGraphs, useSelectedGraph} from "../../Store/useAppSelection";
 import {AddGraph} from "../Modals/AddGraph";
 
@@ -20,7 +19,6 @@ export function GraphMenuBar () {
     const {engine} = useDalEngine();
     const {openModal} = useModalManager();
     const dispatch = useDispatch();
-    const {setSelectedBehavior} = useContext(WorkspaceContext);
 
     const graphs = useGraphs();
     const selectedGraph = useSelectedGraph();
