@@ -1,10 +1,11 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 
 import PropTypes from "prop-types";
-import {useLayoutEventPublisher} from "ui-layout-manager-dev";
+import {useDispatch} from "react-redux";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
-import WorkspaceContext from "../../Providers/WorkspaceContext";
+import {setSelectedParticipant} from "../../Store/appSlice";
+import {useSelectedBehavior} from "../../Store/useAppSelection";
 
 import "./AddValue.scss";
 
@@ -17,13 +18,13 @@ AddParticipant.propTypes = {
  * @return {JSX.Element}
  */
 export function AddParticipant ({close}) {
-    const {selectedBehavior} = useContext(WorkspaceContext);
+    const selectedBehavior= useSelectedBehavior();
     const {engine} = useDalEngine();
     const [participant, setParticipant] = useState("");
     const [error, setError] = useState(null);
     const inputRef = useRef(null);
 
-    const publish = useLayoutEventPublisher();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (inputRef.current) {
@@ -40,16 +41,12 @@ export function AddParticipant ({close}) {
         try {
             const participantInstance = engine.createParticipant({name: participant});
             selectedBehavior.addParticipant(participantInstance);
-            publish({
-                type: "participants:update",
-                payload: participant,
-                source: "add-participant-modal",
-            });
+            dispatch(setSelectedParticipant(participant));
             close();
         } catch (ParticipantAlreadyExistsError) {
             setError(`Participant with name "${participant}" already exists.`);
         }
-    }, [engine, participant, publish, close]);
+    }, [engine, participant, close, selectedBehavior, dispatch]);
 
     return (
         <div className="add-value-modal">
