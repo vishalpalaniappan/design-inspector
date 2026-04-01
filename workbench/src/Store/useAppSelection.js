@@ -48,9 +48,14 @@ export const useSelectedParticipant = () => {
     const selectedParticipantId = useSelector(selectSelectedParticipantId);
 
     return useMemo(() => {
-        if (!selectedParticipantId || !selectedBehaviorId) return null;
+        if (!selectedBehaviorId) return null;
         const behavior = engine.getNode(selectedBehaviorId).getBehavior();
-        return behavior.getParticipant(selectedParticipantId);
+
+        if (selectedParticipantId === null) {
+            return behavior.getParticipant(behavior.getParticipants()[0]?.getName());
+        } else {
+            return behavior.getParticipant(selectedParticipantId);
+        }
     }, [engine, selectedBehaviorId, selectedParticipantId]);
 };
 
