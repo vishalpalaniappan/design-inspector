@@ -39,10 +39,6 @@ export function App () {
             import("./Components/StatusBar/StatusBar").then((m) => ({
                 default: m.default || m.StatusBar,
             })),
-        BehaviorInfo: () =>
-            import("./Components/BehaviorInfo/BehaviorInfo").then((m) => ({
-                default: m.default || m.BehaviorInfo,
-            })),
         GraphMenuBar: () =>
             import("./Components/GraphMenuBar/GraphMenuBar").then((m) => ({
                 default: m.default || m.GraphMenuBar,
