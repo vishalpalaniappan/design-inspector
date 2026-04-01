@@ -62,8 +62,13 @@ export function BehavioralControlGraph () {
     }, [engine, graphRef, setSelectedBehavior]);
 
     const selectBehavior = useCallback((behaviorId) => {
-        const behavior = engine.getNode(behaviorId).getBehavior();;
-        setSelectedBehavior(behavior);
+        if (behaviorId) {
+            setSelectedBehavior(
+                engine.getNode(behaviorId).getBehavior()
+            );
+        } else {
+            setSelectedBehavior(null);
+        }
     }, [setSelectedBehavior]);
 
     return (

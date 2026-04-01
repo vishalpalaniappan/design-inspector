@@ -30,7 +30,8 @@ NodeInfo.propTypes = {
  */
 export function NodeInfo ({close}) {
     const {engine} = useDalEngine();
-    const {selectedBehavior, selectedParticipant, setSelectedParticipant} = useContext(WorkspaceContext);
+    const {selectedBehavior, selectedParticipant,
+        setSelectedParticipant} = useContext(WorkspaceContext);
     const [participants, setParticipants] = useState([]);
     const [participant, setParticipant] = useState(null);
     const [invariants, setInvariants] = useState([]);
@@ -172,8 +173,8 @@ export function NodeInfo ({close}) {
 
                             <div className="participantsContent">
                                 {
-                                    selectedParticipant &&
-                                    selectedParticipant.getInvariants().map((invariant, index) => (
+                                    invariants &&
+                                    invariants.map((invariant, index) => (
                                         <Invariant key={index} invariant={invariant.name} />
                                     ))
                                 }

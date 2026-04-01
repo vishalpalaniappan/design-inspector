@@ -41,7 +41,7 @@ export function AddParticipant ({close}) {
         // Otherwise, add participant and close modal.
         try {
             const participantInstance = engine.createParticipant({name: participant});
-            engine.getNode(selectedBehavior).getBehavior().addParticipant(participantInstance);
+            selectedBehavior.addParticipant(participantInstance);
             publish({
                 type: "participants:update",
                 payload: participant,
