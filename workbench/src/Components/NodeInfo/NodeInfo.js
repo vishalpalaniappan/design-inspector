@@ -24,30 +24,54 @@ NodeInfo.propTypes = {
  */
 export function NodeInfo ({close}) {
     const {engine} = useDalEngine();
-    const {selectedBehavior, selectedParticipant,
-        setSelectedParticipant} = useContext(WorkspaceContext);
+    // eslint-disable-next-line max-len
+    const {selectedBehavior, selectedParticipant, setSelectedParticipant} = useContext(WorkspaceContext);
     const [participants, setParticipants] = useState([]);
     const [participant, setParticipant] = useState(null);
     const [invariants, setInvariants] = useState([]);
     const {openModal} = useModalManager();
 
-    // Add particients modal updates the participants list when a
-    // participant is added and emits this event, so we listen
-    // and update.
+    // Layout Events
     useLayoutEventSubscription("participants:update", (event) => {
+        // Fired by add participant modal.
         if (selectedBehavior) {
             updateParticipants(event.payload);
         }
-    }, [engine, participants, setParticipants, selectedBehavior]);
+    }, [engine, selectedBehavior]);
 
-    // When the selected behavior changes, it updates the participants.
+    useLayoutEventSubscription("invariants:update", (event) => {
+        // Fired by add invariant modal.
+        if (selectedParticipant) {
+            setInvariants([...selectedParticipant.getInvariants()]);
+        }
+    }, [engine, selectedParticipant]);
+
+    // Effects
     useEffect(() => {
         if (engine && selectedBehavior) {
             updateParticipants();
         }
     }, [selectedBehavior, engine]);
 
-    // Open the modal to add a participant.
+    useEffect(() => {
+        if (participants && participant) {
+            const p = participants.find((p) => p.getName() === participant);
+            setSelectedParticipant(p);
+            setInvariants([...p.getInvariants()]);
+        }
+    }, [participant, participants, setSelectedParticipant]);
+
+
+    // Callbacks
+    const addInvariant = useCallback(() => {
+        openModal({
+            title: "Add Invariant",
+            render: ({close}) => {
+                return <AddInvariant close={close} />;
+            },
+        });
+    }, [engine, selectedBehavior, participant]);
+
     const addParticipant = useCallback(() => {
         if (selectedBehavior) {
             openModal({
@@ -59,7 +83,6 @@ export function NodeInfo ({close}) {
         }
     }, [engine, selectedBehavior]);
 
-    // Delete the currently selected participant.
     const deleteParticipant = useCallback(() => {
         if (engine && selectedBehavior && participant) {
             selectedBehavior.removeParticipant(participant);
@@ -71,9 +94,9 @@ export function NodeInfo ({close}) {
         // TODO: Implement edit participant functionality here.
     }, [engine, selectedBehavior, participant]);
 
+
     /**
-     * Given the selected behavior, it sets the participants and
-     * selects the last participant in the list.
+     * Set the participant with the given name.
      * If a participant name is provided, it selects that participant.
      * If there are no participants, it sets the selected participant to null.
      */
@@ -90,34 +113,6 @@ export function NodeInfo ({close}) {
             }
         }
     }, [engine, participants, setParticipants, selectedBehavior]);
-
-
-    useEffect(() => {
-        if (participants && participant) {
-            const p = participants.find((p) => p.getName() === participant);
-            setSelectedParticipant(p);
-            setInvariants([...p.getInvariants()]);
-        }
-    }, [participant, participants, setSelectedParticipant]);
-
-
-    /**
-     * Adds an invariant to current participant.
-     */
-    const addInvariant = useCallback(() => {
-        openModal({
-            title: "Add Invariant",
-            render: ({close}) => {
-                return <AddInvariant close={close} />;
-            },
-        });
-    }, [engine, selectedBehavior, participant]);
-
-    useLayoutEventSubscription("invariants:update", (event) => {
-        if (selectedParticipant) {
-            setInvariants([...selectedParticipant.getInvariants()]);
-        }
-    }, [engine, selectedParticipant]);
 
 
     return (
