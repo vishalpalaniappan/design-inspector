@@ -67,8 +67,7 @@ export function NodeInfo ({close}) {
     // Delete the currently selected participant.
     const deleteParticipant = useCallback(() => {
         if (engine && selectedBehavior && participant) {
-            const behavior = engine.getNode(selectedBehavior).getBehavior();
-            behavior.removeParticipant(participant);
+            selectedBehavior.removeParticipant(participant);
             updateParticipants();
         }
     }, [engine, selectedBehavior, participant]);
@@ -85,8 +84,7 @@ export function NodeInfo ({close}) {
      */
     const updateParticipants = useCallback((participantName) => {
         if (selectedBehavior) {
-            const behavior = engine.getNode(selectedBehavior).getBehavior();
-            const _participants = behavior.getParticipants();
+            const _participants = selectedBehavior.getParticipants();
             setParticipants([..._participants]);
             if (_participants.length > 0 && participantName) {
                 setParticipant(participantName);
@@ -137,7 +135,7 @@ export function NodeInfo ({close}) {
                         <div className="behaviorInfo">
                             <span className="behaviorLabel">
                                 <Pencil style={{marginRight: "5px", color: "grey"}} />
-                                {selectedBehavior}
+                                {selectedBehavior.name}
                             </span>
                         </div>
 
