@@ -1,7 +1,7 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
 
 import PropTypes from "prop-types";
-import {Geo, Pencil, Plus, PlusSquare, Trash} from "react-bootstrap-icons";
+import {Pencil, PlusSquare, Trash} from "react-bootstrap-icons";
 import {useModalManager} from "ui-layout-manager-dev";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
@@ -24,63 +24,44 @@ NodeInfo.propTypes = {
  */
 export function NodeInfo ({close}) {
     const {engine} = useDalEngine();
-    // eslint-disable-next-line max-len
-    const {selectedBehavior, selectedParticipant, setSelectedParticipant} = useContext(WorkspaceContext);
+    const {openModal} = useModalManager();
+    const {selectedBehavior, selectedParticipant,
+        setSelectedParticipant} = useContext(WorkspaceContext);
     const [participants, setParticipants] = useState([]);
     const [participant, setParticipant] = useState(null);
     const [invariants, setInvariants] = useState([]);
-    const {openModal} = useModalManager();
 
-    // Layout Events
     useLayoutEventSubscription("participants:update", (event) => {
-        // Fired by add participant modal.
-        if (selectedBehavior) {
-            updateParticipants(event.payload);
-        }
+        selectedBehavior && updateParticipants(event.payload);
     }, [engine, selectedBehavior]);
 
     useLayoutEventSubscription("invariants:update", (event) => {
-        // Fired by add invariant modal.
-        if (selectedParticipant) {
-            setInvariants([...selectedParticipant.getInvariants()]);
-        }
+        selectedParticipant && setInvariants([...selectedParticipant.getInvariants()]);
     }, [engine, selectedParticipant]);
 
-    // Effects
     useEffect(() => {
-        if (engine && selectedBehavior) {
-            updateParticipants();
-        }
+        (engine && selectedBehavior) && updateParticipants();
     }, [selectedBehavior, engine]);
 
     useEffect(() => {
         if (participants && participant) {
-            const p = participants.find((p) => p.getName() === participant);
-            setSelectedParticipant(p);
-            setInvariants([...p.getInvariants()]);
+            setSelectedParticipant(selectedBehavior.getParticipant(participant));
+            setInvariants([...selectedBehavior.getParticipant(participant).getInvariants()]);
         }
-    }, [participant, participants, setSelectedParticipant]);
+    }, [participant, setSelectedParticipant]);
 
-
-    // Callbacks
     const addInvariant = useCallback(() => {
-        openModal({
+        selectedParticipant && openModal({
             title: "Add Invariant",
-            render: ({close}) => {
-                return <AddInvariant close={close} />;
-            },
+            render: ({close}) => {return <AddInvariant close={close} />;},
         });
     }, [engine, selectedBehavior, participant]);
 
     const addParticipant = useCallback(() => {
-        if (selectedBehavior) {
-            openModal({
-                title: "Add Participant",
-                render: ({close}) => {
-                    return <AddParticipant close={close} />;
-                },
-            });
-        }
+        selectedBehavior && openModal({
+            title: "Add Participant",
+            render: ({close}) => {return <AddParticipant close={close} />;},
+        });
     }, [engine, selectedBehavior]);
 
     const deleteParticipant = useCallback(() => {
@@ -94,40 +75,25 @@ export function NodeInfo ({close}) {
         // TODO: Implement edit participant functionality here.
     }, [engine, selectedBehavior, participant]);
 
-
-    /**
-     * Set the participant with the given name.
-     * If a participant name is provided, it selects that participant.
-     * If there are no participants, it sets the selected participant to null.
-     */
+    // Update participants and select participant based on args
     const updateParticipants = useCallback((participantName) => {
-        if (selectedBehavior) {
-            const _participants = selectedBehavior.getParticipants();
-            setParticipants([..._participants]);
-            if (_participants.length > 0 && participantName) {
-                setParticipant(participantName);
-            } else if (_participants.length > 0) {
-                setParticipant(_participants[_participants.length - 1].getName());
-            } else {
-                setParticipant(null);
-            }
+        if (!selectedBehavior) return;
+        const _participants = selectedBehavior.getParticipants();
+        setParticipants([..._participants]);
+        if (_participants.length > 0 && participantName) {
+            setParticipant(participantName);
+        } else if (_participants.length > 0) {
+            setParticipant(_participants[_participants.length - 1].getName());
+        } else {
+            setParticipant(null);
         }
     }, [engine, participants, setParticipants, selectedBehavior]);
-
 
     return (
         <>
             {
                 selectedBehavior ?
                     <div className="nodeInfoContainer">
-                        <div className="nodeInfoTitle">Behavior</div>
-
-                        <div className="behaviorInfo">
-                            <span className="behaviorLabel">
-                                <Pencil style={{marginRight: "5px", color: "grey"}} />
-                                {selectedBehavior.name}
-                            </span>
-                        </div>
 
                         <div className="nodeInfoTitle">Participants</div>
 
