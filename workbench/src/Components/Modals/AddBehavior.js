@@ -18,11 +18,13 @@ AddBehavior.propTypes = {
  */
 export function AddBehavior ({close}) {
     const {engine} = useDalEngine();
-    const [behavior, setBehavior] = useState("");
-    const [error, setError] = useState(null);
-    const inputRef = useRef(null);
 
     const dispatch = useDispatch();
+
+    const [behavior, setBehavior] = useState("");
+    const [error, setError] = useState(null);
+
+    const inputRef = useRef(null);
 
     useEffect(() => {
         if (inputRef.current) {

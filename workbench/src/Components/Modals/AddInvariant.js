@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
@@ -23,15 +23,14 @@ AddInvariant.propTypes = {
  */
 export function AddInvariant ({close}) {
     const {engine} = useDalEngine();
+
+    const dispatch = useDispatch();
+    const selectedParticipant = useSelectedParticipant();
+    const invariantTypes = useInvariantTypes();
+
     const [chosenInvariant, setChosenInvariant] = useState("");
     const [invariantTypeInstance, setInvariantTypeInstance] = useState([]);
     const [propertyDivs, setPropertyDivs] = useState(null);
-
-    const dispatch = useDispatch();
-
-    const selectedParticipant = useSelectedParticipant();
-
-    const invariantTypes = useInvariantTypes();
 
     useEffect(() => {
         if (engine) {
@@ -64,7 +63,6 @@ export function AddInvariant ({close}) {
         setPropertyDivs([nameDiv, ...optionDivs, submitButton]);
         setInvariantTypeInstance(instance);
     }, [chosenInvariant, engine]);
-
 
     const handleSubmit = useCallback((event) => {
         event.preventDefault();

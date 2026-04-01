@@ -21,11 +21,13 @@ AddGraph.propTypes = {
  */
 export function AddGraph ({close}) {
     const {engine} = useDalEngine();
-    const [graph, setGraph] = useState("");
-    const [error, setError] = useState(null);
-    const inputRef = useRef(null);
 
     const dispatch = useDispatch();
+
+    const inputRef = useRef(null);
+
+    const [graph, setGraph] = useState("");
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         if (inputRef.current) {
@@ -47,7 +49,7 @@ export function AddGraph ({close}) {
             dispatch(setSelectedGraph(graph));
             close();
         }
-    }, [engine, graph, close]);
+    }, [engine, graph, close, dispatch]);
 
     return (
         <div className="add-value-modal">

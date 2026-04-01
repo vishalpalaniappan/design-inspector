@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
@@ -18,13 +18,15 @@ AddParticipant.propTypes = {
  * @return {JSX.Element}
  */
 export function AddParticipant ({close}) {
-    const selectedBehavior= useSelectedBehavior();
     const {engine} = useDalEngine();
+
+    const selectedBehavior= useSelectedBehavior();
+    const dispatch = useDispatch();
+
     const [participant, setParticipant] = useState("");
     const [error, setError] = useState(null);
-    const inputRef = useRef(null);
 
-    const dispatch = useDispatch();
+    const inputRef = useRef(null);
 
     useEffect(() => {
         if (inputRef.current) {
