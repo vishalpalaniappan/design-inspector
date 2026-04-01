@@ -27,3 +27,14 @@ export const useGraphs = () => {
         return engine.graphs.getGraphNames();
     }, [engine]);
 };
+
+export const useParticipants = () => {
+    const {engine} = useDalEngine();
+    const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
+
+    return useMemo(() => {
+        if (!selectedBehaviorId) return [];
+        const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+        return behavior.getParticipants();
+    }, [engine, selectedBehaviorId]);
+};
