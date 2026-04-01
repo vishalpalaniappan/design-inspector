@@ -54,7 +54,7 @@ export function AddInvariant ({close}) {
             ));
 
             const button = <div className="invariant-name-submit">
-                <button type="submit">Add Behavior</button>
+                <button type="submit">Add Invariant</button>
             </div>;
             setPropertyDivs([...divs, button]);
         }
