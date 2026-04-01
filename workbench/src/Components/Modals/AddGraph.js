@@ -1,9 +1,10 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 
 import PropTypes from "prop-types";
-import {useLayoutEventPublisher} from "ui-layout-manager-dev";
+import {useDispatch} from "react-redux";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
+import {setSelectedGraph} from "../../Store/appSlice";
 
 import "./AddValue.scss";
 
@@ -24,7 +25,7 @@ export function AddGraph ({close}) {
     const [error, setError] = useState(null);
     const inputRef = useRef(null);
 
-    const publish = useLayoutEventPublisher();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (inputRef.current) {
@@ -43,12 +44,10 @@ export function AddGraph ({close}) {
             setError(`Graph with name "${graph}" already exists.`);
         } catch (UnknownGraph) {
             engine.createGraph(graph);
-            engine.selectGraph(graph);
-            publish({type: "add:graph", source: "add-graph-modal"});
-            publish({type: "engine:update", source: "add-graph-modal"});
+            dispatch(setSelectedGraph(graph));
             close();
         }
-    }, [engine, graph, publish, close]);
+    }, [engine, graph, close]);
 
     return (
         <div className="add-value-modal">
