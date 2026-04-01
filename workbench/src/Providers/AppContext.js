@@ -4,10 +4,6 @@ import PropTypes from "prop-types";
 
 const AppContext = createContext(null);
 
-AppProvider.propTypes = {
-    children: PropTypes.node.isRequired,
-};
-
 export const AppProvider = ({children}) => {
     const [selectedBehavior, setSelectedBehavior] = useState(null);
     const [selectedParticipant, setSelectedParticipant] = useState(null);
@@ -29,6 +25,10 @@ export const AppProvider = ({children}) => {
             {children}
         </AppContext.Provider>
     );
+};
+
+AppProvider.propTypes = {
+    children: PropTypes.node.isRequired,
 };
 
 export const useApp = () => {
