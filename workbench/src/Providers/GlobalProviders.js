@@ -20,8 +20,6 @@ GlobalProviders.propTypes = {
  */
 function GlobalProviders ({children}) {
     const [workspace, setWorkspace] = useState();
-    const [selectedBehavior, setSelectedBehavior] = useState();
-    const [selectedParticipant, setSelectedParticipant] = useState();
     const termWriteRef = useRef(null);
     const sendJsonMessageRef = useRef(null);
 
@@ -137,7 +135,7 @@ function GlobalProviders ({children}) {
 
     return (
         // eslint-disable-next-line max-len
-        <WorkspaceContext.Provider value={{workspace, selectedBehavior, setSelectedBehavior, selectedParticipant, setSelectedParticipant}}>
+        <WorkspaceContext.Provider value={{workspace}}>
             <DalEngineContext.Provider value={{engine}}>
                 <ServerContext.Provider value={{sendJsonMessage, setTermWriter, connectionStatus}}>
                     {children}
