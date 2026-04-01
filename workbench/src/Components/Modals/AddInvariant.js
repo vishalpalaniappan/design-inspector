@@ -5,6 +5,7 @@ import {useLayoutEventPublisher} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import WorkspaceContext from "../../Providers/WorkspaceContext";
+import {useInvariantTypes} from "../../Store/useAppSelection";
 
 import "./AddValue.scss";
 
@@ -27,6 +28,8 @@ export function AddInvariant ({close}) {
     const [propertyDivs, setPropertyDivs] = useState(null);
 
     const publish = useLayoutEventPublisher();
+
+    const invariantTypes = useInvariantTypes();
 
     useEffect(() => {
         if (engine) {
@@ -84,7 +87,7 @@ export function AddInvariant ({close}) {
                 <select
                     value={chosenInvariant}
                     onChange={(e) => setChosenInvariant(e.target.value)}>
-                    {Object.keys(engine.invariant_types).map((invariant) => (
+                    {Object.keys(invariantTypes).map((invariant) => (
                         <option key={invariant} value={invariant}>
                             {invariant}
                         </option>
