@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef} from "react";
+import React, {useEffect, useRef} from "react";
 
 import {FileBrowser} from "sample-ui-component-library";
 import {useLayoutEventPublisher} from "ui-layout-manager-dev";
