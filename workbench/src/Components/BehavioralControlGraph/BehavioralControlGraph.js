@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 
 import {useDispatch} from "react-redux";
 import {BehavioralGraphBuilder} from "sample-ui-component-library";
@@ -18,13 +18,15 @@ BehavioralControlGraph.propTypes = {
  * @return {JSX.Element}
  */
 export function BehavioralControlGraph () {
-    const [activeTool, setActiveTool] = useState();
-    const graphRef = useRef(null);
-
     const {engine} = useDalEngine();
+
+    const dispatch = useDispatch();
     const selectedGraph = useSelectedGraph();
     const selectedBehavior = useSelectedBehavior();
-    const dispatch = useDispatch();
+
+    const graphRef = useRef(null);
+
+    const [activeTool] = useState();
 
     useEffect(() => {
         if (engine) {

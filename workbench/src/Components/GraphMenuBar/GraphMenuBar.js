@@ -18,8 +18,8 @@ import "./GraphMenuBar.scss";
 export function GraphMenuBar () {
     const {engine} = useDalEngine();
     const {openModal} = useModalManager();
-    const dispatch = useDispatch();
 
+    const dispatch = useDispatch();
     const graphs = useGraphs();
     const selectedGraph = useSelectedGraph();
 
