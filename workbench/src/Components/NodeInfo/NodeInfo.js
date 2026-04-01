@@ -18,13 +18,7 @@ NodeInfo.propTypes = {
 };
 
 /**
- * NodeInfo Info component.
- *
- * TODO: The layout of this component will be entirely redone with
- * components from the library with UI/UX in mind.
- * I am not working to settle on a style that I will keep,
- * it will change when I dedicate time to improving the
- * component library with UI/UX in mind.
+ * NodeInfo component.
  *
  * @return {JSX.Element}
  */
