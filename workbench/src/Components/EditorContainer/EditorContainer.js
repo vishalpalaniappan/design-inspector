@@ -107,7 +107,17 @@ export function EditorContainer () {
 
     const onSelectAbstraction = useCallback((entry) => {
         if (selectedBehavior) {
-            selectedBehavior.addMapping(entry.uid);
+            // ----
+            // TODO: Need to add remove abstraction method to engine
+            //  and rewrite this.
+            // ----
+
+            const found = selectedBehavior._abstractionIds.find((id) => id === entry.uid);
+            const newMap = (found)?
+                selectedBehavior._abstractionIds.filter((id) => id !== found):
+                [...selectedBehavior._abstractionIds, entry.uid];
+            selectedBehavior._abstractionIds = newMap;
+            // selectedBehavior.addMapping(entry.uid);
             editorRef.current.setMappedIds(selectedBehavior._abstractionIds);
         }
     }, [selectedBehavior, editorRef]);
