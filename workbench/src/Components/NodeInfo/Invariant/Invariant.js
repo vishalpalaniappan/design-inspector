@@ -7,7 +7,7 @@ import {useDispatch} from "react-redux";
 import {useDalEngine} from "../../../Providers/GlobalProviders";
 import {incrementCounter} from "../../../Store/appSlice";
 import {setSelectedInvariant} from "../../../Store/appSlice";
-import {useSelectedParticipant, useSelectedInvariant} from "../../../Store/useAppSelection";
+import {useSelectedInvariant, useSelectedParticipant} from "../../../Store/useAppSelection";
 
 import "./Invariant.scss";
 
