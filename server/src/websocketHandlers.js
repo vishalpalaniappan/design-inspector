@@ -2,6 +2,7 @@ import { TerminalSession } from "./terminal.js";
 import saveFile from "./saveFile.js";
 import path from "node:path";
 import loadDir from "./loadDir.js"
+import getMapping from "./getMapping.js";
 
 export class  WSMessageHandler {
     constructor(ws) {
@@ -24,10 +25,21 @@ export class  WSMessageHandler {
 
         this.handlers = {
             workspaces: this.workspaces.bind(this),
+            getMapping: this.getMapping.bind(this),
             save_engine: this.saveEngine.bind(this),
             terminal_input: this.onTerminalInput.bind(this),
             terminal_resize: this.onTerminalResize.bind(this)
         };
+    }
+
+    getMapping = (msg) => {
+        getMapping(msg.payload.filePath).then((mapping) => {
+            msg.data = JSON.parse(mapping);
+            this.ws.send(JSON.stringify({ data: msg.data }));
+        })
+        .catch((err) => {
+            this.ws.send(JSON.stringify({ error: "error", data: err.message }));
+        });
     }
 
     handleMessage(message) {
