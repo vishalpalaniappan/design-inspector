@@ -51,7 +51,8 @@ function GlobalProviders ({children}) {
         });
     };
 
-    const [setMessageHistory] = useState([]);
+    // eslint-disable-next-line no-unused-vars
+    const [, setMessageHistory] = useState([]);
     useEffect(() => {
         if (lastJsonMessage !== null) {
             setMessageHistory((prev) => prev.concat(lastMessage));
