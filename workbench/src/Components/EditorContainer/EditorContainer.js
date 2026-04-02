@@ -1,13 +1,13 @@
-import React, {useContext, useEffect, useRef} from "react";
+import React, {useCallback, useContext, useEffect, useRef} from "react";
 
 import {Editor} from "sample-ui-component-library";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import {useWorkspace} from "../../Providers/GlobalProviders";
 import ServerContext from "../../Providers/ServerContext";
+import {useAppMode} from "../../Store/useAppSelection";
+import {useSelectedBehavior} from "../../Store/useAppSelection";
 import {flattenTree} from "./helper";
-
-import { useAppMode } from "../../Store/useAppSelection";
 
 import "./EditorContainer.scss";
 
@@ -21,6 +21,8 @@ export function EditorContainer () {
     const editorRef = useRef(null);
     const parentIdRef = useRef(null);
     const mode = useAppMode();
+
+    const selectedBehavior = useSelectedBehavior();
 
     useLayoutEventSubscription("file:selected", (event) => {
         editorRef.current.addTab(event.payload);
@@ -97,7 +99,20 @@ export function EditorContainer () {
         }
     }, [mapping, editorRef]);
 
+    useEffect(() => {
+        if (selectedBehavior) {
+            editorRef.current.setMappedIds(selectedBehavior._abstractionIds);
+        }
+    }, [selectedBehavior, editorRef]);
+
+    const onSelectAbstraction = useCallback((entry) => {
+        if (selectedBehavior) {
+            selectedBehavior.addMapping(entry.uid);
+            editorRef.current.setMappedIds(selectedBehavior._abstractionIds);
+        }
+    }, [selectedBehavior, editorRef]);
+
     return (
-        <Editor ref={editorRef} />
+        <Editor ref={editorRef} onSelectAbstraction={onSelectAbstraction}/>
     );
 }
