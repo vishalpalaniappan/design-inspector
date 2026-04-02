@@ -71,15 +71,26 @@ export function AddGraph ({close}) {
                 <span>Graph Name:</span>
             </div>
             <div className="value-name-input">
-                <input
-                    ref={inputRef}
+                <input ref={inputRef}
                     value={graph}
-                    onChange={(e) => setGraph(e.target.value)}/>
-                <div className="value-name-submit">
-                    <button type="button" onClick={handleSubmit}>Add Graph</button>
-                </div>
+                    onChange={(e) => setGraph(e.target.value)}></input>
             </div>
-            {error && <div className="value-error">{error}</div>}
+            <div className="value-name-label">
+                <span>Description:</span>
+            </div>
+            <div className="value-name-input">
+                <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}></textarea>
+            </div>
+            <div className="invariant-name-submit">
+                <button type="button" onClick={handleSubmit}>Add Graph</button>
+            </div>
+            {error && (
+                <div style={{float: "right"}} className="value-error">
+                    {error}
+                </div>
+            )}
         </div>
     );
 }

@@ -65,10 +65,7 @@ export function AddBehavior ({close}) {
     }, [close, behavior]);
 
     return (
-        <div className="add-value-modal" style={{width: "800px", height: "600px"}}>
-            <div className="value-name-label">
-                <span>Behavior Name:</span>
-            </div>
+        <div className="add-value-modal">
             <div className="value-name-label">
                 <span>Behavior Name:</span>
             </div>
@@ -81,7 +78,7 @@ export function AddBehavior ({close}) {
                 <span>Description:</span>
             </div>
             <div className="value-name-input">
-                <textarea ref={inputRef}
+                <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}></textarea>
             </div>
