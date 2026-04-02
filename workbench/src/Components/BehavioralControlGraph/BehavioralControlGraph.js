@@ -58,8 +58,13 @@ export function BehavioralControlGraph () {
     }, [engine, graphRef, dispatch]);
 
     const selectBehavior = useCallback((id) => {
-        if (!id) return;
-        dispatch(setSelectedBehavior(id ? engine.getNode(id).getBehavior().getName() : null));
+        if (!id) {
+            dispatch(setSelectedBehavior(null));
+            dispatch(setSelectedParticipant(null));
+            return;
+        }
+        // Update the behavior and select first participant if it exists
+        dispatch(setSelectedBehavior(engine.getNode(id).getBehavior().getName()));
         const behavior = engine.getNode(id).getBehavior();
         if (behavior.getParticipants().length > 0) {
             dispatch(setSelectedParticipant(behavior.getParticipants()[0].getName()));
