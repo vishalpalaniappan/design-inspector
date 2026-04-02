@@ -8,7 +8,7 @@ import { spawn } from "node:child_process";
  */
 function getMapping(file, args = []) {
     return new Promise((resolve, reject) => {
-        const process = spawn("python3", ["tools/instrumenter/instrumenter.py", "--mode", "parser", file, ...args]);
+        const process = spawn("python3", ["tools/instrumenter/instrumenter.py", "--mode", "parser_stream", file, ...args]);
 
         let stdout = "";
         let stderr = "";
