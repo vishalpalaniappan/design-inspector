@@ -59,7 +59,7 @@ export function BehavioralControlGraph () {
 
     const selectBehavior = useCallback((id) => {
         if (!id) return;
-        dispatch(setSelectedBehavior(id ? engine.getNode(id).getBehavior().name : null));
+        dispatch(setSelectedBehavior(id ? engine.getNode(id).getBehavior().getName() : null));
         const behavior = engine.getNode(id).getBehavior();
         if (behavior.getParticipants().length > 0) {
             dispatch(setSelectedParticipant(behavior.getParticipants()[0].getName()));
