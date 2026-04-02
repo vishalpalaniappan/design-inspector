@@ -120,7 +120,7 @@ export function NodeInfo ({close}) {
                                 {
                                     invariants &&
                                     invariants.map((invariant, index) => (
-                                        <Invariant key={index} invariant={invariant.name} />
+                                        <Invariant key={index} invariant={invariant} />
                                     ))
                                 }
                             </div>
