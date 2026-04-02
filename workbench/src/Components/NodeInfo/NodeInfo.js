@@ -16,7 +16,6 @@ import {Invariant} from "./Invariant/Invariant";
 import "./NodeInfo.scss";
 
 NodeInfo.propTypes = {
-    close: PropTypes.func.isRequired,
 };
 
 /**
@@ -24,7 +23,7 @@ NodeInfo.propTypes = {
  *
  * @return {JSX.Element}
  */
-export function NodeInfo ({close}) {
+export function NodeInfo ({}) {
     const {engine} = useDalEngine();
     const {openModal} = useModalManager();
 
