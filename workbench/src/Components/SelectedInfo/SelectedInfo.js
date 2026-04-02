@@ -1,9 +1,11 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 
 import {InfoCircle} from "react-bootstrap-icons";
+import {useModalManager} from "ui-layout-manager-dev";
 
 // eslint-disable-next-line max-len
 import {useSelectedBehavior, useSelectedInvariant, useSelectedParticipant} from "../../Store/useAppSelection";
+import {ShowInfo} from "../Modals/ShowInfo";
 
 import "./SelectedInfo.scss";
 
@@ -18,6 +20,21 @@ export function SelectedInfo () {
     const selectedBehavior = useSelectedBehavior();
     const selectedInvariant = useSelectedInvariant();
     const selectedParticipant = useSelectedParticipant();
+
+    const {openModal} = useModalManager();
+
+    const showInfo = ({type, value}) => {
+        openModal({
+            title: `Selected ${type} Info`,
+            args: {
+                "selected": value,
+                "type": type,
+            },
+            render: ({close, args}) => {
+                return <ShowInfo close={close} args={args} />;
+            },
+        });
+    };
 
     return (
         <>
@@ -35,7 +52,10 @@ export function SelectedInfo () {
                                         {selectedBehavior.getName()}
                                     </span>
                                 </div>
-                                <div className="icon">
+                                <div className="icon"
+                                    onClick={(e) => showInfo(
+                                        {type: "Behavior", value: selectedBehavior}
+                                    )}>
                                     <InfoCircle />
                                 </div>
                             </div>
@@ -50,7 +70,10 @@ export function SelectedInfo () {
                                         {selectedParticipant.getName()}
                                     </span>
                                 </div>
-                                <div className="icon">
+                                <div className="icon"
+                                    onClick={(e) => showInfo(
+                                        {type: "Participant", value: selectedParticipant}
+                                    )}>
                                     <InfoCircle />
                                 </div>
                             </div>
@@ -65,7 +88,10 @@ export function SelectedInfo () {
                                         {selectedInvariant.getName()}
                                     </span>
                                 </div>
-                                <div className="icon">
+                                <div className="icon"
+                                    onClick={(e) => showInfo(
+                                        {type: "Invariant", value: selectedInvariant}
+                                    )}>
                                     <InfoCircle />
                                 </div>
                             </div>
