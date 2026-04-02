@@ -34,8 +34,7 @@ export function AddParticipant ({close}) {
         }
     }, [engine]);
 
-    const handleSubmit = useCallback((event) => {
-        event.preventDefault();
+    const handleSubmit = useCallback(() => {
         if (participant.trim() === "") {
             setError("Participant name must not be empty.");
             return;
@@ -51,25 +50,33 @@ export function AddParticipant ({close}) {
     }, [engine, participant, close, selectedBehavior, dispatch]);
 
     useEffect(() => {
-        const handleKeyDown = (event) => (event.key === "Escape") && close();
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") {
+                event.preventDefault();
+                close();
+            } else if (event.key === "Enter") {
+                event.preventDefault();
+                handleSubmit();
+            }
+        };
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [close]);
+    }, [close, handleSubmit, participant]);
 
     return (
         <div className="add-value-modal">
             <div className="value-name-label">
                 <span>Participant Name:</span>
             </div>
-            <form className="value-name-input" onSubmit={handleSubmit}>
+            <div className="value-name-input">
                 <input
                     ref={inputRef}
                     value={participant}
                     onChange={(e) => setParticipant(e.target.value)}/>
                 <div className="value-name-submit">
-                    <button type="submit">Add Participant</button>
+                    <button type="button" onClick={handleSubmit}>Add Participant</button>
                 </div>
-            </form>
+            </div>
             {error && <div className="value-error">{error}</div>}
         </div>
     );

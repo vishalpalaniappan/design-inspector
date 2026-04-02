@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
@@ -22,7 +22,7 @@ AddInvariant.propTypes = {
  * provided by the modal manager.
  * @return {JSX.Element}
  */
-export function AddInvariant({ close }) {
+export function AddInvariant ({close}) {
     const {engine} = useDalEngine();
 
     const dispatch = useDispatch();
@@ -90,43 +90,49 @@ export function AddInvariant({ close }) {
         setInvariantTypeInstance(instance);
     }, [chosenInvariant, engine, propertyInputs, invariantName]);
 
-    const handleSubmit = useCallback(
-        (event) => {
-            event.preventDefault();
-            if (invariantName.trim() === "") {
-                setError("Invariant name must not be empty.");
-                return;
-            }
-            const _invariant = engine.createInvariant({name: invariantName});
-            _invariant.invariantType = invariantTypeInstance;
+    const handleSubmit = useCallback(() => {
+        if (invariantName.trim() === "") {
+            setError("Invariant name must not be empty.");
+            return;
+        }
+        const _invariant = engine.createInvariant({name: invariantName});
+        _invariant.invariantType = invariantTypeInstance;
 
-            try {
-                saveInvariantPropValues(_invariant, propertyInputs);
-            } catch (error) {
-                setError(error.message);
-                return;
-            }
-            selectedParticipant.addInvariant(_invariant);
-            dispatch(setSelectedInvariant(_invariant.name));
-            dispatch(incrementCounter());
-            close();
-        },
-        [
-            engine,
-            invariantName,
-            invariantTypeInstance,
-            selectedParticipant,
-            propertyInputs,
-            dispatch,
-            close,
-        ]
+        try {
+            saveInvariantPropValues(_invariant, propertyInputs);
+        } catch (error) {
+            setError(error.message);
+            return;
+        }
+        selectedParticipant.addInvariant(_invariant);
+        dispatch(setSelectedInvariant(_invariant.name));
+        dispatch(incrementCounter());
+        close();
+    },
+    [
+        engine,
+        invariantName,
+        invariantTypeInstance,
+        selectedParticipant,
+        propertyInputs,
+        dispatch,
+        close,
+    ]
     );
 
     useEffect(() => {
-        const handleKeyDown = (event) => (event.key === "Escape") && close();
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") {
+                event.preventDefault();
+                close();
+            } else if (event.key === "Enter") {
+                event.preventDefault();
+                handleSubmit();
+            }
+        };
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [close]);
+    }, [close, invariantName, propertyInputs]);
 
     return (
         <form className="add-value-modal" onSubmit={handleSubmit}>
@@ -147,7 +153,7 @@ export function AddInvariant({ close }) {
             </div>
             {invariantTypeInstance && propertyDivs}
             {error && (
-                <div style={{ float: "right" }} className="value-error">
+                <div style={{float: "right"}} className="value-error">
                     {error}
                 </div>
             )}
