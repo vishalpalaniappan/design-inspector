@@ -25,6 +25,14 @@
     flex: 1;
 }
 
+.add-value-modal > .value-name-input > textarea {
+    font-size: 16px;
+    color:white;
+    background:#333;
+    border: solid 1px grey;
+    flex: 1;
+}
+
 .add-value-modal > .value-name-input >.value-name-submit {
     display: flex;
     justify-content: center;

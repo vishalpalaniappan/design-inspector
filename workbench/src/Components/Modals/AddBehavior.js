@@ -22,6 +22,7 @@ export function AddBehavior ({close}) {
     const dispatch = useDispatch();
 
     const [behavior, setBehavior] = useState("");
+    const [description, setDescription] = useState("");
     const [error, setError] = useState(null);
 
     const inputRef = useRef(null);
@@ -41,13 +42,13 @@ export function AddBehavior ({close}) {
             engine.getNode(behavior);
             setError(`Behavior with name "${behavior}" already exists.`);
         } catch (error) {
-            engine.addNode(behavior, []);
+            engine.addNode(behavior, description, []);
             dispatch(setSelectedBehavior(behavior));
             setTimeout(() => {
                 close();
             }, 0);
         }
-    }, [engine, behavior, close, dispatch]);
+    }, [engine, behavior, description, close, dispatch]);
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -64,22 +65,34 @@ export function AddBehavior ({close}) {
     }, [close, behavior]);
 
     return (
-        <div className="add-value-modal">
+        <div className="add-value-modal" style={{width: "800px", height: "600px"}}>
+            <div className="value-name-label">
+                <span>Behavior Name:</span>
+            </div>
             <div className="value-name-label">
                 <span>Behavior Name:</span>
             </div>
             <div className="value-name-input">
-                <input
-                    ref={inputRef}
+                <input ref={inputRef}
                     value={behavior}
-                    onChange={(e) => setBehavior(e.target.value)}/>
-                <div className="value-name-submit">
-                    <button type="button" onClick={handleSubmit}>Add Behavior</button>
-                </div>
+                    onChange={(e) => setBehavior(e.target.value)}></input>
             </div>
-            {error &&
-                <div className="value-error">{error}</div>
-            }
+            <div className="value-name-label">
+                <span>Description:</span>
+            </div>
+            <div className="value-name-input">
+                <textarea ref={inputRef}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}></textarea>
+            </div>
+            <div className="invariant-name-submit">
+                <button type="button" onClick={handleSubmit}>Add Behavior</button>
+            </div>
+            {error && (
+                <div style={{float: "right"}} className="value-error">
+                    {error}
+                </div>
+            )}
         </div>
     );
 }

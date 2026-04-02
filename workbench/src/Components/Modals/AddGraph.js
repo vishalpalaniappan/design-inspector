@@ -27,6 +27,7 @@ export function AddGraph ({close}) {
     const inputRef = useRef(null);
 
     const [graph, setGraph] = useState("");
+    const [description, setDescription] = useState("");
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -44,11 +45,11 @@ export function AddGraph ({close}) {
             engine.graphs.getGraph(graph);
             setError(`Graph with name "${graph}" already exists.`);
         } catch (UnknownGraph) {
-            engine.createGraph(graph);
+            engine.createGraph(graph, description);
             dispatch(setSelectedGraph(graph));
             close();
         }
-    }, [engine, graph, close, dispatch]);
+    }, [description, engine, graph, close, dispatch]);
 
     useEffect(() => {
         const handleKeyDown = (event) => {

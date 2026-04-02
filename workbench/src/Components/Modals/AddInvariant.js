@@ -33,6 +33,7 @@ export function AddInvariant ({close}) {
     const [invariantTypeInstance, setInvariantTypeInstance] = useState([]);
     const [propertyDivs, setPropertyDivs] = useState(null);
     const [invariantName, setInvariantName] = useState("");
+    const [description, setDescription] = useState("");
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -95,7 +96,10 @@ export function AddInvariant ({close}) {
             setError("Invariant name must not be empty.");
             return;
         }
-        const _invariant = engine.createInvariant({name: invariantName});
+        const _invariant = engine.createInvariant({
+            name: invariantName,
+            description: description,
+        });
         _invariant.invariantType = invariantTypeInstance;
 
         try {
@@ -110,6 +114,7 @@ export function AddInvariant ({close}) {
         close();
     },
     [
+        description,
         engine,
         invariantName,
         invariantTypeInstance,

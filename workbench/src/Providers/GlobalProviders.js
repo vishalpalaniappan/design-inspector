@@ -109,7 +109,10 @@ function GlobalProviders ({children}) {
     };
 
     const engine = useMemo(() => {
-        const e = new DALEngine({name: "default"});
+        const e = new DALEngine({
+            name: "default",
+            description: "Default engine",
+        });
         e.save = () => {
             const serialized = e.serialize();
             sendJsonMessageRef.current({

@@ -34,7 +34,7 @@ export function ShowInfo ({close, args}) {
     }, [close]);
 
     return (
-        <div style={{maxWidth: "800px", width: "800px", height: "600px"}}>
+        <div style={{width: "800px", height: "600px"}}>
             <Editor
                 defaultLanguage="json"
                 defaultValue=""

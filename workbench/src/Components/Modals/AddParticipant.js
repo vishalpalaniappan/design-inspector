@@ -24,6 +24,7 @@ export function AddParticipant ({close}) {
     const dispatch = useDispatch();
 
     const [participant, setParticipant] = useState("");
+    const [description, setDescription] = useState("");
     const [error, setError] = useState(null);
 
     const inputRef = useRef(null);
@@ -40,14 +41,16 @@ export function AddParticipant ({close}) {
             return;
         }
         try {
-            const participantInstance = engine.createParticipant({name: participant});
+            const participantInstance = engine.createParticipant({
+                name: participant, description: description,
+            });
             selectedBehavior.addParticipant(participantInstance);
             dispatch(setSelectedParticipant(participant));
             close();
         } catch (ParticipantAlreadyExistsError) {
             setError(`Participant with name "${participant}" already exists.`);
         }
-    }, [engine, participant, close, selectedBehavior, dispatch]);
+    }, [engine, description, participant, close, selectedBehavior, dispatch]);
 
     useEffect(() => {
         const handleKeyDown = (event) => {
