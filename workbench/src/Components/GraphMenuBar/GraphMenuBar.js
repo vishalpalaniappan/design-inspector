@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect} from "react";
 
-import {PlusSquare, Trash} from "react-bootstrap-icons";
+import {Display, PlusSquare, Trash} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 import {useModalManager} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
-import {setSelectedBehavior, setSelectedGraph} from "../../Store/appSlice";
+import {incrementCounter, setSelectedBehavior, setSelectedGraph} from "../../Store/appSlice";
 import {useGraphs, useSelectedGraph} from "../../Store/useAppSelection";
 import {AddGraph} from "../Modals/AddGraph";
 
@@ -49,6 +49,7 @@ export function GraphMenuBar () {
         engine.removeGraph(selectedGraph.name);
         dispatch(setSelectedGraph(engine.graphs.getActiveGraph().name));
         dispatch(setSelectedBehavior(null));
+        dispatch(incrementCounter());
     }, [engine, selectedGraph, dispatch]);
 
     return (

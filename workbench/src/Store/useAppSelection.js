@@ -18,12 +18,13 @@ import {
 export const useSelectedGraph = () => {
     const {engine} = useDalEngine();
     const selectedGraphId = useSelector(selectSelectedGraphId);
+    const counter = useSelector(selectCounter);
 
     return useMemo(() => {
         if (!selectedGraphId) return null;
         engine.selectGraph(selectedGraphId);
         return engine.graph;
-    }, [engine, selectedGraphId]);
+    }, [engine, selectedGraphId, counter]);
 };
 
 /**
