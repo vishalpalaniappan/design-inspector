@@ -50,7 +50,7 @@ export function AddBehavior ({close}) {
                 close();
             }, 0);
         }
-    }, [engine, behavior, description, close, dispatch]);
+    }, [engine, behavior, description, close, isAtomic, isDesignFork, dispatch]);
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -64,7 +64,7 @@ export function AddBehavior ({close}) {
         };
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [close, behavior]);
+    }, [close, behavior, handleSubmit]);
 
     return (
         <div className="add-value-modal">
