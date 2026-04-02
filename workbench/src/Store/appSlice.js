@@ -12,15 +12,20 @@ const appSlice = createSlice({
     reducers: {
         setSelectedBehavior(state, action) {
             // console.log("Setting selected behavior to:", action.payload);
-            state.selectedBehavior = action.payload;
             state.selectedParticipant = null;
+            state.selectedInvariant = null;
+            state.selectedBehavior = action.payload;
         },
         setSelectedParticipant(state, action) {
             // console.log("Setting selected participant to:", action.payload);
+            state.selectedInvariant = null;
             state.selectedParticipant = action.payload;
         },
         setSelectedGraph(state, action) {
             // console.log("Setting selected graph to:", action.payload);
+            state.selectedBehavior = null;
+            state.selectedParticipant = null;
+            state.selectedInvariant = null;
             state.selectedGraph = action.payload;
         },
         setSelectedInvariant(state, action) {
