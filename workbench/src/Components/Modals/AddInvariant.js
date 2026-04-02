@@ -40,6 +40,15 @@ export function AddInvariant({ close }) {
         }
     }, [engine]);
 
+    const [propertyInputs, setPropertyInputs] = useState({});
+
+    const handlePropertyChange = (id, value) => {
+        setPropertyInputs((prev) => ({
+            ...prev,
+            [id]: value,
+        }));
+    };
+
     useEffect(() => {
         if (!chosenInvariant) return;
         const instance = new engine.invariant_types[chosenInvariant]();
@@ -60,11 +69,13 @@ export function AddInvariant({ close }) {
         );
         const optionDivs = Object.keys(instance.properties).map((key) => (
             <>
-                <div className="value-name-label">
+                <div className="value-name-label" key={key + "-label"}>
                     <span>{instance.properties[key].label}:</span>
                 </div>
-                <div className="value-name-input" key={key}>
-                    <input type="text"></input>
+                <div className="value-name-input" key={key + "-input"}>
+                    <input
+                        value={propertyInputs[key] || ""}
+                        onChange={(e) => handlePropertyChange(key, e.target.value)}></input>
                 </div>
             </>
         ));
@@ -76,7 +87,7 @@ export function AddInvariant({ close }) {
 
         setPropertyDivs([nameDiv, ...optionDivs, submitButton]);
         setInvariantTypeInstance(instance);
-    }, [chosenInvariant, engine, invariantName]);
+    }, [chosenInvariant, engine, propertyInputs, invariantName]);
 
     const handleSubmit = useCallback(
         (event) => {
