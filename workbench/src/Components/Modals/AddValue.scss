@@ -18,6 +18,12 @@
     flex-direction: row;
 }
 
+.add-value-modal > .value-name-input > .check-box{
+    display:flex;
+    flex-direction: row;
+    font-size: 13px;
+}
+
 .add-value-modal > .value-name-input > input {
     font-size: 16px;
     color:white;
