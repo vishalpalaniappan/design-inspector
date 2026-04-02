@@ -51,9 +51,7 @@ function GlobalProviders ({children}) {
         });
     };
 
-    // Sets the message history
-    // eslint-disable-next-line no-unused-vars
-    const [messageHistory, setMessageHistory] = useState([]);
+    const [setMessageHistory] = useState([]);
     useEffect(() => {
         if (lastJsonMessage !== null) {
             setMessageHistory((prev) => prev.concat(lastMessage));
@@ -61,11 +59,26 @@ function GlobalProviders ({children}) {
         }
     }, [lastJsonMessage]);
 
+    // Set the connection state and log to console
+    const connectionStatus = {
+        [ReadyState.CONNECTING]: "Connecting",
+        [ReadyState.OPEN]: "Connected",
+        [ReadyState.CLOSING]: "Closing",
+        [ReadyState.CLOSED]: "Closed",
+        [ReadyState.UNINSTANTIATED]: "Uninstantiated",
+    }[readyState];
+
+    useEffect(() => {
+        console.log("Websocket state:", connectionStatus);
+    }, [readyState]);
+
 
     const processMessage = (msg) => {
         switch (msg.type) {
             case "workspaces":
                 setWorkspace(msg.data);
+                loadEngineFromWorkspace(msg.data);
+                getMappingForWorkspace(msg.data);
                 break;
             case "terminal_output":
                 termWriteRef.current?.(msg.data);
@@ -84,30 +97,32 @@ function GlobalProviders ({children}) {
                     source: "websocket-handler",
                 });
                 break;
+            case "get_mapping":
+                updateMapping(msg.payload.filePath, msg.data);
+                break;
+            case "error":
+                console.log("Received error:", msg);
+                break;
             default:
                 break;
         }
     };
 
-
-    // Set the connection state and log to console
-    const connectionStatus = {
-        [ReadyState.CONNECTING]: "Connecting",
-        [ReadyState.OPEN]: "Connected",
-        [ReadyState.CLOSING]: "Closing",
-        [ReadyState.CLOSED]: "Closed",
-        [ReadyState.UNINSTANTIATED]: "Uninstantiated",
-    }[readyState];
-
-    useEffect(() => {
-        console.log("Websocket state:", connectionStatus);
-    }, [readyState]);
-
-
+    /**
+     * Terminal writer function that can be set by the terminal component
+     * and called by the websocket handler when terminal output is received.
+     *
+     * TODO: Revisit terminal functions to improve all this.
+     * @param {function} fn
+     */
     const setTermWriter = (fn) => {
         termWriteRef.current = fn;
     };
 
+    /**
+     * Create the engine and add a save method that can be
+     * used by application to save engine to workspace.
+     */
     const engine = useMemo(() => {
         const e = new DALEngine({
             name: "default",
@@ -127,14 +142,48 @@ function GlobalProviders ({children}) {
     }, []);
 
 
-    useEffect(() => {
-        if (workspace) {
-            const file = workspace.find((file)=>file.name === "engine.dal");
-            if (file) {
-                engine.deserialize(file.content);
-            }
+    /**
+     * Given a workspace, get the mapping for each python file by
+     * asking the server to run the instrumented in parser_stream mode.
+     * @param {Object} workspace Workspace object.
+     */
+    const getMappingForWorkspace = (workspace) => {
+        const pyFiles = workspace.filter((file) => file.name.endsWith(".py"));
+        pyFiles.forEach((file) => {
+            sendJsonMessageRef.current({
+                type: "get_mapping",
+                payload: {
+                    filePath: file.path,
+                },
+            });
+        });
+    };
+
+    /**
+     * Update workspace with provided mapping.
+     * @param {String} filePath Path of the file to update.
+     * @param {Object} newValue The new mapping value to set.
+     */
+    const updateMapping = (filePath, newValue) => {
+        setWorkspace((prev) =>
+            prev.map((item) =>
+                item.path === filePath
+                    ? {...item, "mapping": newValue}
+                    : item
+            )
+        );
+    };
+
+    /**
+     * Load the engine from the workspace if an engine.dal file is present.
+     * @param {Object} workspace Workspace object.
+     */
+    const loadEngineFromWorkspace = (workspace) => {
+        const file = workspace.find((file)=>file.name === "engine.dal");
+        if (file) {
+            engine.deserialize(file.content);
         }
-    }, [workspace]);
+    };
 
     return (
         // eslint-disable-next-line max-len

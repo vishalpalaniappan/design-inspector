@@ -25,7 +25,7 @@ export class  WSMessageHandler {
 
         this.handlers = {
             workspaces: this.workspaces.bind(this),
-            getMapping: this.getMapping.bind(this),
+            get_mapping: this.getMapping.bind(this),
             save_engine: this.saveEngine.bind(this),
             terminal_input: this.onTerminalInput.bind(this),
             terminal_resize: this.onTerminalResize.bind(this)
@@ -35,7 +35,7 @@ export class  WSMessageHandler {
     getMapping = (msg) => {
         getMapping(msg.payload.filePath).then((mapping) => {
             msg.data = JSON.parse(mapping);
-            this.ws.send(JSON.stringify({ data: msg.data }));
+            this.ws.send(JSON.stringify(msg));
         })
         .catch((err) => {
             this.ws.send(JSON.stringify({ error: "error", data: err.message }));
