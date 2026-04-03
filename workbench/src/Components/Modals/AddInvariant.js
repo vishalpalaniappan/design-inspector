@@ -89,7 +89,7 @@ export function AddInvariant ({close}) {
 
         setPropertyDivs([nameDiv, ...optionDivs, submitButton]);
         setInvariantTypeInstance(instance);
-    }, [chosenInvariant, engine, propertyInputs, invariantName]);
+    }, [chosenInvariant, handleSubmit, engine, propertyInputs, invariantName]);
 
     const handleSubmit = useCallback(() => {
         if (invariantName.trim() === "") {
