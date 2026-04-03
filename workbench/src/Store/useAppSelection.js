@@ -133,3 +133,17 @@ export const useInvariantTypes = () => {
         return engine.invariant_types;
     }, [engine]);
 };
+
+/**
+ * Returns a list of invariant types from the engine.
+ * @return {Object}
+ */
+export const useEngineFiles = () => {
+    const {engine} = useDalEngine();
+    const counter = useSelector(selectCounter);
+
+    return useMemo(() => {
+        if (!engine) return null;
+        return [...engine.getFiles()];
+    }, [engine, counter]);
+};

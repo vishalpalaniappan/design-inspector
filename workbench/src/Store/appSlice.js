@@ -7,6 +7,7 @@ const appSlice = createSlice({
         selectedParticipant: null,
         selectedGraph: null,
         selectedInvariant: null,
+        files: null,
         counter: 0,
     },
     reducers: {
