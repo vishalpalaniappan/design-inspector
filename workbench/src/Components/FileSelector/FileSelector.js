@@ -1,9 +1,8 @@
 import React, {useEffect, useRef} from "react";
 
+import {Floppy, PlusSquare, Trash} from "react-bootstrap-icons";
 import {FileBrowser} from "sample-ui-component-library";
 import {useLayoutEventPublisher} from "ui-layout-manager-dev";
-
-import {Floppy, PlusSquare, Trash} from "react-bootstrap-icons";
 
 import {useWorkspace} from "../../Providers/GlobalProviders";
 
