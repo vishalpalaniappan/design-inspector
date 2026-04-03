@@ -96,19 +96,20 @@ export function AddInvariant ({close}) {
             setError("Invariant name must not be empty.");
             return;
         }
-        const _invariant = engine.createInvariant({
-            name: invariantName,
-            description: description,
-        });
-        _invariant.invariantType = invariantTypeInstance;
 
+        let _invariant;
         try {
+            _invariant = engine.createInvariant({
+                name: invariantName,
+                description: description,
+            });
+            _invariant.invariantType = invariantTypeInstance;
             saveInvariantPropValues(_invariant, propertyInputs);
+            selectedParticipant.addInvariant(_invariant);
         } catch (err) {
             setError(err.message);
             return;
         }
-        selectedParticipant.addInvariant(_invariant);
         dispatch(setSelectedInvariant(_invariant.name));
         dispatch(incrementCounter());
         close();
@@ -137,7 +138,7 @@ export function AddInvariant ({close}) {
         };
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [close, invariantName, propertyInputs]);
+    }, [close, handleSubmit]);
 
     return (
         <div className="add-value-modal" >
