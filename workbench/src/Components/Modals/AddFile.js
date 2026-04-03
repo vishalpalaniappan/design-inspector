@@ -19,8 +19,6 @@ AddFile.propTypes = {
  */
 export function AddFile ({close}) {
     const {engine} = useDalEngine();
-
-    const selectedBehavior= useSelectedBehavior();
     const dispatch = useDispatch();
 
     const [fileName, setFileName] = useState("");
