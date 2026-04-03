@@ -1,12 +1,13 @@
 import React, {useCallback, useEffect, useRef} from "react";
 
 import {Floppy, PlusSquare, Trash} from "react-bootstrap-icons";
+import {useDispatch} from "react-redux";
 import {FileBrowser} from "sample-ui-component-library";
 import {useLayoutEventPublisher} from "ui-layout-manager-dev";
 import {useModalManager} from "ui-layout-manager-dev";
 
-import {useWorkspace} from "../../Providers/GlobalProviders";
 import {useDalEngine} from "../../Providers/GlobalProviders";
+import {incrementCounter} from "../../Store/appSlice";
 import {useEngineFiles} from "../../Store/useAppSelection";
 import {AddFile} from "../Modals/AddFile";
 
@@ -20,26 +21,20 @@ FileSelector.propTypes = {
  * @return {JSX.Element}
  */
 export function FileSelector () {
-    const {workspace} = useWorkspace();
     const {engine} = useDalEngine();
-    const files = useEngineFiles();
     const {openModal} = useModalManager();
+    const [selectedFile, setSelectedFile] = React.useState(null);
 
+    const files = useEngineFiles();
+    const dispatch = useDispatch();
     const fileBrowserRef = useRef();
     const publish = useLayoutEventPublisher();
 
     useEffect(() => {
-        if (workspace) {
-            console.log(workspace);
-            fileBrowserRef.current.addFileTree(workspace);
-        }
-    }, [workspace]);
-
-    useEffect(() => {
-        if (files && files.length > 0) {
+        if (files) {
             /**
              * TODO: This is temporary because I haven't made
-             * the libraries match, I will fix this soon. The 
+             * the libraries match, I will fix this soon. The
              * engine saves path as key and doesn't have some
              * necessary keys.
              */
@@ -53,6 +48,7 @@ export function FileSelector () {
     }, [files]);
 
     const onSelectFile = (node) => {
+        setSelectedFile(node);
         publish({
             type: "file:selected",
             payload: node,
@@ -67,6 +63,17 @@ export function FileSelector () {
         });
     }, []);
 
+    const deleteFile = useCallback(() => {
+        if (selectedFile) {
+            try {
+                engine.removeFile(selectedFile.path);
+                dispatch(incrementCounter());
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    }, [engine, selectedFile, dispatch]);
+
     return (
         <div className="filebrowser-container">
             <div className="browser-container">
@@ -75,7 +82,7 @@ export function FileSelector () {
             <div className="menu">
                 <Floppy className="icon"/>
                 <PlusSquare onClick={createFile} className="icon"/>
-                <Trash className="icon"/>
+                <Trash onClick={deleteFile} className="icon"/>
             </div>
         </div>
     );

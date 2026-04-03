@@ -5,7 +5,6 @@ import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import {useWorkspace} from "../../Providers/GlobalProviders";
 import ServerContext from "../../Providers/ServerContext";
-import {flattenTree} from "./helper";
 
 import "./EditorContainer.scss";
 
@@ -68,12 +67,6 @@ export function EditorContainer () {
         if (!workspace) return;
         parentIdRef.current = crypto.randomUUID();
         editorRef.current.setTabGroupId(parentIdRef.current);
-
-        // This is only for demo purposes, I am randomly loading 2 files.
-        const files = flattenTree(workspace).filter((node) => node.type === "file");
-        for (let i = 0; i < 4; i++) {
-            editorRef.current.addTab(files[Math.floor(Math.random() * 2) + 1]);
-        }
     }, [workspace, connectionStatus]);
 
     return (
