@@ -1,10 +1,13 @@
-import React, {useEffect, useRef} from "react";
+import React, {useCallback, useEffect, useRef} from "react";
 
 import {Floppy, PlusSquare, Trash} from "react-bootstrap-icons";
 import {FileBrowser} from "sample-ui-component-library";
 import {useLayoutEventPublisher} from "ui-layout-manager-dev";
+import {useModalManager} from "ui-layout-manager-dev";
 
 import {useWorkspace} from "../../Providers/GlobalProviders";
+import {useDalEngine} from "../../Providers/GlobalProviders";
+import {AddFile} from "../Modals/AddFile";
 
 import "./FileSelector.scss";
 
@@ -17,6 +20,8 @@ FileSelector.propTypes = {
  */
 export function FileSelector () {
     const {workspace} = useWorkspace();
+    const {engine} = useDalEngine();
+    const {openModal} = useModalManager();
 
     const fileBrowserRef = useRef();
     const publish = useLayoutEventPublisher();
@@ -35,6 +40,13 @@ export function FileSelector () {
         });
     };
 
+    const createFile = useCallback(() => {
+        openModal({
+            title: "Add File",
+            render: ({close}) => {return <AddFile close={close} />;},
+        });
+    }, [engine]);
+
     return (
         <div className="filebrowser-container">
             <div className="browser-container">
@@ -42,7 +54,7 @@ export function FileSelector () {
             </div>
             <div className="menu">
                 <Floppy className="icon"/>
-                <PlusSquare className="icon"/>
+                <PlusSquare onClick={createFile} className="icon"/>
                 <Trash className="icon"/>
             </div>
         </div>
