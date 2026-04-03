@@ -74,13 +74,24 @@ export function FileSelector () {
         }
     }, [engine, selectedFile, dispatch]);
 
+    const saveFiles = useCallback(() => {
+        if (engine) {
+            engine.save();
+            publish({
+                type: "status:set",
+                payload: "Saving design...",
+                source: "tool-bar",
+            });
+        }
+    }, [engine, publish]);
+
     return (
         <div className="filebrowser-container">
             <div className="browser-container">
                 <FileBrowser ref={fileBrowserRef} onSelectFile={onSelectFile}/>
             </div>
             <div className="menu">
-                <Floppy className="icon"/>
+                <Floppy onClick={saveFiles} className="icon"/>
                 <PlusSquare onClick={createFile} className="icon"/>
                 <Trash onClick={deleteFile} className="icon"/>
             </div>
