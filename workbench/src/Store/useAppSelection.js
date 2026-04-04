@@ -4,11 +4,13 @@ import {useSelector} from "react-redux";
 
 import {useDalEngine} from "../Providers/GlobalProviders";
 import {
+    selectActiveTab,
     selectCounter,
     selectSelectedBehaviorId,
     selectSelectedGraphId,
     selectSelectedInvariantId,
-    selectSelectedParticipantId
+    selectSelectedParticipantId,
+    selectTabs
 } from "./appSelectors";
 
 /**
@@ -146,4 +148,15 @@ export const useEngineFiles = () => {
         if (!engine) return null;
         return [...engine.getFiles()];
     }, [engine, counter]);
+};
+
+
+export const useTabs = () => {
+    const tabs = useSelector(selectTabs);
+    return tabs;
+};
+
+export const useActiveTab = () => {
+    const activeTab = useSelector(selectActiveTab);
+    return activeTab;
 };
