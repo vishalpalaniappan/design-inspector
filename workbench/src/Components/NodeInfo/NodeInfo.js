@@ -11,6 +11,7 @@ import {useInvariants, useParticipants} from "../../Store/useAppSelection";
 import {AddInvariant} from "../Modals/AddInvariant";
 import {AddParticipant} from "../Modals/AddParticipant";
 import {Invariant} from "./Invariant/Invariant";
+import { deleteParticipantThunk } from "../../Store/appThunk";
 
 import "./NodeInfo.scss";
 
@@ -45,12 +46,13 @@ export function NodeInfo ({}) {
 
     const deleteParticipant = useCallback(() => {
         if (engine && selectedBehavior && selectedParticipant) {
-            selectedBehavior.removeParticipant(selectedParticipant);
-            const p = participants;
-            dispatch(setSelectedParticipant(p.length > 0? p[0].getName() : null));
-            dispatch(incrementCounter());
+            dispatch(deleteParticipantThunk(engine, selectedParticipant));
         }
     }, [engine, selectedBehavior, selectedParticipant, participants, dispatch]);
+
+    const selectParticipant = useCallback((participantName) => {
+        dispatch(setSelectedParticipant(participantName));
+    }, [dispatch]);
 
     return (
         <>
@@ -71,9 +73,7 @@ export function NodeInfo ({}) {
                                 <select id="car-select" className="selectParticipants"
                                     value={selectedParticipant?.getName()}
                                     disabled={!participants || participants.length === 0}
-                                    onChange={(e) => dispatch(
-                                        setSelectedParticipant(e.target.value)
-                                    )}>
+                                    onChange={(e) => selectParticipant(e.target.value)}>
                                     {(participants && participants.length > 0) &&
                                         participants.map((participant, index) => (
                                             <option key={index}>{participant.getName()}</option>

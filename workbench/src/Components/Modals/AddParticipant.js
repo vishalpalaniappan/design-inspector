@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
-import {setSelectedParticipant} from "../../Store/appSlice";
+import {addParticipantThunk} from "../../Store/appThunk";
 import {useSelectedBehavior} from "../../Store/useAppSelection";
 
 import "./AddValue.scss";
@@ -41,11 +41,7 @@ export function AddParticipant ({close}) {
             return;
         }
         try {
-            const participantInstance = engine.createParticipant({
-                name: participant, description: description,
-            });
-            selectedBehavior.addParticipant(participantInstance);
-            dispatch(setSelectedParticipant(participant));
+            dispatch(addParticipantThunk(engine, participant, description));
             close();
         } catch (err) {
             setError(err.toString());
