@@ -1,14 +1,13 @@
 import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from "react";
 
-import {DALEngine} from "dal-engine-core-js-lib-dev";
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 import useWebSocket, {ReadyState} from "react-use-websocket";
 
 import {setActiveTab, setLastSaved} from "../Store/appSlice";
 import {setStatusMsg} from "../Store/appSlice";
-import DalEngineContext from "./DalEngineContext";
 import engine from "./DalEngine";
+import DalEngineContext from "./DalEngineContext";
 import ServerContext from "./ServerContext";
 
 GlobalProviders.propTypes = {
