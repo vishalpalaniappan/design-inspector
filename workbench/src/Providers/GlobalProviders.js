@@ -31,12 +31,10 @@ function GlobalProviders ({children}) {
     // Connect and setup auto reconnect
     const socketUrl = "ws://localhost:3002";
     const {
-        // sendMessage,
         sendJsonMessage,
         lastMessage,
         lastJsonMessage,
         readyState,
-        // getWebSocket,
     } = useWebSocket(socketUrl, {
         onOpen: () => connectionOpen(),
         shouldReconnect: (closeEvent) => true,
@@ -46,7 +44,6 @@ function GlobalProviders ({children}) {
         sendJsonMessageRef.current = sendJsonMessage;
     }, [sendJsonMessage]);
 
-    // Called when connection is opened.
     const connectionOpen = () => {
         sendJsonMessage({
             "type": "workspaces",
@@ -66,7 +63,6 @@ function GlobalProviders ({children}) {
     const processMessage = (msg) => {
         switch (msg.type) {
             case "workspaces":
-                // TODO: Migrate to loading workspace from engine.
                 setWorkspace(msg.data);
                 break;
             case "terminal_output":
