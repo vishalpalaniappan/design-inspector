@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from "react";
 
-import {Floppy, PlusSquare} from "react-bootstrap-icons";
+import {Crosshair, Easel, Floppy, PlusSquare} from "react-bootstrap-icons";
 import {useLayoutEventPublisher} from "ui-layout-manager-dev";
 import {useModalManager} from "ui-layout-manager-dev";
 
@@ -61,6 +61,16 @@ export function ToolBar () {
                 />
             </div>
             <div className="toolbarContainer bottom">
+                <Crosshair
+                    onClick={(e) => saveGraph()}
+                    title="Mapping Mode"
+                    className="icon"
+                />
+                <Easel
+                    onClick={(e) => saveGraph()}
+                    title="Design Mode"
+                    className="icon"
+                />
                 <Floppy
                     onClick={(e) => saveGraph()}
                     title="Save Graph"
