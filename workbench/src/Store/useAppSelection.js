@@ -164,7 +164,7 @@ export const useActiveTab = () => {
 };
 
 /**
- * Returns the currently active tab.
+ * Returns the current status message.
  * @return {Object}
  */
 export const useStatusMsg = () => {
