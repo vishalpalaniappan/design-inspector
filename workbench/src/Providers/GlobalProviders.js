@@ -1,10 +1,12 @@
-import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
+import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from "react";
 
 import {DALEngine} from "dal-engine-core-js-lib-dev";
 import PropTypes from "prop-types";
+import {useDispatch} from "react-redux";
 import useWebSocket, {ReadyState} from "react-use-websocket";
 import {useLayoutEventPublisher} from "ui-layout-manager-dev";
 
+import {incrementCounter} from "../Store/appSlice";
 import DalEngineContext from "./DalEngineContext";
 import ServerContext from "./ServerContext";
 import WorkspaceContext from "./WorkspaceContext";
@@ -23,6 +25,7 @@ function GlobalProviders ({children}) {
     const termWriteRef = useRef(null);
     const sendJsonMessageRef = useRef(null);
 
+    const dispatch = useDispatch();
     const publish = useLayoutEventPublisher();
 
     // Connect and setup auto reconnect
@@ -72,6 +75,10 @@ function GlobalProviders ({children}) {
                 termWriteRef.current?.(msg.data);
                 break;
             case "design_save_successful":
+                // TODO: Move files to redux store to trigger updates in editor
+                // and other components. This is using the counter to
+                // indicate that the files have been saved.
+                dispatch(incrementCounter());
                 publish({
                     type: "status:set",
                     payload: "Design saved successfully!",
@@ -109,28 +116,36 @@ function GlobalProviders ({children}) {
         termWriteRef.current = fn;
     };
 
+    const saveEngine = useCallback(() => {
+        for (const file of engine.getFiles()) {
+            file.content = file.updatedContent;
+        }
+        const serialized = engine.serialize();
+        sendJsonMessageRef.current({
+            type: "save_engine",
+            payload: {
+                "data": serialized,
+                "fileName": "engine.dal",
+            },
+        });
+    }, [engine]);
+
     const engine = useMemo(() => {
         const e = new DALEngine({
             name: "default",
             description: "Default engine",
         });
-        e.save = () => {
-            const serialized = e.serialize();
-            sendJsonMessageRef.current({
-                type: "save_engine",
-                payload: {
-                    "data": serialized,
-                    "fileName": "engine.dal",
-                },
-            });
-        };
+        e.save = saveEngine;
         return e;
-    }, []);
+    }, [engine, saveEngine]);
 
 
     useEffect(() => {
         if (workspace) {
-            const file = workspace.find((file)=>file.name === "engine.dal");
+            const file = workspace.find((file) => {
+                console.log(file);
+                return file.name === "engine.dal";
+            });
             if (file) {
                 engine.deserialize(file.content);
             }

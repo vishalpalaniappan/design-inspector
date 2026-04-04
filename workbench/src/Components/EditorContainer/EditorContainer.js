@@ -1,11 +1,12 @@
-import React, {useContext, useEffect, useRef} from "react";
+import React, {useCallback, useContext, useEffect, useRef} from "react";
 
 import {Editor} from "sample-ui-component-library";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import {useWorkspace} from "../../Providers/GlobalProviders";
+import {useDalEngine} from "../../Providers/GlobalProviders";
 import ServerContext from "../../Providers/ServerContext";
-import { useEngineFiles } from "../../Store/useAppSelection";
+import {useEngineFiles} from "../../Store/useAppSelection";
 
 import "./EditorContainer.scss";
 
@@ -19,18 +20,22 @@ export function EditorContainer () {
     const editorRef = useRef(null);
     const parentIdRef = useRef(null);
     const files = useEngineFiles();
+    const {engine} = useDalEngine();
 
     useLayoutEventSubscription("file:selected", (event) => {
         editorRef.current.addTab(event.payload);
     });
 
+    // Close tabs of files that were deleted, and update saved content
     useEffect(() => {
         if (files) {
             const _tabs = editorRef.current.getTabs();
-            for (const tab in _tabs) {
-                if (!files.find((file) => file.uid === _tabs[tab].uid)) {
-                    editorRef.current.closeTab(_tabs[tab].uid);
+            for (let i = 0; i < _tabs.length; i++) {
+                const _tab = _tabs[i];
+                if (!files.find((file) => file.uid === _tab.uid)) {
+                    editorRef.current.closeTab(_tab.uid);
                 }
+                editorRef.current.setContent(_tab, _tab.content);
             }
         }
     }, [files]);
