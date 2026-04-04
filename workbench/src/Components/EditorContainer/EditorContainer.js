@@ -4,7 +4,6 @@ import {Editor} from "sample-ui-component-library";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import {useWorkspace} from "../../Providers/GlobalProviders";
-import {useDalEngine} from "../../Providers/GlobalProviders";
 import ServerContext from "../../Providers/ServerContext";
 import {useEngineFiles} from "../../Store/useAppSelection";
 
@@ -20,7 +19,6 @@ export function EditorContainer () {
     const editorRef = useRef(null);
     const parentIdRef = useRef(null);
     const files = useEngineFiles();
-    const {engine} = useDalEngine();
 
     useLayoutEventSubscription("file:selected", (event) => {
         editorRef.current.addTab(event.payload);
