@@ -8,6 +8,7 @@ import useWebSocket, {ReadyState} from "react-use-websocket";
 import {setActiveTab, setLastSaved} from "../Store/appSlice";
 import {setStatusMsg} from "../Store/appSlice";
 import DalEngineContext from "./DalEngineContext";
+import engine from "./DalEngineInstance";
 import ServerContext from "./ServerContext";
 
 GlobalProviders.propTypes = {
@@ -110,14 +111,6 @@ function GlobalProviders ({children}) {
                 "fileName": "engine.dal",
             },
         });
-    }, []);
-
-    const engine = useMemo(() => {
-        const e = new DALEngine({
-            name: "default",
-            description: "Default engine",
-        });
-        return e;
     }, []);
 
     useEffect(() => {
