@@ -67,7 +67,7 @@ function GlobalProviders ({children}) {
                 termWriteRef.current?.(msg.data);
                 break;
             case "design_save_successful":
-                dispatch(setLastSaved(new Date()));
+                dispatch(setLastSaved(new Date().toISOString()));
                 dispatch(setStatusMsg("Design saved successfully!"));
                 break;
             case "design_save_failed":
@@ -99,6 +99,7 @@ function GlobalProviders ({children}) {
         for (const file of engine.getFiles()) {
             file.content = file.updatedContent;
         }
+        console.log("saving");
         const serialized = engine.serialize();
         sendJsonMessageRef.current({
             type: "save_engine",
@@ -125,8 +126,9 @@ function GlobalProviders ({children}) {
             });
             if (file) {
                 engine.deserialize(file.content);
-                if (engine.getFiles().length > 0) {
-                    dispatch(setActiveTab(engine.getFiles()[0].uid));
+                const files = engine.getFiles();
+                if (files.length > 0) {
+                    dispatch(setActiveTab(files[0].uid));
                 }
             }
         }

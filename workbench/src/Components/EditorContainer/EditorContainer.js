@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useRef} from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 
 import {useDispatch} from "react-redux";
 import {Editor} from "sample-ui-component-library";
@@ -23,6 +23,7 @@ export function EditorContainer () {
     const parentIdRef = useRef(null);
     const files = useEngineFiles();
     const lastSaved = useLastSaved();
+    const [editorLoaded, setEditorLoaded] = useState(false);
 
     const activeTab = useActiveTab();
     const dispatch = useDispatch();
@@ -45,10 +46,10 @@ export function EditorContainer () {
             /**
              * Inside editor, the content of the tab is saved in
              * updatedContent key. When updatedContent and content keys are
-             * the same, it means the file isn't dirty. When the file is
-             * saved onto the server, the updated content is set to the
-             * content key of the file, so we need to update the content
-             * of the tab to reflect that.
+             * not the same, it means the file is dirty (shows icon on tab).
+             * When the file is saved onto the server, the updated content
+             * is set to the content key of the file, so we need to update
+             * the content of the tab to reflect that.
              */
             editorRef.current.getTabs().forEach((tab) => {
                 editorRef.current.setContent(tab, tab.content);
@@ -58,8 +59,9 @@ export function EditorContainer () {
 
     useEffect(() => {
         if (activeTab && engine && editorRef.current) {
-            const source = engine.getFile(activeTab);
-            editorRef.current.addTab(source);
+            const activeTabFile = engine.getFile(activeTab);
+            console.log("activeTabFile", activeTabFile);
+            editorRef.current.addTab(activeTabFile);
         }
     }, [activeTab, editorRef.current, engine]);
 
@@ -105,8 +107,12 @@ export function EditorContainer () {
     });
 
     const onSelectTab = useCallback((tab) => {
-        dispatch(setActiveTab(tab && tab.uid));
-    }, [dispatch]);
+        if (editorLoaded) {
+            dispatch(setActiveTab(tab && tab.uid));
+        } else {
+            setEditorLoaded(true);
+        }
+    }, [dispatch, editorLoaded]);
 
     useEffect(() => {
         parentIdRef.current = crypto.randomUUID();
