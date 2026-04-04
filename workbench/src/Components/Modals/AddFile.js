@@ -41,11 +41,10 @@ export function AddFile ({close}) {
             const newFile = engine.addFile(fileName, fileName, "");
             dispatch(setActiveTab(newFile.uid));
             dispatch(incrementCounter());
+            close();
         } catch (err) {
             setError(err.toString());
         }
-        dispatch(incrementCounter());
-        close();
     }, [engine, dispatch, fileName, close]);
 
     useEffect(() => {
