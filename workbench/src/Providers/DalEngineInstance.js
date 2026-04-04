@@ -1,7 +1,7 @@
 
 import {DALEngine} from "dal-engine-core-js-lib-dev";
 
-export const engine = new DALEngine({
+const engine = new DALEngine({
     name: "default",
     description: "Default engine",
 });
