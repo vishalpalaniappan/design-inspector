@@ -3,15 +3,15 @@ import {createSlice} from "@reduxjs/toolkit";
 const appSlice = createSlice({
     name: "app",
     initialState: {
+        activeTab: null,
+        counter: 0,
+        lastSaved: null,
         selectedBehavior: null,
         selectedParticipant: null,
         selectedGraph: null,
         selectedInvariant: null,
         statusMsg: null,
         tabs: null,
-        activeTab: null,
-        lastSaved: null,
-        counter: 0,
     },
     reducers: {
         setSelectedBehavior(state, action) {
