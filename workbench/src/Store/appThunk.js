@@ -1,8 +1,8 @@
+import {saveInvariantPropValues} from "../helpers/helper";
 import {setActiveTab} from "./appSlice";
 import {setSelectedGraph} from "./appSlice";
 import {incrementCounter} from "./appSlice";
 import {setSelectedParticipant} from "./appSlice";
-import {saveInvariantPropValues} from "./helper";
 
 /**
  * Called to delete a file given a file ID.
