@@ -1,5 +1,7 @@
-import {incrementCounter, setActiveTab, setSelectedParticipant} from "./appSlice";
+import {setActiveTab} from "./appSlice";
 import {setSelectedGraph} from "./appSlice";
+import {incrementCounter} from "./appSlice";
+import {setSelectedParticipant} from "./appSlice";
 import {saveInvariantPropValues} from "./helper";
 
 /**
