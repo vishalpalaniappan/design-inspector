@@ -1,9 +1,5 @@
-// Store thunks here with engine to cleanly apply changes to the engine,
-// update state and then make the relevant information available.
-// TODO: Move the rest of the thunks here and remove engine manipulation
-// from the components. I am deferring this for later while I focus on
-// other features.
 import {incrementCounter, setActiveTab, setSelectedParticipant} from "./appSlice";
+import {setSelectedGraph} from "./appSlice";
 import {saveInvariantPropValues} from "./helper";
 
 /**
@@ -140,5 +136,27 @@ export const deleteInvariantThunk = (invariantId) => (dispatch, getState, {engin
     }
     participant.removeInvariant(invariantId);
     dispatch(setSelectedParticipant(participantId));
+    dispatch(incrementCounter());
+};
+
+/**
+ * Graph thunk for adding a graph to the engine and updating the active tab.
+ * @param {String} graphName Graph name.
+ * @return {Function} Thunk function.
+ */
+export const addGraphThunk = (graphName) => (dispatch, getState, {engine}) => {
+    engine.createGraph(graphName);
+    dispatch(setSelectedGraph(engine.graphs.getActiveGraph().name));
+    dispatch(incrementCounter());
+};
+
+/**
+ * Graph thunk for deleting a graph from the engine and updating the active tab.
+ * @param {String} graphName Graph name.
+ * @return {Function} Thunk function.
+ */
+export const deleteGraphThunk = (graphName) => (dispatch, getState, {engine}) => {
+    engine.removeGraph(graphName);
+    dispatch(setSelectedGraph(engine.graphs.getActiveGraph().name));
     dispatch(incrementCounter());
 };
