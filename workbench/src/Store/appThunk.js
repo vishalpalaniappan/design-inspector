@@ -4,7 +4,6 @@
 import {incrementCounter, setActiveTab} from "./appSlice";
 
 export const deleteFileThunk = (engine, fileId) => (dispatch, getState) => {
-    console.log("Deleting file with id: ", fileId);
     const files = engine.getFiles();
     const index = files.findIndex((file) => file.uid === fileId);
     let newUid = null;
