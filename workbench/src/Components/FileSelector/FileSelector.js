@@ -8,7 +8,7 @@ import {useModalManager} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import {incrementCounter, setActiveTab, setTabs} from "../../Store/appSlice";
-import {useEngineFiles} from "../../Store/useAppSelection";
+import {useActiveTab, useEngineFiles} from "../../Store/useAppSelection";
 import {AddFile} from "../Modals/AddFile";
 
 import "./FileSelector.scss";
@@ -27,21 +27,24 @@ export function FileSelector () {
 
     const files = useEngineFiles();
     const dispatch = useDispatch();
+    const activeTab = useActiveTab();
     const fileBrowserRef = useRef();
     const publish = useLayoutEventPublisher();
 
     useEffect(() => {
         if (files) {
             fileBrowserRef.current.addFileTree(files);
-            // const selected = (!selectedFile && files.length > 0)?files[0]:selectedFile;
-            // fileBrowserRef.current.selectNode(selected);
+            if (activeTab) {
+                // TODO: This find step is because the file browser does not
+                // reference file from UID, I need to update it.
+                const file = files.find((file) => file.uid === activeTab);
+                fileBrowserRef.current.selectNode(file);
+            }
         }
-    }, [files, selectedFile]);
+    }, [files, activeTab, selectedFile]);
 
     const onSelectFile = useCallback((node) => {
-        console.log("File selected:", node.name);
         dispatch(setActiveTab(node.uid));
-        setSelectedFile(node);
     }, []);
 
     const createFile = useCallback(() => {
@@ -52,19 +55,21 @@ export function FileSelector () {
     }, []);
 
     const deleteFile = useCallback(() => {
-        if (selectedFile) {
+        if (activeTab) {
             try {
-                const index = files.findIndex((file) => file.path === selectedFile.path);
-                if (index > 0) {
-                    setSelectedFile(files[index - 1]);
+                const index = files.findIndex((file) => file.uid === activeTab);
+                if (index === 0 && files.length > 1) {
+                    dispatch(setActiveTab(files[index + 1].uid));
+                } else if (index > 0) {
+                    dispatch(setActiveTab(files[index - 1].uid));
                 }
-                engine.removeFile(selectedFile.path);
+                engine.removeFile(activeTab);
                 dispatch(incrementCounter());
             } catch (err) {
                 console.error(err);
             }
         }
-    }, [engine, files, fileBrowserRef, selectedFile, dispatch]);
+    }, [engine, files, fileBrowserRef, activeTab, dispatch]);
 
     const saveFiles = useCallback(() => {
         if (engine) {

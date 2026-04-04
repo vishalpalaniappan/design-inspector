@@ -5,7 +5,7 @@ import {useDispatch} from "react-redux";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import {incrementCounter} from "../../Store/appSlice";
-import {useSelectedBehavior} from "../../Store/useAppSelection";
+import {setActiveTab} from "../../Store/appSlice";
 
 import "./AddValue.scss";
 
@@ -38,7 +38,9 @@ export function AddFile ({close}) {
             return;
         }
         try {
-            engine.addFile(fileName, fileName, "");
+            const newFile = engine.addFile(fileName, fileName, "");
+            dispatch(setActiveTab(newFile.uid));
+            dispatch(incrementCounter());
         } catch (err) {
             setError(err.toString());
         }

@@ -45,8 +45,6 @@ export function EditorContainer () {
 
     useEffect(() => {
         if (activeTab) {
-            console.log("Tab selected", activeTab);
-            console.log(engine);
             const source = engine.getFile(activeTab);
             editorRef.current.addTab(source, 0);
         }
