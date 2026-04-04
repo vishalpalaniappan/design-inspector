@@ -88,8 +88,8 @@ export function EditorContainer () {
         }
     });
 
-    const onSelectTab = useCallback((tabId) => {
-        dispatch(setActiveTab(tabId));
+    const onSelectTab = useCallback((tab) => {
+        dispatch(setActiveTab(tab && tab.uid));
     }, [dispatch]);
 
     useEffect(() => {
