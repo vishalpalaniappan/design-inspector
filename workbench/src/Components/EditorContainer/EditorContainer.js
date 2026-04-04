@@ -25,10 +25,6 @@ export function EditorContainer () {
 
     const activeTab = useActiveTab();
 
-    useLayoutEventSubscription("file:selected", (event) => {
-        editorRef.current.addTab(event.payload);
-    });
-
     // Close tabs of files that were deleted, and update saved content
     useEffect(() => {
         if (files) {
@@ -46,7 +42,7 @@ export function EditorContainer () {
     useEffect(() => {
         if (activeTab) {
             const source = engine.getFile(activeTab);
-            editorRef.current.addTab(source, 0);
+            editorRef.current.addTab(source);
         }
     }, [activeTab, engine]);
 
