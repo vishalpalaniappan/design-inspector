@@ -1,6 +1,6 @@
 import {configureStore} from "@reduxjs/toolkit";
 
-import engine from "../Providers/DalEngineInstance";
+import engine from "../Providers/DalEngine";
 import appReducer from "./appSlice";
 
 export const store = configureStore({

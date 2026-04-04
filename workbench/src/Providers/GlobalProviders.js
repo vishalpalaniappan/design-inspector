@@ -8,7 +8,7 @@ import useWebSocket, {ReadyState} from "react-use-websocket";
 import {setActiveTab, setLastSaved} from "../Store/appSlice";
 import {setStatusMsg} from "../Store/appSlice";
 import DalEngineContext from "./DalEngineContext";
-import engine from "./DalEngineInstance";
+import engine from "./DalEngine";
 import ServerContext from "./ServerContext";
 
 GlobalProviders.propTypes = {
