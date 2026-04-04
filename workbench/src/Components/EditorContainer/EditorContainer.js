@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useRef} from "react";
+import React, {useContext, useEffect, useRef} from "react";
 
 import {Editor} from "sample-ui-component-library";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
@@ -7,7 +7,7 @@ import {useWorkspace} from "../../Providers/GlobalProviders";
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import ServerContext from "../../Providers/ServerContext";
 import {useEngineFiles} from "../../Store/useAppSelection";
-import {useActiveTab, useTabs} from "../../Store/useAppSelection";
+import {useActiveTab} from "../../Store/useAppSelection";
 
 import "./EditorContainer.scss";
 

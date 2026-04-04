@@ -151,18 +151,6 @@ export const useEngineFiles = () => {
 };
 
 /**
- * Returns the list of open tabs.
- * @return {Object}
- */
-export const useTabs = () => {
-    const tabs = useSelector(selectTabs);
-
-    return useMemo(() => {
-        return tabs;
-    }, [tabs]);
-};
-
-/**
  * Returns the currently active tab.
  * @return {Object}
  */
