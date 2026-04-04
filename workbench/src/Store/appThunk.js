@@ -27,6 +27,11 @@ export const addFileThunk = (engine, fileName) => (dispatch, getState) => {
     dispatch(incrementCounter());
 };
 
+
+export const selectParticipantThunk = (participantName) => (dispatch) => {
+    dispatch(setSelectedParticipant(participantName));
+};
+
 export const addParticipantThunk = (engine, name, description) => (dispatch, getState) => {
     const selectedBehaviorId = getState().app.selectedBehavior;
     if (!selectedBehaviorId) {

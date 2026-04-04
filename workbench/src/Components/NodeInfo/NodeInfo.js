@@ -5,13 +5,12 @@ import {useDispatch} from "react-redux";
 import {useModalManager} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
-import {incrementCounter, setSelectedParticipant} from "../../Store/appSlice";
+import {deleteParticipantThunk, selectParticipantThunk} from "../../Store/appThunk";
 import {useSelectedBehavior, useSelectedParticipant} from "../../Store/useAppSelection";
 import {useInvariants, useParticipants} from "../../Store/useAppSelection";
 import {AddInvariant} from "../Modals/AddInvariant";
 import {AddParticipant} from "../Modals/AddParticipant";
 import {Invariant} from "./Invariant/Invariant";
-import { deleteParticipantThunk } from "../../Store/appThunk";
 
 import "./NodeInfo.scss";
 
@@ -51,7 +50,7 @@ export function NodeInfo ({}) {
     }, [engine, selectedBehavior, selectedParticipant, participants, dispatch]);
 
     const selectParticipant = useCallback((participantName) => {
-        dispatch(setSelectedParticipant(participantName));
+        dispatch(selectParticipantThunk(participantName));
     }, [dispatch]);
 
     return (
