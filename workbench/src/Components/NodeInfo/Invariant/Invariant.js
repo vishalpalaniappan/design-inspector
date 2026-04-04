@@ -1,13 +1,12 @@
-import React, {useCallback, useContext, useEffect, useState} from "react";
+import React, {useCallback} from "react";
 
 import PropTypes from "prop-types";
-import {Pencil, Trash} from "react-bootstrap-icons";
+import {Trash} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 
-import {useDalEngine} from "../../../Providers/GlobalProviders";
-import {incrementCounter} from "../../../Store/appSlice";
 import {setSelectedInvariant} from "../../../Store/appSlice";
-import {useSelectedInvariant, useSelectedParticipant} from "../../../Store/useAppSelection";
+import {deleteInvariantThunk} from "../../../Store/appThunk";
+import {useSelectedInvariant} from "../../../Store/useAppSelection";
 
 import "./Invariant.scss";
 
@@ -20,19 +19,16 @@ Invariant.propTypes = {
  * @return {JSX.Element}
  */
 export function Invariant ({invariant}) {
-    const {engine} = useDalEngine();
     const dispatch = useDispatch();
 
-    const selectedParticipant = useSelectedParticipant();
     const selectedInvariant = useSelectedInvariant();
 
     const deleteInvariant = useCallback((e) => {
         e.stopPropagation();
-        if (engine && invariant && selectedParticipant) {
-            selectedParticipant.removeInvariant(invariant);
-            dispatch(incrementCounter());
+        if (invariant) {
+            dispatch(deleteInvariantThunk(invariant.getName()));
         }
-    }, [engine, invariant, selectedParticipant]);
+    }, [invariant]);
 
     const selectInvariant = useCallback((e) => {
         e.stopPropagation();

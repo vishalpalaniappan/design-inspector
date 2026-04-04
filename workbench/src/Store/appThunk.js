@@ -121,3 +121,24 @@ export const addInvariantThunk = ({name, description, invariantType, invariantTy
     dispatch(setSelectedParticipant(participantId));
     dispatch(incrementCounter());
 };
+
+/**
+ * Deletes an invariant given its ID.
+ * @param {String} invariantId - The ID of the invariant to delete.
+ * @return {Function} Thunk function.
+ */
+export const deleteInvariantThunk = (invariantId) => (dispatch, getState, {engine}) => {
+    const participantId = getState().app.selectedParticipant;
+    const selectedBehaviorId = getState().app.selectedBehavior;
+    if (!selectedBehaviorId) {
+        throw new Error("No behavior selected");
+    }
+    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+    const participant = behavior.getParticipant(participantId);
+    if (!participant) {
+        throw new Error("No participant selected");
+    }
+    participant.removeInvariant(invariantId);
+    dispatch(setSelectedParticipant(participantId));
+    dispatch(incrementCounter());
+};
