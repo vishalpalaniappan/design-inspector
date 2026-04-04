@@ -31,7 +31,7 @@ export const selectParticipantThunk = (participantName) => (dispatch) => {
     dispatch(setSelectedParticipant(participantName));
 };
 
-export const addParticipantThunk = (engine, name, description) => (dispatch, getState) => {
+export const addParticipantThunk = (name, description) => (dispatch, getState, {engine}) => {
     const selectedBehaviorId = getState().app.selectedBehavior;
     if (!selectedBehaviorId) {
         throw new Error("No behavior selected");

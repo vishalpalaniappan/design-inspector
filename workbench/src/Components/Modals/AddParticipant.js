@@ -3,7 +3,6 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
-import {useDalEngine} from "../../Providers/GlobalProviders";
 import {addParticipantThunk} from "../../Store/appThunk";
 import {useSelectedBehavior} from "../../Store/useAppSelection";
 
@@ -18,8 +17,6 @@ AddParticipant.propTypes = {
  * @return {JSX.Element}
  */
 export function AddParticipant ({close}) {
-    const {engine} = useDalEngine();
-
     const selectedBehavior= useSelectedBehavior();
     const dispatch = useDispatch();
 
@@ -33,7 +30,7 @@ export function AddParticipant ({close}) {
         if (inputRef.current) {
             inputRef.current.focus();
         }
-    }, [engine]);
+    }, []);
 
     const handleSubmit = useCallback(() => {
         if (participant.trim() === "") {
@@ -41,12 +38,12 @@ export function AddParticipant ({close}) {
             return;
         }
         try {
-            dispatch(addParticipantThunk(engine, participant, description));
+            dispatch(addParticipantThunk(participant, description));
             close();
         } catch (err) {
             setError(err.toString());
         }
-    }, [engine, description, participant, close, selectedBehavior, dispatch]);
+    }, [description, participant, close, selectedBehavior, dispatch]);
 
     useEffect(() => {
         const handleKeyDown = (event) => {
