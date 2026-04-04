@@ -10,6 +10,7 @@ const appSlice = createSlice({
         statusMsg: null,
         tabs: null,
         activeTab: null,
+        lastSaved: null,
         counter: 0,
     },
     reducers: {
@@ -42,6 +43,9 @@ const appSlice = createSlice({
         setStatusMsg (state, action) {
             state.statusMsg = action.payload;
         },
+        setLastSaved (state, action) {
+            state.lastSaved = action.payload;
+        },
         incrementCounter (state) {
             /**
              * TODO:
@@ -58,7 +62,7 @@ const appSlice = createSlice({
     },
 });
 
-export const {setSelectedBehavior, setSelectedParticipant, setActiveTab, setStatusMsg,
+export const {setSelectedBehavior, setSelectedParticipant, setActiveTab, setStatusMsg, setLastSaved,
     setSelectedGraph, setSelectedInvariant, incrementCounter} = appSlice.actions;
 
 export default appSlice.reducer;

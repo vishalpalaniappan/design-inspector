@@ -6,6 +6,7 @@ import {useDalEngine} from "../Providers/GlobalProviders";
 import {
     selectActiveTab,
     selectCounter,
+    selectLastSaved,
     selectSelectedBehaviorId,
     selectSelectedGraphId,
     selectSelectedInvariantId,
@@ -172,4 +173,16 @@ export const useStatusMsg = () => {
     return useMemo(() => {
         return statusMsg;
     }, [statusMsg]);
+};
+
+/**
+ * Returns the last saved date time.
+ * @return {Date} Last saved date
+ */
+export const useLastSaved = () => {
+    const lastSaved = useSelector(selectLastSaved);
+
+    return useMemo(() => {
+        return lastSaved;
+    }, [lastSaved]);
 };

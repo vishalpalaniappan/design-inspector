@@ -8,7 +8,7 @@ import {useDalEngine} from "../../Providers/GlobalProviders";
 import ServerContext from "../../Providers/ServerContext";
 import {setActiveTab} from "../../Store/appSlice";
 import {useEngineFiles} from "../../Store/useAppSelection";
-import {useActiveTab} from "../../Store/useAppSelection";
+import {useActiveTab, useLastSaved} from "../../Store/useAppSelection";
 
 import "./EditorContainer.scss";
 
@@ -22,6 +22,7 @@ export function EditorContainer () {
     const editorRef = useRef(null);
     const parentIdRef = useRef(null);
     const files = useEngineFiles();
+    const lastSaved = useLastSaved();
 
     const activeTab = useActiveTab();
     const dispatch = useDispatch();
@@ -35,18 +36,25 @@ export function EditorContainer () {
                 if (!files.find((file) => file.uid === _tab.uid)) {
                     editorRef.current.closeTab(_tab.uid);
                 }
-                /**
-                 * Inside editor, the content of the tab is saved in
-                 * updatedContent key. When updatedContent and content keys are
-                 * the same, it means the file isn't dirty. When the file is
-                 * saved onto the server, the updated content is set to the
-                 * content key of the file, so we need to update the content
-                 * of the tab to reflect that.
-                 */
-                editorRef.current.setContent(_tab, _tab.content);
             }
         }
     }, [files]);
+
+    useEffect(() => {
+        if (lastSaved && files && editorRef.current) {
+            /**
+             * Inside editor, the content of the tab is saved in
+             * updatedContent key. When updatedContent and content keys are
+             * the same, it means the file isn't dirty. When the file is
+             * saved onto the server, the updated content is set to the
+             * content key of the file, so we need to update the content
+             * of the tab to reflect that.
+             */
+            editorRef.current.getTabs().forEach((tab) => {
+                editorRef.current.setContent(tab, tab.content);
+            });
+        }
+    }, [lastSaved]);
 
     useEffect(() => {
         if (activeTab && engine && editorRef.current) {

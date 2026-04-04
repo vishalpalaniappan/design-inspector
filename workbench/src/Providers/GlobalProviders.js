@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 import useWebSocket, {ReadyState} from "react-use-websocket";
 
-import {incrementCounter, setActiveTab} from "../Store/appSlice";
+import {setActiveTab, setLastSaved} from "../Store/appSlice";
 import {setStatusMsg} from "../Store/appSlice";
 import DalEngineContext from "./DalEngineContext";
 import ServerContext from "./ServerContext";
@@ -67,10 +67,7 @@ function GlobalProviders ({children}) {
                 termWriteRef.current?.(msg.data);
                 break;
             case "design_save_successful":
-                // TODO: Move files to redux store to trigger updates in editor
-                // and other components. This is using the counter to
-                // indicate that the files have been saved.
-                dispatch(incrementCounter());
+                dispatch(setLastSaved(new Date()));
                 dispatch(setStatusMsg("Design saved successfully!"));
                 break;
             case "design_save_failed":
