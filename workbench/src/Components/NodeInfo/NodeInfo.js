@@ -33,12 +33,6 @@ export function NodeInfo ({}) {
     const participant = useSelectedParticipant();
     const selectedBehavior = useSelectedBehavior();
 
-    useEffect(() => {
-        if (participants && participants.length > 0 && participant === null) {
-            dispatch(setSelectedParticipant(participants[0].getName()));
-        }
-    }, [participant, participants, dispatch]);
-
     const addInvariant = useCallback(() => {
         participant && openModal({
             title: "Add Invariant",
@@ -65,8 +59,7 @@ export function NodeInfo ({}) {
         if (participants.length > 0 && participantName) {
             dispatch(setSelectedParticipant(participantName));
         } else if (participants.length > 0) {
-            const lastParticipantName = participants[participants.length - 1].getName();
-            dispatch(setSelectedParticipant(lastParticipantName));
+            dispatch(setSelectedParticipant(participants[participants.length - 1].getName()));
         } else {
             dispatch(setSelectedParticipant(null));
         }
