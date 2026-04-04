@@ -35,6 +35,14 @@ export function EditorContainer () {
                 if (!files.find((file) => file.uid === _tab.uid)) {
                     editorRef.current.closeTab(_tab.uid);
                 }
+                /**
+                 * Inside editor, the content of the tab is saved in
+                 * updatedContent key. When updatedContent and content keys are
+                 * the same, it means the file isn't dirty. When the file is
+                 * saved onto the server, the updated content is set to the
+                 * content key of the file, so we need to update the content
+                 * of the tab to reflect that.
+                 */
                 editorRef.current.setContent(_tab, _tab.content);
             }
         }
