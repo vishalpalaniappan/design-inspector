@@ -23,7 +23,6 @@ FileSelector.propTypes = {
 export function FileSelector () {
     const {engine} = useDalEngine();
     const {openModal} = useModalManager();
-    const [selectedFile, setSelectedFile] = useState(null);
 
     const files = useEngineFiles();
     const dispatch = useDispatch();
@@ -41,7 +40,7 @@ export function FileSelector () {
                 fileBrowserRef.current.selectNode(file);
             }
         }
-    }, [files, activeTab, selectedFile]);
+    }, [files, activeTab]);
 
     const onSelectFile = useCallback((node) => {
         dispatch(setActiveTab(node.uid));
