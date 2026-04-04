@@ -31,7 +31,7 @@ const appSlice = createSlice({
             state.selectedInvariant = null;
             state.selectedGraph = action.payload;
         },
-        setSelectedInvariant(state, action) {
+        setSelectedInvariant (state, action) {
             // console.log("Setting selected invariant to:", action.payload);
             state.selectedInvariant = action.payload;
         },
@@ -39,7 +39,7 @@ const appSlice = createSlice({
             console.log("Setting tabs to:", action.payload);
             state.tabs = action.payload;
         },
-        setActiveTab(state, action) {
+        setActiveTab (state, action) {
             console.log("Setting active tab to:", action.payload);
             state.activeTab = action.payload;
         },

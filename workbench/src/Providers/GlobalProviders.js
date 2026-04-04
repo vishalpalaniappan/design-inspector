@@ -46,7 +46,6 @@ function GlobalProviders ({children}) {
         sendJsonMessageRef.current = sendJsonMessage;
     }, [sendJsonMessage]);
 
-
     // Called when connection is opened.
     const connectionOpen = () => {
         sendJsonMessage({
@@ -63,7 +62,6 @@ function GlobalProviders ({children}) {
             processMessage(lastJsonMessage);
         }
     }, [lastJsonMessage]);
-
 
     const processMessage = (msg) => {
         switch (msg.type) {
@@ -97,7 +95,6 @@ function GlobalProviders ({children}) {
         }
     };
 
-
     // Set the connection state and log to console
     const connectionStatus = {
         [ReadyState.CONNECTING]: "Connecting",
@@ -110,7 +107,6 @@ function GlobalProviders ({children}) {
     useEffect(() => {
         console.log("Websocket state:", connectionStatus);
     }, [readyState]);
-
 
     const setTermWriter = (fn) => {
         termWriteRef.current = fn;
@@ -139,11 +135,9 @@ function GlobalProviders ({children}) {
         return e;
     }, [engine, saveEngine]);
 
-
     useEffect(() => {
         if (workspace) {
             const file = workspace.find((file) => {
-                console.log(file);
                 return file.name === "engine.dal";
             });
             if (file) {

@@ -4,8 +4,10 @@ import {Editor} from "sample-ui-component-library";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import {useWorkspace} from "../../Providers/GlobalProviders";
+import {useDalEngine} from "../../Providers/GlobalProviders";
 import ServerContext from "../../Providers/ServerContext";
 import {useEngineFiles} from "../../Store/useAppSelection";
+import {useActiveTab, useTabs} from "../../Store/useAppSelection";
 
 import "./EditorContainer.scss";
 
@@ -16,9 +18,12 @@ import "./EditorContainer.scss";
 export function EditorContainer () {
     const {connectionStatus} = useContext(ServerContext);
     const {workspace} = useWorkspace();
+    const {engine} = useDalEngine();
     const editorRef = useRef(null);
     const parentIdRef = useRef(null);
     const files = useEngineFiles();
+
+    const activeTab = useActiveTab();
 
     useLayoutEventSubscription("file:selected", (event) => {
         editorRef.current.addTab(event.payload);
@@ -37,6 +42,15 @@ export function EditorContainer () {
             }
         }
     }, [files]);
+
+    useEffect(() => {
+        if (activeTab) {
+            console.log("Tab selected", activeTab);
+            console.log(engine);
+            const source = engine.getFile(activeTab);
+            editorRef.current.addTab(source, 0);
+        }
+    }, [activeTab, engine]);
 
     useLayoutEventSubscription("drag:drop", (event) => {
         const drop = event.payload;

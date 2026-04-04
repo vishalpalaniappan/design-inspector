@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 
 import {Floppy, PlusSquare, Trash} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
@@ -7,7 +7,7 @@ import {useLayoutEventPublisher} from "ui-layout-manager-dev";
 import {useModalManager} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
-import {incrementCounter} from "../../Store/appSlice";
+import {incrementCounter, setActiveTab, setTabs} from "../../Store/appSlice";
 import {useEngineFiles} from "../../Store/useAppSelection";
 import {AddFile} from "../Modals/AddFile";
 
@@ -23,7 +23,7 @@ FileSelector.propTypes = {
 export function FileSelector () {
     const {engine} = useDalEngine();
     const {openModal} = useModalManager();
-    const [selectedFile, setSelectedFile] = React.useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
 
     const files = useEngineFiles();
     const dispatch = useDispatch();
@@ -32,29 +32,17 @@ export function FileSelector () {
 
     useEffect(() => {
         if (files) {
-            /**
-             * TODO: This is temporary because I haven't made
-             * the libraries match, I will fix this soon. The
-             * engine saves path as key and doesn't have some
-             * necessary keys
-             */
-            for (const file of files) {
-                file["uid"] = file.name;
-                file["path"] = file.key;
-                file["type"] = "file";
-            }
             fileBrowserRef.current.addFileTree(files);
+            // const selected = (!selectedFile && files.length > 0)?files[0]:selectedFile;
+            // fileBrowserRef.current.selectNode(selected);
         }
-    }, [files]);
+    }, [files, selectedFile]);
 
-    const onSelectFile = (node) => {
+    const onSelectFile = useCallback((node) => {
+        console.log("File selected:", node.name);
+        dispatch(setActiveTab(node.uid));
         setSelectedFile(node);
-        publish({
-            type: "file:selected",
-            payload: node,
-            source: "file-tree",
-        });
-    };
+    }, []);
 
     const createFile = useCallback(() => {
         openModal({
@@ -66,13 +54,17 @@ export function FileSelector () {
     const deleteFile = useCallback(() => {
         if (selectedFile) {
             try {
+                const index = files.findIndex((file) => file.path === selectedFile.path);
+                if (index > 0) {
+                    setSelectedFile(files[index - 1]);
+                }
                 engine.removeFile(selectedFile.path);
                 dispatch(incrementCounter());
             } catch (err) {
                 console.error(err);
             }
         }
-    }, [engine, selectedFile, dispatch]);
+    }, [engine, files, fileBrowserRef, selectedFile, dispatch]);
 
     const saveFiles = useCallback(() => {
         if (engine) {

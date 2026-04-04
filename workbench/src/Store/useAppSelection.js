@@ -137,7 +137,7 @@ export const useInvariantTypes = () => {
 };
 
 /**
- * Returns a list of invariant types from the engine.
+ * Returns a list of engine files.
  * @return {Object}
  */
 export const useEngineFiles = () => {
@@ -150,13 +150,26 @@ export const useEngineFiles = () => {
     }, [engine, counter]);
 };
 
-
+/**
+ * Returns the list of open tabs.
+ * @return {Object}
+ */
 export const useTabs = () => {
     const tabs = useSelector(selectTabs);
-    return tabs;
+
+    return useMemo(() => {
+        return tabs;
+    }, [tabs]);
 };
 
+/**
+ * Returns the currently active tab.
+ * @return {Object}
+ */
 export const useActiveTab = () => {
     const activeTab = useSelector(selectActiveTab);
-    return activeTab;
+
+    return useMemo(() => {
+        return activeTab;
+    }, [activeTab]);
 };
