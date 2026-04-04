@@ -16,3 +16,9 @@ export const deleteFileThunk = (engine, fileId) => (dispatch, getState) => {
     dispatch(setActiveTab(newUid));
     dispatch(incrementCounter());
 };
+
+export const addFileThunk = (engine, fileName) => (dispatch, getState) => {
+    const newFile = engine.addFile(fileName, fileName, "");
+    dispatch(setActiveTab(newFile.uid));
+    dispatch(incrementCounter());
+};

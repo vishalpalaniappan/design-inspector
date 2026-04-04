@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import {incrementCounter} from "../../Store/appSlice";
 import {setActiveTab} from "../../Store/appSlice";
+import {addFileThunk} from "../../Store/appThunk";
 
 import "./AddValue.scss";
 
@@ -38,9 +39,7 @@ export function AddFile ({close}) {
             return;
         }
         try {
-            const newFile = engine.addFile(fileName, fileName, "");
-            dispatch(setActiveTab(newFile.uid));
-            dispatch(incrementCounter());
+            dispatch(addFileThunk(engine, fileName));
             close();
         } catch (err) {
             setError(err.toString());
