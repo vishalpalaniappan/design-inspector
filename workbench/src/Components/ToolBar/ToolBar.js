@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback} from "react";
 
 import {Floppy, PlusSquare} from "react-bootstrap-icons";
 import {useLayoutEventPublisher} from "ui-layout-manager-dev";
@@ -14,12 +14,10 @@ import "./ToolBar.scss";
  * @return {JSX.Element}
  */
 export function ToolBar () {
-    const [selectedTool, setSelectedTool] = useState("select");
-
     const {openModal} = useModalManager();
+    const {engine} = useDalEngine();
 
     const publish = useLayoutEventPublisher();
-    const {engine} = useDalEngine();
 
     const saveGraph = useCallback(() => {
         if (engine) {
@@ -32,18 +30,8 @@ export function ToolBar () {
         }
     }, [engine]);
 
-    const selectTool = (tool) => {
-        setSelectedTool(tool);
-        publish({
-            type: "tool:selected",
-            payload: tool,
-            source: "tool-bar",
-        });
-    };
-
-
     const addBehavior = () => {
-        const {id, closeModal} = openModal({
+        openModal({
             title: "Add Behavior",
             render: ({close}) => {
                 return <AddBehavior close={close} />;
@@ -67,7 +55,6 @@ export function ToolBar () {
                     className="icon"
                 />
             </div>
-
         </div>
     );
 }
