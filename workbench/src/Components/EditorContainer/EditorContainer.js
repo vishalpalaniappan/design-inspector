@@ -5,6 +5,7 @@ import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 
 import {useWorkspace} from "../../Providers/GlobalProviders";
 import ServerContext from "../../Providers/ServerContext";
+import { useEngineFiles } from "../../Store/useAppSelection";
 
 import "./EditorContainer.scss";
 
@@ -17,10 +18,22 @@ export function EditorContainer () {
     const {workspace} = useWorkspace();
     const editorRef = useRef(null);
     const parentIdRef = useRef(null);
+    const files = useEngineFiles();
 
     useLayoutEventSubscription("file:selected", (event) => {
         editorRef.current.addTab(event.payload);
     });
+
+    useEffect(() => {
+        if (files) {
+            const _tabs = editorRef.current.getTabs();
+            for (const tab in _tabs) {
+                if (!files.find((file) => file.uid === _tabs[tab].uid)) {
+                    editorRef.current.closeTab(_tabs[tab].uid);
+                }
+            }
+        }
+    }, [files]);
 
     useLayoutEventSubscription("drag:drop", (event) => {
         const drop = event.payload;
