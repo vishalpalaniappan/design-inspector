@@ -161,6 +161,7 @@ export const addGraphThunk = (graphName) => (dispatch, getState, {engine}) => {
 export const deleteGraphThunk = (graphName) => (dispatch, getState, {engine}) => {
     engine.removeGraph(graphName);
     dispatch(setSelectedGraph(engine.graphs.getActiveGraph().name));
+    dispatch(setSelectedBehavior(null));
     dispatch(incrementCounter());
 };
 
