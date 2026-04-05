@@ -9,6 +9,7 @@ import {setStatusMsg} from "../Store/appSlice";
 import engine from "./DalEngine";
 import DalEngineContext from "./DalEngineContext";
 import ServerContext from "./ServerContext";
+import TerminalContext from "./TerminalContext";
 
 GlobalProviders.propTypes = {
     children: PropTypes.node,
@@ -83,15 +84,15 @@ function GlobalProviders ({children}) {
         [ReadyState.UNINSTANTIATED]: "Uninstantiated",
     }[readyState];
 
+    // Used to allow msg handler to write to terminal.
     const setTermWriter = (fn) => {
         termWriteRef.current = fn;
     };
 
+    // Called to save the engine to the server.
     const saveEngine = useCallback(() => {
         if (!engineRef.current) return;
-        for (const file of engineRef.current.getFiles()) {
-            file.content = file.updatedContent;
-        }
+        engineRef.current.getFiles().forEach((file) => file.content = file.updatedContent);
         sendJsonMessageRef.current({
             type: "save_engine",
             payload: {
@@ -101,32 +102,29 @@ function GlobalProviders ({children}) {
         });
     }, []);
 
+    // When the workspace is first loaded, find the engine and deserialize it.
+    useEffect(() => {
+        if (!workspace) return;
+        const file = workspace.find((file) => file.name === "engine.dal");
+        if (!file) return;
+        engine.deserialize(file.content);
+        (engine.getFiles().length > 0) && dispatch(setActiveTab(engine.getFiles()[0].uid));
+    }, [workspace, engine]);
+
+    // Set the engine ref and save fn for use in msg handler and other contexts.
     useEffect(() => {
         engineRef.current = engine;
         engine.save = saveEngine;
     }, [engine, saveEngine]);
 
-    useEffect(() => {
-        if (workspace) {
-            const file = workspace.find((file) => {
-                return file.name === "engine.dal";
-            });
-            if (file) {
-                engine.deserialize(file.content);
-                const files = engine.getFiles();
-                if (files.length > 0) {
-                    dispatch(setActiveTab(files[0].uid));
-                }
-            }
-        }
-    }, [workspace, engine]);
-
     return (
         // eslint-disable-next-line max-len
         <DalEngineContext.Provider value={{engine}}>
-            <ServerContext.Provider value={{sendJsonMessage, setTermWriter, connectionStatus}}>
-                {children}
-            </ServerContext.Provider>
+            <TerminalContext.Provider value={{setTermWriter}}>
+                <ServerContext.Provider value={{sendJsonMessage, messageHistory, connectionStatus}}>
+                    {children}
+                </ServerContext.Provider>
+            </TerminalContext.Provider>
         </DalEngineContext.Provider>
     );
 };

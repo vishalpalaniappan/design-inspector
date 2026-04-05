@@ -4,6 +4,7 @@ import {FitAddon} from "@xterm/addon-fit";
 import {Terminal} from "xterm";
 
 import ServerContext from "../../Providers/ServerContext";
+import TerminalContext from "../../Providers/TerminalContext";
 
 import "xterm/css/xterm.css";
 import "./PtyTerminal.scss";
@@ -16,7 +17,8 @@ PtyTerminal.propTypes = {
  * @return {JSX.Element}
  */
 export function PtyTerminal () {
-    const {sendJsonMessage, setTermWriter, connectionStatus} = useContext(ServerContext);
+    const {sendJsonMessage, connectionStatus} = useContext(ServerContext);
+    const {setTermWriter} = useContext(TerminalContext);
 
     // TODO: This component needs a lot of work, I had to disable strict mode
     // for this to work. I will revisit this and make it more robust.
