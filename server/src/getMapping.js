@@ -49,6 +49,11 @@ function getMapping(source, args = []) {
             }
         });
 
+        if (typeof source !== "string") {
+            reject(new Error("source must be a string"));
+            return;
+        }
+
         process.stdin.write(source);
         process.stdin.end();
     });
