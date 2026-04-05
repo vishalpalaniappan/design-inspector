@@ -123,8 +123,13 @@ export function EditorContainer () {
         }
     }, [dispatch, editorLoaded]);
 
-    const onSelectAbstraction = useCallback((abstraction) => {
-        dispatch(mapStatementToBehaviorThunk(abstraction));
+    const onSelectAbstraction = useCallback((abstraction, shiftKey) => {
+        if (shiftKey) {
+            // open modal to get variable name to map to participant
+            console.log("Shift key pressed, open modal to map to participant");
+        } else {
+            dispatch(mapStatementToBehaviorThunk(abstraction));
+        }
     }, [dispatch]);
 
     useEffect(() => {
