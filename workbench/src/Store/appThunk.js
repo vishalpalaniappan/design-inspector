@@ -202,8 +202,11 @@ export const mapStatementToBehaviorThunk = (statementId) => (dispatch, getState,
         return;
     }
     const behavior = engine.getNode(selectedBehaviorId).getBehavior();
-    const hasStatement = behavior._abstractionIds.includes(statementId);
-    (hasStatement) ? behavior.removeMapping(statementId): behavior.addMapping(statementId);
-    console.log(behavior._abstractionIds);
+    const hasStatementId = behavior._abstractionIds.includes(statementId);
+    if (hasStatementId) {
+        behavior.removeMapping(statementId);
+    } else {
+        behavior.addMapping(statementId);
+    }
     dispatch(incrementCounter());
 };
