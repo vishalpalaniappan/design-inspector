@@ -74,7 +74,7 @@ function GlobalProviders ({children}) {
         }
     };
 
-    // Set the connection state and log to console
+    // Set the connection state
     const connectionStatus = {
         [ReadyState.CONNECTING]: "Connecting",
         [ReadyState.OPEN]: "Connected",
@@ -88,16 +88,14 @@ function GlobalProviders ({children}) {
     };
 
     const saveEngine = useCallback(() => {
-        const currentEngine = engineRef.current;
-        if (!currentEngine) return;
-        for (const file of currentEngine.getFiles()) {
+        if (!engineRef.current) return;
+        for (const file of engineRef.current.getFiles()) {
             file.content = file.updatedContent;
         }
-        const serialized = currentEngine.serialize();
         sendJsonMessageRef.current({
             type: "save_engine",
             payload: {
-                "data": serialized,
+                "data": engineRef.current.serialize(),
                 "fileName": "engine.dal",
             },
         });
