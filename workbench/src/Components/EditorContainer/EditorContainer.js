@@ -130,8 +130,11 @@ export function EditorContainer () {
         if (shiftKey && abstraction?.isMappedCurrent) {
             openModal({
                 title: "Map Variable Onto Participant",
-                render: ({close}) => {
-                    return <MapParticipant close={close} />;
+                args: {
+                    abstraction: abstraction,
+                },
+                render: ({close, args}) => {
+                    return <MapParticipant close={close} args={args}/>;
                 },
             });
         } else {

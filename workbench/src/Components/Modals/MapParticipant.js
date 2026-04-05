@@ -4,26 +4,40 @@ import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
+import {useSelectedParticipant} from "../../Store/useAppSelection";
 
 import "./AddValue.scss";
 
 MapParticipant.propTypes = {
     close: PropTypes.func.isRequired,
+    args: PropTypes.object
 };
 
 /**
  * Map Participant modal body component.
  * @return {JSX.Element}
  */
-export function MapParticipant ({close}) {
+export function MapParticipant ({close, args}) {
     const {engine} = useDalEngine();
 
     const dispatch = useDispatch();
+    const selectedParticipant = useSelectedParticipant();
 
     const [variableName, setVariableName] = useState("");
     const [error, setError] = useState(null);
 
     const inputRef = useRef(null);
+
+    useEffect(() => {
+        if (selectedParticipant) {
+            // TODO: I should use a getter and it shouldn't be abstraction id,
+            // I'm just working with what I have setup in the engine.
+            const p = selectedParticipant;
+            if (p._abstractionId && p._abstractionId?.variableName) {
+                setVariableName(p._abstractionId.variableName);
+            }
+        }
+    }, [selectedParticipant]);
 
     useEffect(() => {
         if (inputRef.current) {
@@ -37,11 +51,16 @@ export function MapParticipant ({close}) {
             return;
         }
         try {
+            console.log(args, selectedParticipant);
+            selectedParticipant.mapAbstraction({
+                abstractionId: args.abstraction.uid,
+                variableName: variableName,
+            });
             close();
         } catch (err) {
             setError(err.toString());
         }
-    }, [engine, variableName, close, dispatch]);
+    }, [engine, variableName, close, dispatch, selectedParticipant, args]);
 
     useEffect(() => {
         const handleKeyDown = (event) => {

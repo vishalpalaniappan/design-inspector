@@ -39,11 +39,12 @@ export const useSelectedGraph = () => {
 export const useSelectedBehavior = () => {
     const {engine} = useDalEngine();
     const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
+    const counter = useSelector(selectCounter);
 
     return useMemo(() => {
         if (!selectedBehaviorId) return null;
         return engine.getNode(selectedBehaviorId).getBehavior();
-    }, [engine, selectedBehaviorId]);
+    }, [engine, selectedBehaviorId, counter]);
 };
 
 /**
@@ -54,12 +55,13 @@ export const useSelectedParticipant = () => {
     const {engine} = useDalEngine();
     const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
     const selectedParticipantId = useSelector(selectSelectedParticipantId);
+    const counter = useSelector(selectCounter);
 
     return useMemo(() => {
         if (!selectedBehaviorId || !selectedParticipantId) return null;
         const behavior = engine.getNode(selectedBehaviorId).getBehavior();
         return behavior.getParticipant(selectedParticipantId);
-    }, [engine, selectedBehaviorId, selectedParticipantId]);
+    }, [engine, selectedBehaviorId, selectedParticipantId, counter]);
 };
 
 /**
@@ -71,13 +73,14 @@ export const useSelectedInvariant = () => {
     const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
     const selectedParticipantId = useSelector(selectSelectedParticipantId);
     const selectedInvariantId = useSelector(selectSelectedInvariantId);
+    const counter = useSelector(selectCounter);
 
     return useMemo(() => {
         if (!selectedBehaviorId || !selectedParticipantId || !selectedInvariantId) return null;
         const behavior = engine.getNode(selectedBehaviorId).getBehavior();
         const participant = behavior.getParticipant(selectedParticipantId);
         return participant.getInvariant(selectedInvariantId);
-    }, [engine, selectedBehaviorId, selectedParticipantId, selectedInvariantId]);
+    }, [engine, selectedBehaviorId, selectedParticipantId, selectedInvariantId, counter]);
 };
 
 /**
@@ -87,10 +90,11 @@ export const useSelectedInvariant = () => {
 export const useGraphs = () => {
     const {engine} = useDalEngine();
     const graphId = useSelector(selectSelectedGraphId);
+    const counter = useSelector(selectCounter);
 
     return useMemo(() => {
         return engine.graphs.getGraphNames();
-    }, [engine, graphId]);
+    }, [engine, graphId, counter]);
 };
 
 /**
