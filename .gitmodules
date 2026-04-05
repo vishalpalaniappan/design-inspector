@@ -1,3 +1,4 @@
 [submodule "server/tools/instrumenter"]
 	path = server/tools/instrumenter
 	url = git@github.com:vishalpalaniappan/design-instrumenter.git
+	branch = main
