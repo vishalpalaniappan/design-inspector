@@ -13,7 +13,9 @@ async function saveFile(fileName, folderPath, data) {
 
     engine.deserialize(data);
 
-    const pythonFiles = engine.getFiles().filter(file => file.name.endsWith(".py"));
+    const pythonFiles = engine.getFiles().filter((file) => {
+        return (file.name.endsWith(".py") && file.updatedContent !== file.content);
+    });
 
     await Promise.all(
         pythonFiles.map(async (file) => {
