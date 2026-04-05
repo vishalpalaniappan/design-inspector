@@ -212,7 +212,7 @@ export const useEngineFiles = () => {
                 entry.isMappedCurrent = false;
                 entry.isMappedOther = false;
                 const isMapped = checkIfStatamentIsMapped(
-                    engine.graph.nodes, entry.uid, selectedBehaviorId
+                    engine.graphs._graphs, entry.uid, selectedBehaviorId
                 );
                 if (isMapped === "isMappedCurrent") {
                     entry.isMappedCurrent = true;
