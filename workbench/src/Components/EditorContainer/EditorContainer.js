@@ -127,7 +127,7 @@ export function EditorContainer () {
     }, [dispatch, editorLoaded]);
 
     const onSelectAbstraction = useCallback((abstraction, shiftKey) => {
-        if (shiftKey) {
+        if (shiftKey && abstraction?.isMappedCurrent) {
             openModal({
                 title: "Map Variable Onto Participant",
                 render: ({close}) => {
