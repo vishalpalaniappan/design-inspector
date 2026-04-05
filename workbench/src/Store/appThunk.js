@@ -95,7 +95,7 @@ export const deleteParticipantThunk = (participantId) => (dispatch, getState, {e
  */
 // eslint-disable-next-line max-len
 export const addInvariantThunk = ({name, description, invariantType, invariantTypeProps}) => (dispatch, getState, {engine}) => {
-    if (name && name.trim() === "") {
+    if (!name || name.trim() === "") {
         throw new Error("Invariant name must not be empty.");
     }
     const participantId = getState().app.selectedParticipant;
