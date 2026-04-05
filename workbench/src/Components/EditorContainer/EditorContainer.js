@@ -41,8 +41,9 @@ export function EditorContainer () {
                     editorRef.current.closeTab(_tab.uid);
                 }
             }
+            editorRef.current.layoutEditor();
         }
-    }, [files]);
+    }, [files, editorLoaded]);
 
     useEffect(() => {
         if (editorRef.current && editorLoaded) {
