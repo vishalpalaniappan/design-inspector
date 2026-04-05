@@ -188,3 +188,12 @@ export const selectBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}
         dispatch(setSelectedParticipant(null));
     }
 };
+
+
+export const mapStatementToBehaviorThunk = (statementId) => (dispatch, getState, {engine}) => {
+    const selectedBehaviorId = getState().app.selectedBehavior;
+    if (!selectedBehaviorId) {
+        console.info("No behavior selected, cannot map statement to behavior.");
+        return;
+    }
+};

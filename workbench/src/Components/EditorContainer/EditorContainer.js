@@ -7,6 +7,7 @@ import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import ServerContext from "../../Providers/ServerContext";
 import {setActiveTab} from "../../Store/appSlice";
+import {mapStatementToBehaviorThunk} from "../../Store/appThunk";
 import {useEngineFiles} from "../../Store/useAppSelection";
 import {useActiveTab, useLastSaved} from "../../Store/useAppSelection";
 import {useAppMode} from "../../Store/useAppSelection";
@@ -122,7 +123,7 @@ export function EditorContainer () {
     }, [dispatch, editorLoaded]);
 
     const onSelectAbstraction = useCallback((abstraction) => {
-        console.log("Selected abstraction:", abstraction);
+        dispatch(mapStatementToBehaviorThunk(abstraction.uid));
     });
 
     useEffect(() => {
