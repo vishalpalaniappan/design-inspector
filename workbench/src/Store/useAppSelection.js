@@ -140,32 +140,6 @@ export const useInvariantTypes = () => {
 };
 
 /**
- * Returns a list of engine files.
- * @return {Object}
- */
-export const useEngineFiles = () => {
-    const {engine} = useDalEngine();
-    const counter = useSelector(selectCounter);
-
-    return useMemo(() => {
-        if (!engine) return null;
-        return [...engine.getFiles()];
-    }, [engine, counter]);
-};
-
-/**
- * Returns the currently active tab.
- * @return {Object}
- */
-export const useActiveTab = () => {
-    const activeTab = useSelector(selectActiveTab);
-
-    return useMemo(() => {
-        return activeTab;
-    }, [activeTab]);
-};
-
-/**
  * Returns the current status message.
  * @return {Object}
  */
@@ -199,4 +173,44 @@ export const useAppMode = () => {
     return useMemo(() => {
         return appMode;
     }, [appMode]);
+};
+
+
+/**
+ * Returns the currently active tab.
+ * @return {Object}
+ */
+export const useActiveTab = () => {
+    const activeTab = useSelector(selectActiveTab);
+
+    return useMemo(() => {
+        return activeTab;
+    }, [activeTab]);
+};
+
+/**
+ * Returns a list of engine files.
+ * @return {Object}
+ */
+export const useEngineFiles = () => {
+    const {engine} = useDalEngine();
+    const counter = useSelector(selectCounter);
+    const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
+    const activeTab = useSelector(selectActiveTab);
+
+    return useMemo(() => {
+        if (!engine) return null;
+
+        const files = [...engine.getFiles()];
+        if (!selectedBehaviorId) return files;
+
+        for (const file of files) {
+            if (file.uid !== activeTab || !file?.mapping) continue;
+            const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+            file.mapping.forEach((entry) => {
+                entry.isMappedOther = (behavior._abstractionIds.includes(entry.uid));
+            });
+        }
+        return files;
+    }, [engine, activeTab, selectedBehaviorId, counter]);
 };
