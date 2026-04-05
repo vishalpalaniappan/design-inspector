@@ -124,7 +124,6 @@ export function EditorContainer () {
     }, [dispatch, editorLoaded]);
 
     const onSelectAbstraction = useCallback((abstraction) => {
-        console.log("Selected abstraction:", abstraction);
         dispatch(mapStatementToBehaviorThunk(abstraction));
     }, [dispatch]);
 
