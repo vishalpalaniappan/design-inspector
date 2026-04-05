@@ -51,7 +51,6 @@ export function MapParticipant ({close, args}) {
             return;
         }
         try {
-            console.log(args, selectedParticipant);
             selectedParticipant.mapAbstraction({
                 abstractionId: args.abstraction.uid,
                 variableName: variableName,
