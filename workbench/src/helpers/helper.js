@@ -1,5 +1,4 @@
 const saveInvariantPropValues = (invariant, propertyInputs) => {
-    console.log(invariant);
     const props = invariant.invariantType.properties;
     const keys = Object.keys(props);
 

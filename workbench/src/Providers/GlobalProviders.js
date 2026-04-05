@@ -27,7 +27,7 @@ function GlobalProviders ({children}) {
 
     const dispatch = useDispatch();
 
-    // Connect to websocketand setup auto reconnect
+    // Connect to websocket and setup auto reconnect
     const socketUrl = "ws://localhost:3002";
     const {sendJsonMessage, lastMessage, lastJsonMessage, readyState} = useWebSocket(socketUrl, {
         onOpen: () => sendJsonMessage({"type": "workspaces"}),
