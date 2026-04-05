@@ -59,7 +59,7 @@ export function BehavioralControlGraph () {
         } catch (err) {
             console.error(err);
         }
-    }, [dispatch, engine]);
+    }, [dispatch]);
 
     return (
         <div className="flow-wrapper">
