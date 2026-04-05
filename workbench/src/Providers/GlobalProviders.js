@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
@@ -23,30 +23,19 @@ GlobalProviders.propTypes = {
 function GlobalProviders ({children}) {
     const [workspace, setWorkspace] = useState();
     const termWriteRef = useRef(null);
-    const sendJsonMessageRef = useRef(null);
     const engineRef = useRef(null);
 
     const dispatch = useDispatch();
 
-    // Connect and setup auto reconnect
+    // Connect to websocketand setup auto reconnect
     const socketUrl = "ws://localhost:3002";
     const {sendJsonMessage, lastMessage, lastJsonMessage, readyState} = useWebSocket(socketUrl, {
-        onOpen: () => connectionOpen(),
+        onOpen: () => sendJsonMessage({"type": "workspaces"}),
         shouldReconnect: (closeEvent) => true,
     });
 
-    useEffect(() => {
-        sendJsonMessageRef.current = sendJsonMessage;
-    }, [sendJsonMessage]);
 
-    const connectionOpen = () => {
-        sendJsonMessage({
-            "type": "workspaces",
-        });
-    };
-
-    // Sets the message history
-    // eslint-disable-next-line no-unused-vars
+    // Sets the message history and processes received message.
     const [messageHistory, setMessageHistory] = useState([]);
     useEffect(() => {
         if (lastJsonMessage !== null) {
@@ -55,6 +44,7 @@ function GlobalProviders ({children}) {
         }
     }, [lastJsonMessage]);
 
+    // Process the received message
     const processMessage = (msg) => {
         switch (msg.type) {
             case "workspaces":
@@ -93,22 +83,27 @@ function GlobalProviders ({children}) {
     const saveEngine = useCallback(() => {
         if (!engineRef.current) return;
         engineRef.current.getFiles().forEach((file) => file.content = file.updatedContent);
-        sendJsonMessageRef.current({
+        sendJsonMessage({
             type: "save_engine",
             payload: {
                 "data": engineRef.current.serialize(),
                 "fileName": "engine.dal",
             },
         });
-    }, []);
+    }, [sendJsonMessage]);
 
     // When the workspace is first loaded, find the engine and deserialize it.
     useEffect(() => {
         if (!workspace) return;
+
         const file = workspace.find((file) => file.name === "engine.dal");
         if (!file) return;
+
         engine.deserialize(file.content);
-        (engine.getFiles().length > 0) && dispatch(setActiveTab(engine.getFiles()[0].uid));
+        const files = engine.getFiles();
+        if (files.length > 0) {
+            dispatch(setActiveTab(files[0].uid));
+        }
     }, [workspace, engine]);
 
     // Set the engine ref and save fn for use in msg handler and other contexts.
