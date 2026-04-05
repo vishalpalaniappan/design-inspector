@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 
 import PropTypes from "prop-types";
 import {Trash} from "react-bootstrap-icons";
@@ -21,6 +21,7 @@ Invariant.propTypes = {
 export function Invariant ({invariant}) {
     const dispatch = useDispatch();
 
+    const [selected, setSelected] = React.useState(false);
     const selectedInvariant = useSelectedInvariant();
 
     const deleteInvariant = useCallback((e) => {
@@ -28,7 +29,7 @@ export function Invariant ({invariant}) {
         if (invariant) {
             dispatch(deleteInvariantThunk(invariant.getName()));
         }
-    }, [invariant]);
+    }, [invariant, dispatch]);
 
     const selectInvariant = useCallback((e) => {
         e.stopPropagation();
@@ -37,8 +38,16 @@ export function Invariant ({invariant}) {
         }
     }, [invariant, dispatch]);
 
+    useEffect(() => {
+        if (!selectedInvariant || !invariant) {
+            setSelected(false);
+            return;
+        }
+        setSelected(selectedInvariant.getName() === invariant.getName());
+    }, [selectedInvariant, invariant]);
+
     return (
-        <div className={`participantCard ${selectedInvariant === invariant ? "selected" : ""}`}
+        <div className={`participantCard ${selected ? "selected" : ""}`}
             onClick={selectInvariant}>
             <span>{invariant.getName()}</span>
             <div className="icons">

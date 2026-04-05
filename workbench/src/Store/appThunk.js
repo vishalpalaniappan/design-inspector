@@ -4,6 +4,7 @@ import {setSelectedGraph} from "./appSlice";
 import {incrementCounter} from "./appSlice";
 import {setSelectedParticipant} from "./appSlice";
 import {setSelectedBehavior} from "./appSlice";
+import {setSelectedInvariant} from "./appSlice";
 
 /**
  * Called to delete a file given a file ID.
@@ -118,6 +119,7 @@ export const addInvariantThunk = ({name, description, invariantType, invariantTy
 
     participant.addInvariant(invariant);
     dispatch(setSelectedParticipant(participantId));
+    dispatch(setSelectedInvariant(invariant.getName()));
     dispatch(incrementCounter());
 };
 
@@ -139,6 +141,7 @@ export const deleteInvariantThunk = (invariantId) => (dispatch, getState, {engin
     }
     participant.removeInvariant(invariantId);
     dispatch(setSelectedParticipant(participantId));
+    dispatch(setSelectedInvariant(null));
     dispatch(incrementCounter());
 };
 
