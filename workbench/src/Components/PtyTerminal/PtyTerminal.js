@@ -119,7 +119,8 @@ export function PtyTerminal () {
     return (
         <>
             {
-                showTerminal && <div className="terminal-wrapper">
+                showTerminal &&
+                <div className="terminal-wrapper">
                     <div ref={containerRef}
                         className="terminal-container"
                         style={{
