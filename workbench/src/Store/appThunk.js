@@ -195,18 +195,21 @@ export const selectBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}
  * @param {String} statementId Unique id of statement for mapping.
  * @return {Function} Thunk function.
  */
-export const mapStatementToBehaviorThunk = (statementId) => (dispatch, getState, {engine}) => {
+export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {engine}) => {
     const selectedBehaviorId = getState().app.selectedBehavior;
     if (!selectedBehaviorId) {
         console.info("No behavior selected, cannot map statement to behavior.");
         return;
     }
+    if (statement?.isMappedOther) {
+        return;
+    }
     const behavior = engine.getNode(selectedBehaviorId).getBehavior();
-    const hasStatementId = behavior._abstractionIds.includes(statementId);
+    const hasStatementId = behavior._abstractionIds.includes(statement.uid);
     if (hasStatementId) {
-        behavior.removeMapping(statementId);
+        behavior.removeMapping(statement.uid);
     } else {
-        behavior.addMapping(statementId);
+        behavior.addMapping(statement.uid);
     }
     dispatch(incrementCounter());
 };
