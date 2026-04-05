@@ -208,7 +208,7 @@ export const useEngineFiles = () => {
             if (file.uid !== activeTab || !file?.mapping) continue;
             const behavior = engine.getNode(selectedBehaviorId).getBehavior();
             file.mapping.forEach((entry) => {
-                entry.isMappedOther = (behavior._abstractionIds.includes(entry.uid));
+                entry.isMappedCurrent = (behavior._abstractionIds.includes(entry.uid));
             });
         }
         return files;
