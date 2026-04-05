@@ -201,6 +201,9 @@ export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {
         console.info("No behavior selected, cannot map statement to behavior.");
         return;
     }
+    if (statement?.isMappedOther) {
+        return;
+    }
     const behavior = engine.getNode(selectedBehaviorId).getBehavior();
     const hasStatementId = behavior._abstractionIds.includes(statement.uid);
     if (hasStatementId) {
