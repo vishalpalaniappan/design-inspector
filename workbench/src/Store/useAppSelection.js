@@ -207,18 +207,12 @@ export const useEngineFiles = () => {
 
         for (const file of files) {
             if (file.uid !== activeTab || !file?.mapping) continue;
-
+            const behavior = engine.getNode(selectedBehaviorId).getBehavior();
             file.mapping.forEach((entry) => {
                 entry.isMappedCurrent = false;
-                entry.isMappedOther = false;
-                const isMapped = checkIfStatamentIsMapped(
-                    engine.graph.nodes, entry.uid, selectedBehaviorId
-                );
-                if (isMapped === "isMappedCurrent") {
+                if (behavior._abstractionIds.includes(entry.uid)) {
                     entry.isMappedCurrent = true;
-                } else if (isMapped === "isMappedOther") {
-                    entry.isMappedOther = true;
-                }
+                };
             });
         }
         return files;
