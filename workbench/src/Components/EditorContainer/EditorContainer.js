@@ -3,6 +3,7 @@ import React, {useCallback, useContext, useEffect, useRef, useState} from "react
 import {useDispatch} from "react-redux";
 import {Editor} from "sample-ui-component-library";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
+import {useModalManager} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import ServerContext from "../../Providers/ServerContext";
@@ -11,6 +12,7 @@ import {mapStatementToBehaviorThunk} from "../../Store/appThunk";
 import {useEngineFiles} from "../../Store/useAppSelection";
 import {useActiveTab, useLastSaved} from "../../Store/useAppSelection";
 import {useAppMode} from "../../Store/useAppSelection";
+import {MapParticipant} from "../Modals/MapParticipant";
 
 import "./EditorContainer.scss";
 
@@ -25,6 +27,7 @@ export function EditorContainer () {
     const parentIdRef = useRef(null);
     const files = useEngineFiles();
     const lastSaved = useLastSaved();
+    const {openModal} = useModalManager();
     const [editorLoaded, setEditorLoaded] = useState(false);
 
     const activeTab = useActiveTab();
@@ -125,8 +128,12 @@ export function EditorContainer () {
 
     const onSelectAbstraction = useCallback((abstraction, shiftKey) => {
         if (shiftKey) {
-            // open modal to get variable name to map to participant
-            console.log("Shift key pressed, open modal to map to participant");
+            openModal({
+                title: "Map Variable Onto Participant",
+                render: ({close}) => {
+                    return <MapParticipant close={close} />;
+                },
+            });
         } else {
             dispatch(mapStatementToBehaviorThunk(abstraction));
         }
