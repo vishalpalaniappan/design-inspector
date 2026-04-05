@@ -29,4 +29,16 @@ const saveInvariantPropValues = (invariant, propertyInputs) => {
     };
 };
 
-export {saveInvariantPropValues};
+const checkIfStatamentIsMapped = (nodes, statementId, selectedBehaviorId) => {
+    for (const node of nodes) {
+        const behavior = node.getBehavior();
+        const abstractionIds = behavior._abstractionIds;
+        if (abstractionIds.includes(statementId) && behavior.getName() === selectedBehaviorId) {
+            return "isMappedCurrent";
+        } else if (abstractionIds.includes(statementId)) {
+            return "isMappedOther";
+        }
+    }
+};
+
+export {checkIfStatamentIsMapped, saveInvariantPropValues};
