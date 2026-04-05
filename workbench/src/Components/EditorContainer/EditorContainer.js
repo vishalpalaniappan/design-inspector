@@ -125,7 +125,7 @@ export function EditorContainer () {
 
     const onSelectAbstraction = useCallback((abstraction) => {
         dispatch(mapStatementToBehaviorThunk(abstraction.uid));
-    });
+    }, [dispatch]);
 
     useEffect(() => {
         parentIdRef.current = crypto.randomUUID();
