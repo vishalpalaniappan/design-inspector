@@ -31,7 +31,7 @@ export function AddInvariant ({close}) {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (invariantTypes) {
+        if (invariantTypes && Object.keys(invariantTypes).length > 0) {
             setChosenInvariant(Object.keys(invariantTypes)[0] || "");
         }
     }, [invariantTypes]);
@@ -123,32 +123,40 @@ export function AddInvariant ({close}) {
 
     return (
         <div className="add-value-modal" >
-            <div className="value-name-label">
-                <span>Invariants:</span>
-            </div>
-            <div className="value-name-input">
-                <select
-                    value={chosenInvariant}
-                    onMouseDown={(e) => e.stopPropagation()}
-                    onClick={(e) => e.stopPropagation()}
-                    onChange={(e) => {
-                        e.stopPropagation();
-                        setChosenInvariant(e.target.value);
-                    }}
-                >
-                    {Object.keys(invariantTypes).map((invariant) => (
-                        <option key={invariant} value={invariant}>
-                            {new invariantTypes[invariant]().label}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            {invariantTypeInstance && propertyDivs}
-            {error && (
-                <div style={{float: "right"}} className="value-error">
-                    {error}
-                </div>
-            )}
+            { (!invariantTypes || Object.keys(invariantTypes).length === 0) ?
+                <div className="value-name-label">
+                    No invariant types available. Please define invariant
+                     types in the engine configuration.
+                </div>:
+                <>
+                    <div className="value-name-label">
+                        <span>Invariants:</span>
+                    </div>
+                    <div className="value-name-input">
+                        <select
+                            value={chosenInvariant}
+                            onMouseDown={(e) => e.stopPropagation()}
+                            onClick={(e) => e.stopPropagation()}
+                            onChange={(e) => {
+                                e.stopPropagation();
+                                setChosenInvariant(e.target.value);
+                            }}
+                        >
+                            {Object.keys(invariantTypes).map((invariant) => (
+                                <option key={invariant} value={invariant}>
+                                    {new invariantTypes[invariant]().label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    {invariantTypeInstance && propertyDivs}
+                    {error && (
+                        <div style={{float: "right"}} className="value-error">
+                            {error}
+                        </div>
+                    )}
+                </>
+            }
         </div>
     );
 }
