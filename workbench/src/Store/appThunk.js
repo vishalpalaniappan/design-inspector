@@ -192,7 +192,7 @@ export const selectBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}
 
 /**
  * Maps the clicked statement to the selected behavior.
- * @param {String} statementId Unique id of statement for mapping.
+ * @param {Object} statement Statement object for mapping.
  * @return {Function} Thunk function.
  */
 export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {engine}) => {
