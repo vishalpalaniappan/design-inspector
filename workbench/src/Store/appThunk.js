@@ -249,17 +249,6 @@ export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {
  * @return {Function} Thunk function.
  */
 export const selectMappingThunk = (abstraction) => (dispatch, getState, {engine}) => {
-    const files = engine.getFiles();
-    for (const file of files) {
-        if (!file?.mapping) continue;
-        const mapping = file.mapping;
-        for (const entry of mapping) {
-            if (entry.uid === abstraction.uid) {
-                dispatch(setActiveTab(file.uid));
-                break;
-            }
-        }
-    }
     dispatch(setSelectedMapping(abstraction));
     dispatch(incrementCounter());
 };

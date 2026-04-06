@@ -69,7 +69,8 @@ export function EditorContainer () {
 
     useEffect(() => {
         if (selectedMapping) {
-            editorRef.current.goToLine(selectedMapping.lineNumber);
+            const file = files.find((file) => file.uid === selectedMapping.fileUid);
+            editorRef.current.addTab(file, null, selectedMapping.lineNumber);
         }
     }, [selectedMapping]);
 
