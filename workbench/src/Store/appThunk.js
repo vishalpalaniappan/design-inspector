@@ -245,7 +245,7 @@ export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {
 
 /**
  * Sets the selected abstraction id.
- * @param {String} abstractionId 
+ * @param {String} abstractionId
  * @return {Function} Thunk function.
  */
 export const selectAbstractionIdThunk = (abstractionId) => (dispatch, getState, {engine}) => {

@@ -29,17 +29,4 @@ const saveInvariantPropValues = (invariant, propertyInputs) => {
     };
 };
 
-const getMappedInfoFromAbstractionId = (files, abstractionId) => {
-    // TODO: Move this to engine function.
-    for (const file of files) {
-        if (!file?.mapping) continue;
-        for (const entry of file.mapping) {
-            if (entry.uid === abstractionId) {
-                return {entry: entry, file: file};
-            }
-        }
-    }
-    return null;
-};
-
-export {getMappedInfoFromAbstractionId, saveInvariantPropValues};
+export {saveInvariantPropValues};

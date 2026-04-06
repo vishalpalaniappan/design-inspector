@@ -2,8 +2,6 @@ import {useMemo} from "react";
 
 import {useSelector} from "react-redux";
 
-import {checkIfStatamentIsMapped} from "../helpers/helper";
-import {getMappedInfoFromAbstractionId} from "../helpers/helper";
 import {useDalEngine} from "../Providers/GlobalProviders";
 import {
     selectActiveTab,
@@ -174,44 +172,33 @@ export const useSelectedBehaviorAbstractions = () => {
     return useMemo(() => {
         if (!selectedBehaviorId) return null;
         const selections = [];
-
         const behavior = engine.getNode(selectedBehaviorId)?.getBehavior();
         if (!behavior) return selections;
+        if (!behavior._abstractionIds) return selections;
 
-        const behaviorAbs = behavior._abstractionIds;
-        if (!behaviorAbs) return selections;
-
-        const files = engine.getFiles();
-        behaviorAbs.forEach((abstractionId) => {
-            const {entry, file} = getMappedInfoFromAbstractionId(files, abstractionId);
-            if (entry) {
-                const source = (Array.isArray(entry.source)) ? entry.source[0] : entry.source;
-                selections.push({
-                    type: "behavior",
-                    uid: entry.uid,
-                    source: source,
-                    fileUid: file.uid,
-                });
-            }
-        });
-
-        const participants = behavior.getParticipants();
-        participants.forEach((participant) => {
-            const participantAbs = participant._abstractionId;
-            if (!participantAbs) return;
-            const {entry, file} = getMappedInfoFromAbstractionId(
-                files, participantAbs.abstractionId
-            );
-            if (entry) {
+        // From the files, get the mapping info for behavior and participants
+        for (const file of engine.getFiles()) {
+            if (!file?.mapping) return;
+            for (const entry of file.mapping) {
+                if (behavior._abstractionIds.includes(entry.uid)) {
+                    selections.push({
+                        type: "behavior",
+                        source: (Array.isArray(entry.source)) ? entry.source[0] : entry.source,
+                    });
+                }
+                const participant = behavior.getParticipants().find(
+                    (p) => p._abstractionId?.abstractionId === entry.uid
+                );
+                if (!participant) continue;
                 selections.push({
                     type: "participant",
-                    uid: entry.uid,
                     participantName: participant.getName(),
-                    variableName: participantAbs?.variableName,
-                    fileUid: file.uid,
+                    variableName: participant._abstractionId?.variableName,
                 });
-            }
-        });
+                selections[selections.length - 1].uid = entry.uid;
+                selections[selections.length - 1].fileUid = file.uid;
+            };
+        };
         return selections;
     }, [engine, selectedBehaviorId, counter]);
 };
