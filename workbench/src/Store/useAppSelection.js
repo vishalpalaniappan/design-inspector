@@ -3,6 +3,7 @@ import {useMemo} from "react";
 import {useSelector} from "react-redux";
 
 import {checkIfStatamentIsMapped} from "../helpers/helper";
+import {getMappedInfoFromAbstractionId} from "../helpers/helper";
 import {useDalEngine} from "../Providers/GlobalProviders";
 import {
     selectActiveTab,
@@ -136,11 +137,59 @@ export const useInvariants = () => {
  * @return {Object} The selected abstraction id
  */
 export const useSelectedAbstractionId = () => {
+    const {engine} = useDalEngine();
     const selectedAbstractionId = useSelector(selectSelectedAbstractionId);
     const counter = useSelector(selectCounter);
     return useMemo(() => {
-        return selectedAbstractionId;
-    }, [selectedAbstractionId, counter]);
+        let source;
+        engine.getFiles().forEach((file) => {
+            if (!file?.mapping) return;
+            const mapping = file.mapping;
+            mapping.forEach((entry) => {
+                if (entry.uid === selectedAbstractionId) {
+                }
+            });
+        });
+        return source;
+    }, [engine, selectedAbstractionId, counter]);
+};
+
+
+/**
+ * Returns the selected behavior abstractions from the engine.
+ * @return {Object} The selected behavior abstractions
+ */
+export const useSelectedBehaviorAbstractions = () => {
+    const {engine} = useDalEngine();
+    const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
+
+    const counter = useSelector(selectCounter);
+    return useMemo(() => {
+        if (!selectedBehaviorId) return null;
+        const selections = [];
+
+        const behavior = engine.getNode(selectedBehaviorId)?.getBehavior();
+        if (!behavior) return selections;
+
+        const behaviorAbs = behavior._abstractionIds;
+        if (!behaviorAbs) return selections;
+
+        const files = engine.getFiles();
+        behaviorAbs.forEach((abstractionId) => {
+            const entry = getMappedInfoFromAbstractionId(files, abstractionId);
+            (entry) && selections.push(entry);
+        });
+
+        const participants = behavior.getParticipants();
+        participants.forEach((participant) => {
+            const participantAbs = participant._abstractionId;
+            if (!participantAbs) return;
+            const entry = getMappedInfoFromAbstractionId(files, participantAbs.abstractionId);
+            (entry) && selections.push(entry);
+        });
+
+        return selections;
+    }, [engine, selectedBehaviorId, counter]);
 };
 
 /**
