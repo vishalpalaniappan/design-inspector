@@ -141,7 +141,9 @@ export const useSelectedAbstractionId = () => {
     const selectedAbstractionId = useSelector(selectSelectedAbstractionId);
     const counter = useSelector(selectCounter);
     return useMemo(() => {
-        let source;
+        // TODO: Implement logic to save the file name, line number
+        // and abstraction id so that the editor will go to the
+        // correct line.
         engine.getFiles().forEach((file) => {
             if (!file?.mapping) return;
             const mapping = file.mapping;
@@ -150,7 +152,7 @@ export const useSelectedAbstractionId = () => {
                 }
             });
         });
-        return source;
+        return selectedAbstractionId;
     }, [engine, selectedAbstractionId, counter]);
 };
 
