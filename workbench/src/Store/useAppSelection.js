@@ -178,7 +178,7 @@ export const useSelectedBehaviorAbstractions = () => {
 
         // From the files, get the mapping info for behavior and participants
         for (const file of engine.getFiles()) {
-            if (!file?.mapping) return;
+            if (!file?.mapping) continue;
             for (const entry of file.mapping) {
                 if (behavior._abstractionIds.includes(entry.uid)) {
                     selections.push({
