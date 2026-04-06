@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect} from "react";
 
 import PropTypes from "prop-types";
+import {Trash} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 
 import {selectAbstractionIdThunk} from "../../../Store/appThunk";
@@ -27,7 +28,7 @@ export function MappingInfoRow ({abstraction}) {
 
     return (
         <div className="mapping-row-info-container" onClick={selectRow}>
-            <>
+            <div className="mapping-row-content">
                 {
                     abstraction?.type === "behavior" &&
                         <>
@@ -46,7 +47,10 @@ export function MappingInfoRow ({abstraction}) {
                             </div>
                         </>
                 }
-            </>
+            </div>
+            <div className="mapping-row-icon-column">
+                <Trash />
+            </div>
         </div>
     );
 }

@@ -4,6 +4,14 @@
     border-bottom: solid 0.5px rgb(54, 54, 54);
     cursor:pointer;
     padding: 4px;
+    display: flex;
+    flex-direction: row;
+}
+
+.mapping-row-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .mapping-row-info-container:hover {
@@ -19,4 +27,11 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     color: #bbbbbb;
+}
+
+.mapping-row-icon-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
 }
