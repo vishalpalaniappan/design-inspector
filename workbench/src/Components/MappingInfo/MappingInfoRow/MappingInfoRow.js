@@ -3,7 +3,7 @@ import React, {useCallback, useEffect} from "react";
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
-import selectAbstractionIdThunk from "../../../Store/appThunk";
+import {selectAbstractionIdThunk} from "../../../Store/appThunk";
 
 import "./MappingInfoRow.scss";
 
