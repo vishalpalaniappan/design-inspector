@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {Trash} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 
-import {selectAbstractionIdThunk} from "../../../Store/appThunk";
+import {selectMappingThunk} from "../../../Store/appThunk";
 import {deleteMappingThunk} from "../../../Store/appThunk";
 
 import "./MappingInfoRow.scss";
@@ -23,7 +23,7 @@ export function MappingInfoRow ({abstraction}) {
 
     const selectRow = useCallback(() => {
         if (abstraction.uid) {
-            dispatch(selectAbstractionIdThunk(abstraction.uid));
+            dispatch(selectMappingThunk(abstraction.uid));
         }
     }, [dispatch, abstraction]);
 

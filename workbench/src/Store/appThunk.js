@@ -246,7 +246,7 @@ export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {
  * @param {String} abstractionId
  * @return {Function} Thunk function.
  */
-export const selectAbstractionIdThunk = (abstractionId) => (dispatch, getState, {engine}) => {
+export const selectMappingThunk = (abstractionId) => (dispatch, getState, {engine}) => {
     const files = engine.getFiles();
     for (const file of files) {
         if (!file?.mapping) continue;
