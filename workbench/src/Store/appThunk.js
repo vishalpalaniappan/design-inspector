@@ -1,5 +1,5 @@
 import {saveInvariantPropValues} from "../helpers/helper";
-import {setActiveTab, setSelectedAbstractionId, setSelectedMapping} from "./appSlice";
+import {setActiveTab, setSelectedMapping} from "./appSlice";
 import {setSelectedGraph} from "./appSlice";
 import {incrementCounter} from "./appSlice";
 import {setSelectedParticipant} from "./appSlice";
