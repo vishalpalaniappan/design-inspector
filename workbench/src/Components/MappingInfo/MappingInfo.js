@@ -24,7 +24,7 @@ export function MappingInfo () {
                     <MappingInfoRow
                         key={abstraction.uid}
                         type={""}
-                        uid={abstraction.uid}
+                        uid={abstraction.value}
                     />
                 );
             })}

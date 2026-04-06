@@ -176,19 +176,34 @@ export const useSelectedBehaviorAbstractions = () => {
 
         const files = engine.getFiles();
         behaviorAbs.forEach((abstractionId) => {
-            const entry = getMappedInfoFromAbstractionId(files, abstractionId);
-            (entry) && selections.push(entry);
+            const {entry, file} = getMappedInfoFromAbstractionId(files, abstractionId);
+            if (entry) {
+                const source = (Array.isArray(entry.source)) ? entry.source[0] : entry.source;
+                selections.push({
+                    uid: entry.uid,
+                    value: source,
+                    fileUid: file.uid,
+                });
+            }
         });
 
         const participants = behavior.getParticipants();
         participants.forEach((participant) => {
             const participantAbs = participant._abstractionId;
             if (!participantAbs) return;
-            const entry = getMappedInfoFromAbstractionId(files, participantAbs.abstractionId);
-            (entry) && selections.push(entry);
+            const {entry, file} = getMappedInfoFromAbstractionId(
+                files, participantAbs.abstractionId
+            );
+            if (entry) {
+                const source = (Array.isArray(entry.source)) ? entry.source[0] : entry.source;
+                // TODO: Indicate variable value
+                selections.push({
+                    uid: entry.uid,
+                    value: source,
+                    fileUid: file.uid,
+                });
+            }
         });
-        // Map behavior to source and participant to variable name
-
         return selections;
     }, [engine, selectedBehaviorId, counter]);
 };

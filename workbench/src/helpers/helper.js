@@ -50,7 +50,7 @@ const getMappedInfoFromAbstractionId = (files, abstractionId) => {
         if (!file?.mapping) continue;
         for (const entry of file.mapping) {
             if (entry.uid === abstractionId) {
-                return entry;
+                return {entry: entry, file: file};
             }
         }
     }
