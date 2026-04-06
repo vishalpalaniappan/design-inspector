@@ -12,10 +12,6 @@ import "./MappingInfo.scss";
 export function MappingInfo () {
     const selectedBehaviorAbstractions = useSelectedBehaviorAbstractions();
 
-    useEffect(() => {
-        console.log("Selected behavior abstractions:", selectedBehaviorAbstractions);
-    }, [selectedBehaviorAbstractions]);
-
     const getRowData = useCallback(() => {
         if (!selectedBehaviorAbstractions) return [];
         return selectedBehaviorAbstractions.map((abstraction) => {
