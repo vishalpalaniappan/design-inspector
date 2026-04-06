@@ -57,8 +57,8 @@ export function MappingInfoRow ({abstraction}) {
                         </>
                 }
             </div>
-            <div className="mapping-row-icon-column" onClick={deleteMapping}>
-                <Trash/>
+            <div className="mapping-row-icon-column">
+                <Trash onClick={deleteMapping}/>
             </div>
         </div>
     );
