@@ -27,22 +27,26 @@ export function MappingInfoRow ({abstraction}) {
 
     return (
         <div className="mapping-row-info-container" onClick={selectRow}>
-            {
-                abstraction?.type === "behavior" &&
-                    <>
-                        <div className="mapping-row-info-title">Mapped Source:</div>
-                        <div className="mapping-row-info-value">{abstraction.source}</div>
-                    </>
-            }
-            {
-                abstraction?.type === "participant" &&
-                    <>
-                        <div className="mapping-row-info-title">
-                            Participant: {abstraction.participantName}
-                        </div>
-                        <div className="mapping-row-info-value">{abstraction.variableName}</div>
-                    </>
-            }
+            <>
+                {
+                    abstraction?.type === "behavior" &&
+                        <>
+                            <div className="mapping-row-info-title">Mapped Source:</div>
+                            <div className="mapping-row-info-value">{abstraction.source}</div>
+                        </>
+                }
+                {
+                    abstraction?.type === "participant" &&
+                        <>
+                            <div className="mapping-row-info-title">
+                                Participant: {abstraction.participantName}
+                            </div>
+                            <div className="mapping-row-info-value">
+                                Variable Name: {abstraction.variableName}
+                            </div>
+                        </>
+                }
+            </>
         </div>
     );
 }
