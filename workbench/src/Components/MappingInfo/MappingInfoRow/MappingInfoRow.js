@@ -5,6 +5,7 @@ import {Trash} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 
 import {selectAbstractionIdThunk} from "../../../Store/appThunk";
+import {deleteMappingThunk} from "../../../Store/appThunk";
 
 import "./MappingInfoRow.scss";
 
@@ -25,6 +26,11 @@ export function MappingInfoRow ({abstraction}) {
             dispatch(selectAbstractionIdThunk(abstraction.uid));
         }
     }, [dispatch, abstraction]);
+
+    const deleteMapping = useCallback((e) => {
+        e.stopPropagation();
+        dispatch(deleteMappingThunk(abstraction));
+    }, [abstraction]);
 
     return (
         <div className="mapping-row-info-container" onClick={selectRow}>
@@ -51,8 +57,8 @@ export function MappingInfoRow ({abstraction}) {
                         </>
                 }
             </div>
-            <div className="mapping-row-icon-column">
-                <Trash />
+            <div className="mapping-row-icon-column" onClick={deleteMapping}>
+                <Trash/>
             </div>
         </div>
     );

@@ -263,3 +263,53 @@ export const selectAbstractionIdThunk = (abstractionId) => (dispatch, getState, 
     dispatch(setSelectedAbstractionId(abstractionId));
     dispatch(incrementCounter());
 };
+
+
+export const deleteMappingThunk = (abstraction) => (dispatch, getState, {engine}) => {
+    const files = engine.getFiles();
+    const selectedBehaviorId = getState().app.selectedBehavior;
+    const selectedParticipantId = getState().app.selectedParticipant;
+    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+
+    if (abstraction.type === "behavior") {
+        behavior.removeMapping(abstraction.uid);
+        for (const file of files) {
+            if (!file?.mapping) continue;
+            file.mapping.forEach((entry) => {
+                if (entry.uid === abstraction.uid) {
+                    entry.behaviorId = null;
+                }
+            });
+        };
+    }
+
+    if (selectedParticipantId && abstraction.type === "participant") {
+        // Using this because, it doesn't have remove mapping function.
+        // TODO: Standardize the method names.
+        behavior.getParticipant(selectedParticipantId).mapAbstraction(null);
+    }
+    dispatch(setSelectedAbstractionId(null));
+    dispatch(incrementCounter());
+};
+
+/**
+ * Maps an abstraction to the selected participant.
+ * @param {String} abstractionId ID of the abstraction to map.
+ * @param {String} variableName Variable name to map the abstraction to.
+ * @return {Function} Thunk function.
+ */
+export const mapAbstractionThunk = ({absId, varName}) => (dispatch, getState, {engine}) => {
+    const selectedBehaviorId = getState().app.selectedBehavior;
+    const selectedParticipantId = getState().app.selectedParticipant;
+    if (!selectedBehaviorId || !selectedParticipantId) {
+        console.info("No behavior or participant selected, cannot map abstraction.");
+        return;
+    }
+    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+    const participant = behavior.getParticipant(selectedParticipantId);
+    participant.mapAbstraction({
+        abstractionId: absId,
+        variableName: varName,
+    });
+    dispatch(incrementCounter());
+};

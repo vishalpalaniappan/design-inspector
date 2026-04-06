@@ -3,6 +3,8 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
+import { mapAbstractionThunk } from "../../Store/appThunk";
+
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import {useSelectedParticipant} from "../../Store/useAppSelection";
 
@@ -51,10 +53,10 @@ export function MapParticipant ({close, args}) {
             return;
         }
         try {
-            selectedParticipant.mapAbstraction({
-                abstractionId: args.abstraction.uid,
-                variableName: variableName,
-            });
+            dispatch(mapAbstractionThunk({
+                absId: args.abstraction.uid,
+                varName: variableName,
+            }));
             close();
         } catch (err) {
             setError(err.toString());
