@@ -25,7 +25,7 @@ export function MappingInfo () {
                     />
                 );
             })}
-            {(selectedParticipant && selectedParticipant._abstractionId) && 
+            {(selectedParticipant && selectedParticipant._abstractionId) &&
                 <MappingInfoRow
                     key={selectedParticipant._abstractionId.abstractionId}
                     type={"Participant"}

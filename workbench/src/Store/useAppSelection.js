@@ -138,7 +138,6 @@ export const useInvariants = () => {
 export const useSelectedAbstractionId = () => {
     const selectedAbstractionId = useSelector(selectSelectedAbstractionId);
     const counter = useSelector(selectCounter);
-
     return useMemo(() => {
         return selectedAbstractionId;
     }, [selectedAbstractionId, counter]);

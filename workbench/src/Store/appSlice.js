@@ -6,7 +6,7 @@ const appSlice = createSlice({
         activeTab: null,
         counter: 0,
         lastSaved: null,
-        appMode: 1, // 1 = design, 2 = mapping
+        appMode: 1,
         selectedBehavior: null,
         selectedParticipant: null,
         selectedGraph: null,
@@ -63,7 +63,7 @@ const appSlice = createSlice({
         setMappingMode (state) {
             state.appMode = 2;
         },
-        setSelectedAbstractionId(state, action) {
+        setSelectedAbstractionId (state, action) {
             state.selectedAbstractionId = action.payload;
         },
     },
