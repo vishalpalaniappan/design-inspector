@@ -29,7 +29,6 @@ export function MappingInfoRow ({type, uid, value}) {
 
     return (
         <div className="mapping-row-info-container" onClick={selectRow}>
-            <div className="mapping-row-info-title">{type} Abstraction ID:</div>
             <div className="mapping-row-info-value">{uid && uid}</div>
             {value &&
                 <>
