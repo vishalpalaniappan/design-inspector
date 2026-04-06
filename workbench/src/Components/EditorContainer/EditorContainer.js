@@ -11,6 +11,7 @@ import {setActiveTab} from "../../Store/appSlice";
 import {mapStatementToBehaviorThunk} from "../../Store/appThunk";
 import {useEngineFiles} from "../../Store/useAppSelection";
 import {useActiveTab, useLastSaved, useSelectedBehavior} from "../../Store/useAppSelection";
+import {useSelectedParticipant} from "../../Store/useAppSelection";
 import {useAppMode} from "../../Store/useAppSelection";
 import {MapParticipant} from "../Modals/MapParticipant";
 
@@ -31,6 +32,7 @@ export function EditorContainer () {
     const [editorLoaded, setEditorLoaded] = useState(false);
 
     const selectedBehavior = useSelectedBehavior();
+    const selectedParticipant = useSelectedParticipant();
 
     const activeTab = useActiveTab();
     const dispatch = useDispatch();
@@ -136,7 +138,8 @@ export function EditorContainer () {
     }, [dispatch, editorLoaded]);
 
     const onSelectAbstraction = useCallback((abstraction, shiftKey) => {
-        if (shiftKey && abstraction?.isMappedCurrent) {
+        if (shiftKey && abstraction?.behaviorId == selectedBehavior.getName()) {
+            if (!selectedParticipant) return;
             openModal({
                 title: "Map Variable Onto Participant",
                 args: {
@@ -149,7 +152,7 @@ export function EditorContainer () {
         } else {
             dispatch(mapStatementToBehaviorThunk(abstraction));
         }
-    }, [dispatch]);
+    }, [dispatch, selectedBehavior, selectedParticipant]);
 
     useEffect(() => {
         parentIdRef.current = crypto.randomUUID();

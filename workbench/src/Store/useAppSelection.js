@@ -183,6 +183,8 @@ export const useSelectedBehaviorAbstractions = () => {
                 if (behavior._abstractionIds.includes(entry.uid)) {
                     selections.push({
                         type: "behavior",
+                        uid: entry.uid,
+                        fileUid: file.uid,
                         source: (Array.isArray(entry.source)) ? entry.source[0] : entry.source,
                     });
                 }
@@ -192,11 +194,11 @@ export const useSelectedBehaviorAbstractions = () => {
                 if (!participant) continue;
                 selections.push({
                     type: "participant",
+                    uid: entry.uid,
+                    fileUid: file.uid,
                     participantName: participant.getName(),
                     variableName: participant._abstractionId?.variableName,
                 });
-                selections[selections.length - 1].uid = entry.uid;
-                selections[selections.length - 1].fileUid = file.uid;
             };
         };
         return selections;
