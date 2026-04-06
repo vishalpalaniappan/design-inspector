@@ -12,8 +12,6 @@ import "./MappingInfo.scss";
  * @return {JSX.Element}
  */
 export function MappingInfo () {
-    const selectedBehavior = useSelectedBehavior();
-    const selectedParticipant = useSelectedParticipant();
     const selectedBehaviorAbstractions = useSelectedBehaviorAbstractions();
 
     useEffect(() => {
@@ -21,23 +19,15 @@ export function MappingInfo () {
     }, [selectedBehaviorAbstractions]);
     return (
         <div className="mapping-container">
-            {selectedBehavior && selectedBehavior._abstractionIds.map((abstractionId) => {
+            {selectedBehaviorAbstractions && selectedBehaviorAbstractions.map((abstraction) => {
                 return (
                     <MappingInfoRow
-                        key={abstractionId}
-                        type={"Behavior"}
-                        uid={abstractionId}
+                        key={abstraction.uid}
+                        type={""}
+                        uid={abstraction.uid}
                     />
                 );
             })}
-            {(selectedParticipant && selectedParticipant._abstractionId) &&
-                <MappingInfoRow
-                    key={selectedParticipant._abstractionId.abstractionId}
-                    type={"Participant"}
-                    value={selectedParticipant._abstractionId.variableName}
-                    uid={selectedParticipant._abstractionId.abstractionId}
-                />
-            }
         </div>
     );
 }

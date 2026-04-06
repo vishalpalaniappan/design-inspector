@@ -187,7 +187,6 @@ export const useSelectedBehaviorAbstractions = () => {
             const entry = getMappedInfoFromAbstractionId(files, participantAbs.abstractionId);
             (entry) && selections.push(entry);
         });
-
         // Map behavior to source and participant to variable name
 
         return selections;
