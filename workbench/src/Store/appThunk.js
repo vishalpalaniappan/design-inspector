@@ -1,5 +1,5 @@
 import {saveInvariantPropValues} from "../helpers/helper";
-import {setActiveTab} from "./appSlice";
+import {setActiveTab, setSelectedAbstractionId} from "./appSlice";
 import {setSelectedGraph} from "./appSlice";
 import {incrementCounter} from "./appSlice";
 import {setSelectedParticipant} from "./appSlice";
@@ -211,5 +211,16 @@ export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {
     } else {
         behavior.addMapping(statement.uid);
     }
+    dispatch(incrementCounter());
+};
+
+
+/**
+ * Sets the selected abstraction id.
+ * @param {String} abstractionId 
+ * @return {Function} Thunk function.
+ */
+export const selectAbstractionIdThunk = (abstractionId) => (dispatch, getState, {engine}) => {
+    dispatch(setSelectedAbstractionId(abstractionId));
     dispatch(incrementCounter());
 };

@@ -3,7 +3,7 @@ import React, {useCallback, useEffect} from "react";
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
-import {setSelectedAbstractionId} from "../../../Store/appSlice";
+import selectAbstractionIdThunk from "../../../Store/appThunk";
 import {incrementCounter} from "../../../Store/appSlice";
 
 import "./MappingInfoRow.scss";
@@ -24,8 +24,7 @@ export function MappingInfoRow ({type, uid, value}) {
 
     const selectRow = useCallback(() => {
         if (uid) {
-            dispatch(setSelectedAbstractionId(uid));
-            dispatch(incrementCounter());
+            dispatch(selectAbstractionIdThunk(uid));
         }
     }, [dispatch, uid]);
 
