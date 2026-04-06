@@ -23,7 +23,7 @@ export function MappingInfoRow ({abstraction}) {
 
     const selectRow = useCallback(() => {
         if (abstraction.uid) {
-            dispatch(selectMappingThunk(abstraction.uid));
+            dispatch(selectMappingThunk(abstraction));
         }
     }, [dispatch, abstraction]);
 

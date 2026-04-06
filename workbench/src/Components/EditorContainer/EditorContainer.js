@@ -12,6 +12,7 @@ import {mapStatementToBehaviorThunk} from "../../Store/appThunk";
 import {useEngineFiles} from "../../Store/useAppSelection";
 import {useActiveTab, useLastSaved, useSelectedBehavior} from "../../Store/useAppSelection";
 import {useSelectedParticipant} from "../../Store/useAppSelection";
+import {useSelectedMapping} from "../../Store/useAppSelection";
 import {useAppMode} from "../../Store/useAppSelection";
 import {MapParticipant} from "../Modals/MapParticipant";
 
@@ -33,6 +34,7 @@ export function EditorContainer () {
 
     const selectedBehavior = useSelectedBehavior();
     const selectedParticipant = useSelectedParticipant();
+    const selectedMapping = useSelectedMapping();
 
     const activeTab = useActiveTab();
     const dispatch = useDispatch();
@@ -57,6 +59,19 @@ export function EditorContainer () {
             editorRef.current.setMode(appMode);
         }
     }, [appMode, editorLoaded]);
+
+    useEffect(() => {
+        if (selectedBehavior && editorRef.current) {
+            editorRef.current.setCurrentBehavior(selectedBehavior.getName());
+            editorRef.current.layoutEditor();
+        }
+    }, [selectedBehavior]);
+
+    useEffect(() => {
+        if (selectedMapping) {
+            editorRef.current.goToLine(selectedMapping.lineNumber);
+        }
+    }, [selectedMapping]);
 
     useEffect(() => {
         if (selectedBehavior && editorRef.current) {

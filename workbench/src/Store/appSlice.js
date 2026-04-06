@@ -10,7 +10,7 @@ const appSlice = createSlice({
         selectedBehavior: null,
         selectedParticipant: null,
         selectedGraph: null,
-        selectedAbstractionId: null,
+        selectedMapping: null,
         selectedInvariant: null,
         statusMsg: null,
         tabs: null,
@@ -63,8 +63,8 @@ const appSlice = createSlice({
         setMappingMode (state) {
             state.appMode = 2;
         },
-        setSelectedAbstractionId (state, action) {
-            state.selectedAbstractionId = action.payload;
+        setSelectedMapping (state, action) {
+            state.selectedMapping = action.payload;
         },
     },
 });
@@ -80,7 +80,7 @@ export const {
     setSelectedInvariant,
     incrementCounter,
     setDesignMode,
-    setSelectedAbstractionId,
+    setSelectedMapping,
 } = appSlice.actions;
 
 export default appSlice.reducer;

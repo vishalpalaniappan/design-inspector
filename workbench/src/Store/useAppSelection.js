@@ -8,10 +8,10 @@ import {
     selectAppMode,
     selectCounter,
     selectLastSaved,
-    selectSelectedAbstractionId,
     selectSelectedBehaviorId,
     selectSelectedGraphId,
     selectSelectedInvariantId,
+    selectSelectedMappingId,
     selectSelectedParticipantId,
     selectStatusMsg} from "./appSelectors";
 
@@ -132,26 +132,16 @@ export const useInvariants = () => {
 
 /**
  * Returns the selected abstraction id from the engine.
- * @return {Object} The selected abstraction id
+ * @return {Object} The selected mapping
  */
-export const useSelectedAbstractionId = () => {
+export const useSelectedMapping = () => {
     const {engine} = useDalEngine();
-    const selectedAbstractionId = useSelector(selectSelectedAbstractionId);
+    const selectedMapping = useSelector(selectSelectedMappingId);
     const counter = useSelector(selectCounter);
     return useMemo(() => {
-        // TODO: Implement logic to save the file name, line number
-        // and abstraction id so that the editor will go to the
-        // correct line.
-        engine.getFiles().forEach((file) => {
-            if (!file?.mapping) return;
-            const mapping = file.mapping;
-            mapping.forEach((entry) => {
-                if (entry.uid === selectedAbstractionId) {
-                }
-            });
-        });
-        return selectedAbstractionId;
-    }, [engine, selectedAbstractionId, counter]);
+        if (!selectedMapping) return null;
+        return selectedMapping;
+    }, [engine, selectedMapping, counter]);
 };
 
 
@@ -185,6 +175,7 @@ export const useSelectedBehaviorAbstractions = () => {
                         type: "behavior",
                         uid: entry.uid,
                         fileUid: file.uid,
+                        lineNumber: entry.start_line,
                         source: (Array.isArray(entry.source)) ? entry.source[0] : entry.source,
                     });
                 }
@@ -196,6 +187,7 @@ export const useSelectedBehaviorAbstractions = () => {
                     type: "participant",
                     uid: entry.uid,
                     fileUid: file.uid,
+                    lineNumber: entry.start_line,
                     participantName: participant.getName(),
                     variableName: participant._abstractionId?.variableName,
                 });

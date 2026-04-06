@@ -1,5 +1,5 @@
 import {saveInvariantPropValues} from "../helpers/helper";
-import {setActiveTab, setSelectedAbstractionId} from "./appSlice";
+import {setActiveTab, setSelectedAbstractionId, setSelectedMapping} from "./appSlice";
 import {setSelectedGraph} from "./appSlice";
 import {incrementCounter} from "./appSlice";
 import {setSelectedParticipant} from "./appSlice";
@@ -187,6 +187,7 @@ export const selectBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}
     } else {
         dispatch(setSelectedParticipant(null));
     }
+    dispatch(setSelectedMapping(null));
 };
 
 /**
@@ -210,6 +211,7 @@ export const deleteBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}
     dispatch(setSelectedBehavior(null));
     dispatch(setSelectedParticipant(null));
     dispatch(setSelectedInvariant(null));
+    dispatch(setSelectedMapping(null));
     dispatch(incrementCounter());
 };
 
@@ -243,22 +245,22 @@ export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {
 
 /**
  * Sets the selected abstraction id.
- * @param {String} abstractionId
+ * @param {String} abstraction See useSelectedBehaviorAbstractions selector.
  * @return {Function} Thunk function.
  */
-export const selectMappingThunk = (abstractionId) => (dispatch, getState, {engine}) => {
+export const selectMappingThunk = (abstraction) => (dispatch, getState, {engine}) => {
     const files = engine.getFiles();
     for (const file of files) {
         if (!file?.mapping) continue;
         const mapping = file.mapping;
         for (const entry of mapping) {
-            if (entry.uid === abstractionId) {
+            if (entry.uid === abstraction.uid) {
                 dispatch(setActiveTab(file.uid));
                 break;
             }
         }
     }
-    dispatch(setSelectedAbstractionId(abstractionId));
+    dispatch(setSelectedMapping(abstraction));
     dispatch(incrementCounter());
 };
 
@@ -290,7 +292,7 @@ export const deleteMappingThunk = (abstraction) => (dispatch, getState, {engine}
         // TODO: Standardize the method names.
         behavior.getParticipant(selectedParticipantId).mapAbstraction(null);
     }
-    dispatch(setSelectedAbstractionId(null));
+    dispatch(setSelectedMapping(null));
     dispatch(incrementCounter());
 };
 
