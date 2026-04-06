@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import {useSelectedBehavior} from "../../Store/useAppSelection";
 import {useSelectedParticipant} from "../../Store/useAppSelection";
-import {MappingInfoRow} from "./MappingInfoRow/MappingInfo";
+import {MappingInfoRow} from "./MappingInfoRow/MappingInfoRow";
 
 import "./MappingInfo.scss";
 
@@ -32,7 +32,7 @@ export function MappingInfo () {
                     value={selectedParticipant._abstractionId.variableName}
                     uid={selectedParticipant._abstractionId.abstractionId}
                 />
-                }
+            }
         </div>
     );
 }

@@ -2,12 +2,12 @@ import React from "react";
 
 import PropTypes from "prop-types";
 
-import "./MappingInfo.scss";
+import "./MappingInfoRow.scss";
 
 MappingInfoRow.propTypes = {
     uid: PropTypes.string,
     type: PropTypes.string,
-    value: PropTypes.string
+    value: PropTypes.string,
 };
 
 /**
