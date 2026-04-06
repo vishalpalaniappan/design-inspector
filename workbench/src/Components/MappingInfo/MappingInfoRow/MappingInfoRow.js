@@ -30,7 +30,7 @@ export function MappingInfoRow ({abstraction}) {
     const deleteMapping = useCallback((e) => {
         e.stopPropagation();
         dispatch(deleteMappingThunk(abstraction));
-    }, [abstraction]);
+    }, [dispatch, abstraction]);
 
     return (
         <div className="mapping-row-info-container" onClick={selectRow}>
