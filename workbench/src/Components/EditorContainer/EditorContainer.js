@@ -10,7 +10,7 @@ import ServerContext from "../../Providers/ServerContext";
 import {setActiveTab} from "../../Store/appSlice";
 import {mapStatementToBehaviorThunk} from "../../Store/appThunk";
 import {useEngineFiles} from "../../Store/useAppSelection";
-import {useActiveTab, useLastSaved} from "../../Store/useAppSelection";
+import {useActiveTab, useLastSaved, useSelectedBehavior} from "../../Store/useAppSelection";
 import {useAppMode} from "../../Store/useAppSelection";
 import {MapParticipant} from "../Modals/MapParticipant";
 
@@ -29,6 +29,8 @@ export function EditorContainer () {
     const lastSaved = useLastSaved();
     const {openModal} = useModalManager();
     const [editorLoaded, setEditorLoaded] = useState(false);
+
+    const selectedBehavior = useSelectedBehavior();
 
     const activeTab = useActiveTab();
     const dispatch = useDispatch();
@@ -53,6 +55,13 @@ export function EditorContainer () {
             editorRef.current.setMode(appMode);
         }
     }, [appMode, editorLoaded]);
+
+    useEffect(() => {
+        if (selectedBehavior && editorRef.current) {
+            editorRef.current.setCurrentBehavior(selectedBehavior.getName());
+            editorRef.current.layoutEditor();
+        }
+    }, [selectedBehavior]);
 
     useEffect(() => {
         if (lastSaved && files && editorRef.current) {

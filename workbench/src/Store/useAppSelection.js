@@ -290,26 +290,6 @@ export const useEngineFiles = () => {
 
     return useMemo(() => {
         if (!engine) return null;
-
-        const files = [...engine.getFiles()];
-        if (!selectedBehaviorId) return files;
-
-        for (const file of files) {
-            if (file.uid !== activeTab || !file?.mapping) continue;
-
-            file.mapping.forEach((entry) => {
-                entry.isMappedCurrent = false;
-                entry.isMappedOther = false;
-                const isMapped = checkIfStatamentIsMapped(
-                    engine.graphs._graphs, entry.uid, selectedBehaviorId
-                );
-                if (isMapped === "isMappedCurrent") {
-                    entry.isMappedCurrent = true;
-                } else if (isMapped === "isMappedOther") {
-                    entry.isMappedOther = true;
-                }
-            });
-        }
-        return files;
-    }, [engine, activeTab, selectedBehaviorId, counter]);
+        return engine.getFiles();
+    }, [engine, selectedBehaviorId, activeTab, counter]);
 };

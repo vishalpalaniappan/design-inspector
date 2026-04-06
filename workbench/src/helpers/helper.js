@@ -29,21 +29,6 @@ const saveInvariantPropValues = (invariant, propertyInputs) => {
     };
 };
 
-const checkIfStatamentIsMapped = (graphs, statementId, selectedBehaviorId) => {
-    // TODO: Move this to engine function.
-    for (const graph of Object.keys(graphs)) {
-        for (const node of graphs[graph].nodes) {
-            const behavior = node.getBehavior();
-            const abstractionIds = behavior._abstractionIds;
-            if (abstractionIds.includes(statementId) && behavior.getName() === selectedBehaviorId) {
-                return "isMappedCurrent";
-            } else if (abstractionIds.includes(statementId)) {
-                return "isMappedOther";
-            }
-        }
-    }
-};
-
 const getMappedInfoFromAbstractionId = (files, abstractionId) => {
     // TODO: Move this to engine function.
     for (const file of files) {
@@ -57,4 +42,4 @@ const getMappedInfoFromAbstractionId = (files, abstractionId) => {
     return null;
 };
 
-export {checkIfStatamentIsMapped, getMappedInfoFromAbstractionId, saveInvariantPropValues};
+export {getMappedInfoFromAbstractionId, saveInvariantPropValues};
