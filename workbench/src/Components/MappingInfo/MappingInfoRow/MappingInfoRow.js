@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
 import selectAbstractionIdThunk from "../../../Store/appThunk";
-import {incrementCounter} from "../../../Store/appSlice";
 
 import "./MappingInfoRow.scss";
 
