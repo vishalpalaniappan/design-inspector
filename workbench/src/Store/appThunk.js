@@ -189,6 +189,30 @@ export const selectBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}
     }
 };
 
+/**
+ * Deletes a behavior given its ID, removes its mapping from files,
+ * and updates the selected behavior and participant.
+ * @param {String} behaviorId String ID of the behavior to delete.
+ * @return {Function} Thunk function.
+ */
+export const deleteBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}) => {
+    engine.removeNode(behaviorId);
+    // Remove behavior from any mapping in files
+    engine.getFiles().forEach((file) => {
+        if (!file.mapping) return;
+        const mapping = file.mapping;
+        for (const entry of mapping) {
+            if (entry.behaviorId === behaviorId) {
+                entry.behaviorId = null;
+            }
+        }
+    });
+    dispatch(setSelectedBehavior(null));
+    dispatch(setSelectedParticipant(null));
+    dispatch(setSelectedInvariant(null));
+    dispatch(incrementCounter());
+};
+
 
 /**
  * Maps the clicked statement to the selected behavior.
