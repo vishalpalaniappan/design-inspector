@@ -178,6 +178,7 @@ export const useSelectedBehaviorAbstractions = () => {
         behaviorAbs.forEach((abstractionId) => {
             const entry = getMappedInfoFromAbstractionId(files, abstractionId);
             (entry) && selections.push(entry);
+            console.log(entry.source);
         });
 
         const participants = behavior.getParticipants();
@@ -186,7 +187,10 @@ export const useSelectedBehaviorAbstractions = () => {
             if (!participantAbs) return;
             const entry = getMappedInfoFromAbstractionId(files, participantAbs.abstractionId);
             (entry) && selections.push(entry);
+            console.log(participantAbs.abstractionId.variableName);
         });
+
+        // Map behavior to source and participant to variable name
 
         return selections;
     }, [engine, selectedBehaviorId, counter]);
