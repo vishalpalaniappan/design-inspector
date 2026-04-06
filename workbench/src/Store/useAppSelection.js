@@ -9,12 +9,12 @@ import {
     selectAppMode,
     selectCounter,
     selectLastSaved,
+    selectSelectedAbstractionId,
     selectSelectedBehaviorId,
     selectSelectedGraphId,
     selectSelectedInvariantId,
     selectSelectedParticipantId,
-    selectStatusMsg
-} from "./appSelectors";
+    selectStatusMsg} from "./appSelectors";
 
 /**
  * Returns the selected graph from the engine.
@@ -115,7 +115,7 @@ export const useParticipants = () => {
 
 /**
  * Returns a list of invariants from the selected participant.
- * @return {Object}
+ * @return {Object} The list of invariants
  */
 export const useInvariants = () => {
     const {engine} = useDalEngine();
@@ -129,6 +129,19 @@ export const useInvariants = () => {
         const participant = behavior.getParticipant(selectedParticipantId);
         return participant ? participant.getInvariants() : [];
     }, [engine, selectedBehaviorId, selectedParticipantId, counter]);
+};
+
+/**
+ * Returns the selected abstraction id from the engine.
+ * @return {Object} The selected abstraction id
+ */
+export const useSelectedAbstractionId = () => {
+    const selectedAbstractionId = useSelector(selectSelectedAbstractionId);
+    const counter = useSelector(selectCounter);
+
+    return useMemo(() => {
+        return selectedAbstractionId;
+    }, [selectedAbstractionId, counter]);
 };
 
 /**

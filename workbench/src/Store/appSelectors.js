@@ -7,3 +7,4 @@ export const selectActiveTab = (state) => state.app.activeTab;
 export const selectStatusMsg = (state) => state.app.statusMsg;
 export const selectLastSaved = (state) => state.app.lastSaved;
 export const selectAppMode = (state) => state.app.appMode;
+export const selectSelectedAbstractionId = (state) => state.app.selectedAbstractionId;
