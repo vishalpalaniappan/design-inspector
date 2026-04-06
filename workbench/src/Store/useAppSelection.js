@@ -290,6 +290,6 @@ export const useEngineFiles = () => {
 
     return useMemo(() => {
         if (!engine) return null;
-        return engine.getFiles();
+        return [...engine.getFiles()];
     }, [engine, selectedBehaviorId, activeTab, counter]);
 };
