@@ -77,7 +77,7 @@ export function PtyTerminal () {
 
         termRef.current = term;
         fitRef.current = fitAddon;
-        
+
         fitAddon.fit();
 
         setTermWriter((data) => {
