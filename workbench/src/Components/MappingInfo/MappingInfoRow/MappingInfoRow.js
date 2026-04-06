@@ -8,9 +8,7 @@ import {selectAbstractionIdThunk} from "../../../Store/appThunk";
 import "./MappingInfoRow.scss";
 
 MappingInfoRow.propTypes = {
-    uid: PropTypes.string,
-    type: PropTypes.string,
-    value: PropTypes.string,
+    abstraction: PropTypes.object.isRequired,
 };
 
 /**
@@ -18,24 +16,32 @@ MappingInfoRow.propTypes = {
  * @param {string} uid - The unique identifier to display in the row
  * @return {JSX.Element}
  */
-export function MappingInfoRow ({type, uid, value}) {
+export function MappingInfoRow ({abstraction}) {
     const dispatch = useDispatch();
 
     const selectRow = useCallback(() => {
-        if (uid) {
-            dispatch(selectAbstractionIdThunk(uid));
+        if (abstraction.uid) {
+            dispatch(selectAbstractionIdThunk(abstraction.uid));
         }
-    }, [dispatch, uid]);
+    }, [dispatch, abstraction]);
 
     return (
         <div className="mapping-row-info-container" onClick={selectRow}>
-            <div className="mapping-row-info-value">{uid && uid}</div>
-            {value &&
-                <>
-                    <div style={{marginTop: "8px"}}></div>
-                    <div className="mapping-row-info-title">Variable Name:</div>
-                    <div className="mapping-row-info-value">{value}</div>
-                </>
+            {
+                abstraction?.type === "behavior" &&
+                    <>
+                        <div className="mapping-row-info-title">Mapped Source:</div>
+                        <div className="mapping-row-info-value">{abstraction.source}</div>
+                    </>
+            }
+            {
+                abstraction?.type === "participant" &&
+                    <>
+                        <div className="mapping-row-info-title">
+                            Participant: {abstraction.participantName}
+                        </div>
+                        <div className="mapping-row-info-value">{abstraction.variableName}</div>
+                    </>
             }
         </div>
     );

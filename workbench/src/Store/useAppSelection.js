@@ -163,6 +163,11 @@ export const useSelectedBehaviorAbstractions = () => {
     const {engine} = useDalEngine();
     const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
 
+    /**
+     * TODO: This entire function is overly complicated. This is because I am
+     * implementing logic that should be in the engine here. I will refactor
+     * this to make it much easier to understand.
+     **/
     const counter = useSelector(selectCounter);
     return useMemo(() => {
         if (!selectedBehaviorId) return null;
@@ -180,8 +185,9 @@ export const useSelectedBehaviorAbstractions = () => {
             if (entry) {
                 const source = (Array.isArray(entry.source)) ? entry.source[0] : entry.source;
                 selections.push({
+                    type: "behavior",
                     uid: entry.uid,
-                    value: source,
+                    source: source,
                     fileUid: file.uid,
                 });
             }
@@ -195,11 +201,11 @@ export const useSelectedBehaviorAbstractions = () => {
                 files, participantAbs.abstractionId
             );
             if (entry) {
-                const source = (Array.isArray(entry.source)) ? entry.source[0] : entry.source;
-                // TODO: Indicate variable value
                 selections.push({
+                    type: "participant",
                     uid: entry.uid,
-                    value: source,
+                    participantName: participant.getName(),
+                    variableName: participantAbs?.variableName,
                     fileUid: file.uid,
                 });
             }
