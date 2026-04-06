@@ -40,7 +40,10 @@ export function MappingInfoRow ({abstraction}) {
                     abstraction?.type === "participant" &&
                         <>
                             <div className="mapping-row-info-title">
-                                Participant: {abstraction.participantName}
+                                Mapped Participant:
+                            </div>
+                            <div className="mapping-row-info-value" style={{marginBottom: "2px"}}>
+                                Participant Name: {abstraction.participantName}
                             </div>
                             <div className="mapping-row-info-value">
                                 Variable Name: {abstraction.variableName}
