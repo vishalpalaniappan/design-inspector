@@ -263,6 +263,7 @@
         },
         "leftMenuContainer2": {
             "id": "leftMenuContainer2",
+            "component": "MappingInfo",
             "menuBar": {
                 "showClose": false,
                 "title": "Mapping"
