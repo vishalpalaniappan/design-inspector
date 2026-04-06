@@ -264,10 +264,6 @@
         "leftMenuContainer2": {
             "id": "leftMenuContainer2",
             "component": "MappingInfo",
-            "menuBar": {
-                "showClose": false,
-                "title": "Mapping"
-            },
             "background": "#1e1e1e"
         },
         "selectedInfoContainer": {
