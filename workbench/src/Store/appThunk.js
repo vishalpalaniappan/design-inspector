@@ -213,7 +213,6 @@ export const deleteBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}
     dispatch(incrementCounter());
 };
 
-
 /**
  * Maps the clicked statement to the selected behavior.
  * @param {Object} statement Statement object for mapping.
@@ -242,7 +241,6 @@ export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {
     dispatch(incrementCounter());
 };
 
-
 /**
  * Sets the selected abstraction id.
  * @param {String} abstractionId
@@ -264,7 +262,11 @@ export const selectAbstractionIdThunk = (abstractionId) => (dispatch, getState, 
     dispatch(incrementCounter());
 };
 
-
+/**
+ * Deletes the mapping.
+ * @param {Object} abstraction See useSelectedBehaviorAbstractions selector.
+ * @return {Function} Thunk function.
+ */
 export const deleteMappingThunk = (abstraction) => (dispatch, getState, {engine}) => {
     const files = engine.getFiles();
     const selectedBehaviorId = getState().app.selectedBehavior;
