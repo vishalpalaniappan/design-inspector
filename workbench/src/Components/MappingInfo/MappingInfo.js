@@ -25,6 +25,14 @@ export function MappingInfo () {
                     />
                 );
             })}
+            {(selectedParticipant && selectedParticipant._abstractionId) && 
+                <MappingInfoRow
+                    key={selectedParticipant._abstractionId.abstractionId}
+                    type={"Participant"}
+                    value={selectedParticipant._abstractionId.variableName}
+                    uid={selectedParticipant._abstractionId.abstractionId}
+                />
+                }
         </div>
     );
 }
