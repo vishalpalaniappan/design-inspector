@@ -112,13 +112,13 @@ function GlobalProviders ({children}) {
     // When the workspace is first loaded, find the engine and deserialize it.
     useEffect(() => {
         if (!design) return;
-
         engine.deserialize(design.data);
         const files = engine.getFiles();
         if (files.length > 0) {
             dispatch(setActiveTab(files[0].uid));
         }
         engine.loaded = true;
+        console.log("Design loaded:", design.fileName);
     }, [design, engine]);
 
     // Set the engine ref and save fn for use in msg handler and other contexts.
