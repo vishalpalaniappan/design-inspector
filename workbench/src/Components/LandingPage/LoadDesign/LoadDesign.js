@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 
 import {Trash} from "react-bootstrap-icons";
 
@@ -27,8 +27,19 @@ export function LoadDesign () {
                 }
                 return null;
             }));
+
+            const params = new URLSearchParams(window.location.search);
+            const engine = params.get("engine");
+            if (engine) {
+                // Given http://localhost:3011/?engine=test.dal
+                // Load test.dal if it exists in the workspace
+                const design = workspace.find((item) => item.name === engine);
+                if (design) {
+                    sendMessage("load_design", {"fileName": design.name});
+                }
+            }
         }
-    }, [workspace]);
+    }, [workspace, setSelectedDesign, loadDesign]);
 
     const sendMessage = useCallback((type, payload) => {
         sendJsonMessage({
