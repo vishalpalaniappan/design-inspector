@@ -29,11 +29,11 @@ export function LoadDesign () {
             }));
 
             const params = new URLSearchParams(window.location.search);
-            const engine = params.get("engine");
-            if (engine) {
-                // Given http://localhost:3011/?engine=test.dal
+            const designName = params.get("design");
+            if (designName) {
+                // Given http://localhost:3011/?design=test.dal
                 // Load test.dal if it exists in the workspace
-                const design = workspace.find((item) => item.name === engine);
+                const design = workspace.find((item) => item.name === designName);
                 if (design) {
                     sendMessage("load_design", {"fileName": design.name});
                 }
