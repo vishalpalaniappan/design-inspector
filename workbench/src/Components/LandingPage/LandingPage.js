@@ -17,6 +17,7 @@ export function LandingPage () {
     const [designs, setDesigns] = useState([]);
     const [selectedDesign, setSelectedDesign] = useState(null);
     const {sendJsonMessage} = useContext(ServerContext);
+    const [fileName, setFileName] = useState("");
 
     useEffect(() => {
         if (workspace) {
@@ -29,11 +30,22 @@ export function LandingPage () {
         }
     }, [workspace]);
 
-    const newDesign = useCallback(() => {
-        console.log("Creating new design...");
-    }, []);
+    const newDesign = useCallback((e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log("Creating new design:", fileName);
+        sendJsonMessage({
+            type: "create_design",
+            payload: {
+                "fileName": fileName.endsWith(".dal") ? fileName : fileName + ".dal",
+            },
+        });
+        setFileName("");
+    }, [fileName]);
 
-    const deleteDesign = useCallback(() => {
+    const deleteDesign = useCallback((e) => {
+        e.stopPropagation();
+        e.preventDefault();
         console.log("Deleting selected design...");
     }, []);
 
@@ -54,11 +66,12 @@ export function LandingPage () {
                     </div>
                     <div className="create-design-row">
                         <span></span>
-                        <input 
+                        <input
                             className="file-name-input"
-                            placeholder="Enter design name...">
-
-                        </input>
+                            placeholder="Enter design name..."
+                            value={fileName}
+                            onChange={(e) => setFileName(e.target.value)}
+                        />
                         <div className="create-btn" onClick={newDesign}>
                             <span> + Create</span>
                         </div>
@@ -80,7 +93,7 @@ export function LandingPage () {
                     <div className="button-row">
                         <div className="buttons-left">
                             <div className="icon-btn">
-                                <Trash onClick={newDesign} />
+                                <Trash onClick={deleteDesign} />
                             </div>
                         </div>
                         <div className="buttons-right">
