@@ -23,6 +23,7 @@ GlobalProviders.propTypes = {
  */
 function GlobalProviders ({children}) {
     const [workspace, setWorkspace] = useState();
+    const [design, setDesign] = useState();
     const termWriteRef = useRef(null);
     const engineRef = useRef(null);
 
@@ -49,6 +50,9 @@ function GlobalProviders ({children}) {
         switch (msg.type) {
             case "workspaces":
                 setWorkspace(msg.data);
+                break;
+            case "load_design":
+                setDesign(msg.data);
                 break;
             case "terminal_output":
                 termWriteRef.current?.(msg.data);
@@ -107,18 +111,15 @@ function GlobalProviders ({children}) {
 
     // When the workspace is first loaded, find the engine and deserialize it.
     useEffect(() => {
-        if (!workspace) return;
+        if (!design) return;
 
-        const file = workspace.find((file) => file.name === "engine.dal");
-        if (!file) return;
-
-        engine.deserialize(file.content);
+        engine.deserialize(design.data);
         const files = engine.getFiles();
         if (files.length > 0) {
             dispatch(setActiveTab(files[0].uid));
         }
-        console.log("Engine loaded: ", engine);
-    }, [workspace, engine]);
+        engine.loaded = true;
+    }, [design, engine]);
 
     // Set the engine ref and save fn for use in msg handler and other contexts.
     useEffect(() => {

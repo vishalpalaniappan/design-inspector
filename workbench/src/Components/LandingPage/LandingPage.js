@@ -58,6 +58,17 @@ export function LandingPage () {
         e.stopPropagation();
         setSelectedDesign(design);
     };
+
+    const loadDesign = useCallback(() => {
+        if (!selectedDesign) return;
+        sendJsonMessage({
+            type: "load_design",
+            payload: {
+                "fileName": selectedDesign.name,
+            },
+        });
+    }, [selectedDesign]);
+
     return (
         <div className="landing-page">
             <div className="splash">
@@ -101,7 +112,7 @@ export function LandingPage () {
                             </div>
                         </div>
                         <div className="buttons-right">
-                            <span className="open-button">Open Design</span>
+                            <span className="open-button" onClick={loadDesign}>Open Design</span>
                         </div>
                     </div>
                 </div>
