@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
+
+import {PlusSquare, Trash} from "react-bootstrap-icons";
 
 import splashScreen from "../../Assets/splash_screen.png";
-
-import { PlusSquare, Trash } from "react-bootstrap-icons";
+import { useWorkspace } from "../../Providers/GlobalProviders";
 
 import "./LandingPage.scss";
 
@@ -10,7 +11,27 @@ import "./LandingPage.scss";
  * Landing page of the viewer component.
  * @return {JSX.Element}
  */
-export function LandingPage() {
+export function LandingPage () {
+    const {workspace} = useWorkspace();
+    const [designs, setDesigns] = useState([]);
+    const [selectedDesign, setSelectedDesign] = useState(null);
+
+    useEffect(() => {
+        if (workspace) {
+            setDesigns(workspace.map((item) => {
+                if (item.type === "file" && item.name.endsWith(".dal")) {
+                    return item;
+                }
+                return null;
+            }));
+        }
+    }, [workspace]);
+
+
+    const selectFile = (e, design) => {
+        e.stopPropagation();
+        setSelectedDesign(design);
+    };
     return (
         <div className="landing-page">
             <div className="splash">
@@ -22,12 +43,18 @@ export function LandingPage() {
                         Design Workbench
                     </div>
                     <div className="subtitle">Select Design</div>
-                    <div className="file-selector-container">
+                    <div className="file-selector-container"
+                        onClick={(e) => selectFile(e, null)}>
                         <div className="files">
-                            <div className="file">Library Manager</div>
-                            <div className="file">Bubble Sort</div>
-                            <div className="file">Ticketing System</div>
-                            <div className="file">Render Farm</div>
+                            {designs.map((design) => (
+                                <div key={design.uid}
+                                    onClick={(e) => selectFile(e, design)}
+                                    className="file"
+                                    style={design?.uid === selectedDesign?.uid ?
+                                        {backgroundColor: "#3a4a5c"} : {}}>
+                                    {design.name}
+                                </div>
+                            ))}
                         </div>
                     </div>
                     <div className="button-row">

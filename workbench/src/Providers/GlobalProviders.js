@@ -10,6 +10,7 @@ import engine from "./DalEngine";
 import DalEngineContext from "./DalEngineContext";
 import ServerContext from "./ServerContext";
 import TerminalContext from "./TerminalContext";
+import WorkspaceContext from "./WorkspaceContext";
 
 GlobalProviders.propTypes = {
     children: PropTypes.node,
@@ -127,13 +128,15 @@ function GlobalProviders ({children}) {
 
     return (
         // eslint-disable-next-line max-len
-        <DalEngineContext.Provider value={{engine}}>
-            <TerminalContext.Provider value={{setTermWriter}}>
-                <ServerContext.Provider value={{sendJsonMessage, messageHistory, connectionStatus}}>
-                    {children}
-                </ServerContext.Provider>
-            </TerminalContext.Provider>
-        </DalEngineContext.Provider>
+        <ServerContext.Provider value={{sendJsonMessage, messageHistory, connectionStatus}}>
+            <DalEngineContext.Provider value={{engine}}>
+                <WorkspaceContext.Provider value={{workspace}}>
+                    <TerminalContext.Provider value={{setTermWriter}}>
+                        {children}
+                    </TerminalContext.Provider>
+                </WorkspaceContext.Provider>
+            </DalEngineContext.Provider>
+        </ServerContext.Provider>
     );
 };
 
@@ -141,6 +144,15 @@ export const useDalEngine = function () {
     const context = useContext(DalEngineContext);
     if (!context) {
         throw new Error("useDalEngine must be used within a GlobalProvider");
+    }
+    return context;
+};
+
+
+export const useWorkspace = function () {
+    const context = useContext(WorkspaceContext);
+    if (!context) {
+        throw new Error("useWorkspace must be used within a GlobalProvider");
     }
     return context;
 };
