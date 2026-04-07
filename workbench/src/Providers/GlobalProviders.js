@@ -105,10 +105,10 @@ function GlobalProviders ({children}) {
             type: "save_engine",
             payload: {
                 "data": engineRef.current.serialize(),
-                "fileName": "engine.dal",
+                "fileName": design.fileName,
             },
         });
-    }, [sendJsonMessage]);
+    }, [sendJsonMessage, design]);
 
     // When the workspace is first loaded, find the engine and deserialize it.
     useEffect(() => {
