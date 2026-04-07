@@ -39,4 +39,8 @@ export const registry = {
         import("./Components/MappingInfo/MappingInfo").then((m) => ({
             default: m.default || m.MappingInfo,
         })),
+    SideBarMenu: () =>
+        import("./Components/SideBarMenu/SideBarMenu").then((m) => ({
+            default: m.default || m.SideBarMenu,
+        })),
 };

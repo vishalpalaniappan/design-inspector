@@ -150,6 +150,7 @@
         },
         "sidebar": {
             "id": "sidebar",
+            "component": "SideBarMenu",
             "background": "#333"
         },
         "menuContainer": {

@@ -1,0 +1,22 @@
+.side-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+
+    .bottom {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .icon {
+            cursor: pointer;
+            color: rgb(196, 196, 196);
+            margin: 10px 0;
+        }
+
+        .icon:hover {
+            color: white;
+        }
+    }
+}
