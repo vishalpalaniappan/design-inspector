@@ -3,6 +3,7 @@ import saveFile from "./saveFile.js";
 import loadWorkspace from "./loadWorkspace.js"
 import createFile from "./createFile.js";
 import deleteFile from "./deleteFile.js";
+import loadFile from "./loadFile.js";
 
 export class  WSMessageHandler {
     constructor(ws) {
@@ -29,7 +30,8 @@ export class  WSMessageHandler {
             terminal_input: this.onTerminalInput.bind(this),
             terminal_resize: this.onTerminalResize.bind(this),
             create_design: this.createDesign.bind(this),
-            delete_design: this.deleteDesign.bind(this)
+            delete_design: this.deleteDesign.bind(this),
+            load_design: this.loadDesign.bind(this)
         };
     }
 
@@ -64,6 +66,16 @@ export class  WSMessageHandler {
         loadWorkspace().then((folders) => {
             msg.type = "workspaces";
             msg.data = folders;
+            this.ws.send(JSON.stringify(msg));
+        }) .catch((err) => {
+            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+        });
+    }
+
+    loadDesign = (msg) => {
+        loadFile(msg.payload.fileName).then((file) => {
+            msg.type = "load_design";
+            msg.data = file;
             this.ws.send(JSON.stringify(msg));
         }) .catch((err) => {
             this.ws.send(JSON.stringify({ type: "error", data: err.message }));
