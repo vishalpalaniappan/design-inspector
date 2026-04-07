@@ -50,8 +50,8 @@ export class  WSMessageHandler {
         }
     }
 
-    createDesign = (msg) => {
-        createFile(msg.payload.fileName);
+    createDesign = async (msg) => {
+        await createFile(msg.payload.fileName);
         loadWorkspace().then((folders) => {
             msg.type = "workspaces";
             msg.data = folders;
@@ -61,15 +61,16 @@ export class  WSMessageHandler {
         });
     }
 
-    deleteDesign = (msg) => {
-        deleteFile(msg.payload.fileName)
-        loadWorkspace().then((folders) => {
+    deleteDesign = async (msg) => {
+        try {
+            await deleteFile(msg.payload.fileName);
+            const folders = await loadWorkspace();
             msg.type = "workspaces";
             msg.data = folders;
             this.ws.send(JSON.stringify(msg));
-        }) .catch((err) => {
+        } catch (err) {
             this.ws.send(JSON.stringify({ type: "error", data: err.message }));
-        });
+        }
     }
 
     loadDesign = (msg) => {
@@ -82,22 +83,24 @@ export class  WSMessageHandler {
         });
     }
 
-    workspaces = (msg) => {
-        loadWorkspace().then((folders) => {
+    workspaces = async (msg) => {
+        try {
+            const folders = await loadWorkspace();
             msg.type = "workspaces";
             msg.data = folders;
             this.ws.send(JSON.stringify(msg));
-        }) .catch((err) => {
+        } catch (err) {
             this.ws.send(JSON.stringify({ type: "error", data: err.message }));
-        });
+        }
     }
 
-    saveEngine = (msg) => {
-        saveFile(msg.payload.fileName, "workspace", msg.payload.data).then((serializedEngine) => {
+    saveEngine = async (msg) => {
+        try {
+            const serializedEngine = await saveFile(msg.payload.fileName, "workspace", msg.payload.data);
             this.ws.send(JSON.stringify({ type: "design_save_successful", data: serializedEngine }));
-        }).catch((err) => {
+        } catch (err) {
             this.ws.send(JSON.stringify({ type: "design_save_failed" }));
-        });
+        }
     }
 
     onTerminalData = (data) => {
