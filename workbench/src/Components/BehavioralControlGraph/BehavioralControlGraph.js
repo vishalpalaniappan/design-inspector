@@ -6,6 +6,7 @@ import {BehavioralGraphBuilder} from "sample-ui-component-library";
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import {setSelectedBehavior} from "../../Store/appSlice";
 import {selectBehaviorThunk} from "../../Store/appThunk";
+import {deleteBehaviorThunk} from "../../Store/appThunk";
 import {useSelectedGraph} from "../../Store/useAppSelection";
 import {useSelectedBehavior} from "../../Store/useAppSelection";
 
@@ -41,9 +42,8 @@ export function BehavioralControlGraph () {
     }, [graphRef, engine]);
 
     const deleteBehavior = useCallback((node) => {
-        engine.removeNode(node.id);
+        dispatch(deleteBehaviorThunk(node.id));
         graphRef.current.updateEngine(engine);
-        dispatch(setSelectedBehavior(null));
     }, [engine, graphRef, dispatch]);
 
     const deleteTransition = useCallback((edge) => {

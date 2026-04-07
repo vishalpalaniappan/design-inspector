@@ -1,5 +1,5 @@
 import {saveInvariantPropValues} from "../helpers/helper";
-import {setActiveTab} from "./appSlice";
+import {setActiveTab, setSelectedMapping} from "./appSlice";
 import {setSelectedGraph} from "./appSlice";
 import {incrementCounter} from "./appSlice";
 import {setSelectedParticipant} from "./appSlice";
@@ -187,4 +187,122 @@ export const selectBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}
     } else {
         dispatch(setSelectedParticipant(null));
     }
+    dispatch(setSelectedMapping(null));
+};
+
+/**
+ * Deletes a behavior given its ID, removes its mapping from files,
+ * and updates the selected behavior and participant.
+ * @param {String} behaviorId String ID of the behavior to delete.
+ * @return {Function} Thunk function.
+ */
+export const deleteBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}) => {
+    engine.removeNode(behaviorId);
+    // Remove behavior from any mapping in files
+    engine.getFiles().forEach((file) => {
+        if (!file.mapping) return;
+        const mapping = file.mapping;
+        for (const entry of mapping) {
+            if (entry.behaviorId === behaviorId) {
+                entry.behaviorId = null;
+            }
+        }
+    });
+    dispatch(setSelectedBehavior(null));
+    dispatch(setSelectedParticipant(null));
+    dispatch(setSelectedInvariant(null));
+    dispatch(setSelectedMapping(null));
+    dispatch(incrementCounter());
+};
+
+/**
+ * Maps the clicked statement to the selected behavior.
+ * @param {Object} statement Statement object for mapping.
+ * @return {Function} Thunk function.
+ */
+export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {engine}) => {
+    const selectedBehaviorId = getState().app.selectedBehavior;
+    if (!selectedBehaviorId) {
+        console.info("No behavior selected, cannot map statement to behavior.");
+        return;
+    }
+
+    // Statement is mapped to another behavior.
+    if (statement?.behaviorId && statement.behaviorId !== selectedBehaviorId) {
+        return;
+    }
+    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+    const hasStatementId = behavior._abstractionIds.includes(statement.uid);
+    if (hasStatementId) {
+        behavior.removeMapping(statement.uid);
+        statement.behaviorId = null;
+    } else {
+        behavior.addMapping(statement.uid);
+        statement.behaviorId = selectedBehaviorId;
+    }
+    dispatch(incrementCounter());
+};
+
+/**
+ * Sets the selected abstraction id.
+ * @param {String} abstraction See useSelectedBehaviorAbstractions selector.
+ * @return {Function} Thunk function.
+ */
+export const selectMappingThunk = (abstraction) => (dispatch, getState, {engine}) => {
+    dispatch(setSelectedMapping(abstraction));
+    dispatch(incrementCounter());
+};
+
+/**
+ * Deletes the mapping.
+ * @param {Object} abstraction See useSelectedBehaviorAbstractions selector.
+ * @return {Function} Thunk function.
+ */
+export const deleteMappingThunk = (abstraction) => (dispatch, getState, {engine}) => {
+    const files = engine.getFiles();
+    const selectedBehaviorId = getState().app.selectedBehavior;
+    const selectedParticipantId = getState().app.selectedParticipant;
+    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+
+    if (abstraction.type === "behavior") {
+        behavior.removeMapping(abstraction.uid);
+        for (const file of files) {
+            if (!file?.mapping) continue;
+            file.mapping.forEach((entry) => {
+                if (entry.uid === abstraction.uid) {
+                    entry.behaviorId = null;
+                }
+            });
+        };
+    }
+
+    if (selectedParticipantId && abstraction.type === "participant") {
+        // Using this because, it doesn't have remove mapping function.
+        // TODO: Standardize the method names.
+        behavior.getParticipant(selectedParticipantId).mapAbstraction(null);
+    }
+    dispatch(setSelectedMapping(null));
+    dispatch(incrementCounter());
+};
+
+/**
+ * Maps an abstraction to the selected participant.
+ * @param {String} abstractionId ID of the abstraction to map.
+ * @param {String} variableName Variable name to map the abstraction to.
+ * @return {Function} Thunk function.
+ */
+export const mapAbstractionThunk = ({absId, varName}) => (dispatch, getState, {engine}) => {
+    const selectedBehaviorId = getState().app.selectedBehavior;
+    const selectedParticipantId = getState().app.selectedParticipant;
+    if (!selectedBehaviorId || !selectedParticipantId) {
+        console.info("No behavior or participant selected, cannot map abstraction.");
+        return;
+    }
+    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+    const participant = behavior.getParticipant(selectedParticipantId);
+    participant.mapAbstraction({
+        abstractionId: absId,
+        variableName: varName,
+    });
+    dispatch(incrementCounter());
 };

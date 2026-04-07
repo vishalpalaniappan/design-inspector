@@ -5,14 +5,15 @@ import {useSelector} from "react-redux";
 import {useDalEngine} from "../Providers/GlobalProviders";
 import {
     selectActiveTab,
+    selectAppMode,
     selectCounter,
     selectLastSaved,
     selectSelectedBehaviorId,
     selectSelectedGraphId,
     selectSelectedInvariantId,
+    selectSelectedMappingId,
     selectSelectedParticipantId,
-    selectStatusMsg
-} from "./appSelectors";
+    selectStatusMsg} from "./appSelectors";
 
 /**
  * Returns the selected graph from the engine.
@@ -37,11 +38,12 @@ export const useSelectedGraph = () => {
 export const useSelectedBehavior = () => {
     const {engine} = useDalEngine();
     const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
+    const counter = useSelector(selectCounter);
 
     return useMemo(() => {
         if (!selectedBehaviorId) return null;
         return engine.getNode(selectedBehaviorId).getBehavior();
-    }, [engine, selectedBehaviorId]);
+    }, [engine, selectedBehaviorId, counter]);
 };
 
 /**
@@ -52,12 +54,13 @@ export const useSelectedParticipant = () => {
     const {engine} = useDalEngine();
     const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
     const selectedParticipantId = useSelector(selectSelectedParticipantId);
+    const counter = useSelector(selectCounter);
 
     return useMemo(() => {
         if (!selectedBehaviorId || !selectedParticipantId) return null;
         const behavior = engine.getNode(selectedBehaviorId).getBehavior();
         return behavior.getParticipant(selectedParticipantId);
-    }, [engine, selectedBehaviorId, selectedParticipantId]);
+    }, [engine, selectedBehaviorId, selectedParticipantId, counter]);
 };
 
 /**
@@ -69,13 +72,14 @@ export const useSelectedInvariant = () => {
     const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
     const selectedParticipantId = useSelector(selectSelectedParticipantId);
     const selectedInvariantId = useSelector(selectSelectedInvariantId);
+    const counter = useSelector(selectCounter);
 
     return useMemo(() => {
         if (!selectedBehaviorId || !selectedParticipantId || !selectedInvariantId) return null;
         const behavior = engine.getNode(selectedBehaviorId).getBehavior();
         const participant = behavior.getParticipant(selectedParticipantId);
         return participant.getInvariant(selectedInvariantId);
-    }, [engine, selectedBehaviorId, selectedParticipantId, selectedInvariantId]);
+    }, [engine, selectedBehaviorId, selectedParticipantId, selectedInvariantId, counter]);
 };
 
 /**
@@ -85,10 +89,11 @@ export const useSelectedInvariant = () => {
 export const useGraphs = () => {
     const {engine} = useDalEngine();
     const graphId = useSelector(selectSelectedGraphId);
+    const counter = useSelector(selectCounter);
 
     return useMemo(() => {
         return engine.graphs.getGraphNames();
-    }, [engine, graphId]);
+    }, [engine, graphId, counter]);
 };
 
 /**
@@ -109,7 +114,7 @@ export const useParticipants = () => {
 
 /**
  * Returns a list of invariants from the selected participant.
- * @return {Object}
+ * @return {Object} The list of invariants
  */
 export const useInvariants = () => {
     const {engine} = useDalEngine();
@@ -126,6 +131,73 @@ export const useInvariants = () => {
 };
 
 /**
+ * Returns the selected abstraction id from the engine.
+ * @return {Object} The selected mapping
+ */
+export const useSelectedMapping = () => {
+    const {engine} = useDalEngine();
+    const selectedMapping = useSelector(selectSelectedMappingId);
+    const counter = useSelector(selectCounter);
+    return useMemo(() => {
+        if (!selectedMapping) return null;
+        return selectedMapping;
+    }, [engine, selectedMapping, counter]);
+};
+
+
+/**
+ * Returns the selected behavior abstractions from the engine.
+ * @return {Object} The selected behavior abstractions
+ */
+export const useSelectedBehaviorAbstractions = () => {
+    const {engine} = useDalEngine();
+    const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
+
+    /**
+     * TODO: This entire function is overly complicated. This is because I am
+     * implementing logic that should be in the engine here. I will refactor
+     * this to make it much easier to understand.
+     **/
+    const counter = useSelector(selectCounter);
+    return useMemo(() => {
+        if (!selectedBehaviorId) return null;
+        const selections = [];
+        const behavior = engine.getNode(selectedBehaviorId)?.getBehavior();
+        if (!behavior) return selections;
+        if (!behavior._abstractionIds) return selections;
+
+        // From the files, get the mapping info for behavior and participants
+        for (const file of engine.getFiles()) {
+            if (!file?.mapping) continue;
+            for (const entry of file.mapping) {
+                if (behavior._abstractionIds.includes(entry.uid)) {
+                    selections.push({
+                        type: "behavior",
+                        uid: entry.uid,
+                        fileUid: file.uid,
+                        lineNumber: entry.start_line,
+                        source: (Array.isArray(entry.source)) ? entry.source[0] : entry.source,
+                    });
+                }
+                const participant = behavior.getParticipants().find(
+                    (p) => p._abstractionId?.abstractionId === entry.uid
+                );
+                if (!participant) continue;
+                selections.push({
+                    type: "participant",
+                    uid: entry.uid,
+                    fileUid: file.uid,
+                    lineNumber: entry.start_line,
+                    participantName: participant.getName(),
+                    variableName: participant._abstractionId?.variableName,
+                });
+            };
+        };
+        return selections;
+    }, [engine, selectedBehaviorId, counter]);
+};
+
+/**
  * Returns a list of invariant types from the engine.
  * @return {Object}
  */
@@ -136,32 +208,6 @@ export const useInvariantTypes = () => {
         if (!engine) return [];
         return engine.invariant_types;
     }, [engine]);
-};
-
-/**
- * Returns a list of engine files.
- * @return {Object}
- */
-export const useEngineFiles = () => {
-    const {engine} = useDalEngine();
-    const counter = useSelector(selectCounter);
-
-    return useMemo(() => {
-        if (!engine) return null;
-        return [...engine.getFiles()];
-    }, [engine, counter]);
-};
-
-/**
- * Returns the currently active tab.
- * @return {Object}
- */
-export const useActiveTab = () => {
-    const activeTab = useSelector(selectActiveTab);
-
-    return useMemo(() => {
-        return activeTab;
-    }, [activeTab]);
 };
 
 /**
@@ -186,4 +232,45 @@ export const useLastSaved = () => {
     return useMemo(() => {
         return lastSaved;
     }, [lastSaved]);
+};
+
+/**
+ * Returns the app mode.
+ * @return {Number} 1 for design mode, 2 for mapping mode
+ */
+export const useAppMode = () => {
+    const appMode = useSelector(selectAppMode);
+
+    return useMemo(() => {
+        return appMode;
+    }, [appMode]);
+};
+
+
+/**
+ * Returns the currently active tab.
+ * @return {Object}
+ */
+export const useActiveTab = () => {
+    const activeTab = useSelector(selectActiveTab);
+
+    return useMemo(() => {
+        return activeTab;
+    }, [activeTab]);
+};
+
+/**
+ * Returns a list of engine files.
+ * @return {Object}
+ */
+export const useEngineFiles = () => {
+    const {engine} = useDalEngine();
+    const counter = useSelector(selectCounter);
+    const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
+    const activeTab = useSelector(selectActiveTab);
+
+    return useMemo(() => {
+        if (!engine) return null;
+        return [...engine.getFiles()];
+    }, [engine, selectedBehaviorId, activeTab, counter]);
 };

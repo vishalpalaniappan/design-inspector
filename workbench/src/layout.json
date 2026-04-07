@@ -263,10 +263,7 @@
         },
         "leftMenuContainer2": {
             "id": "leftMenuContainer2",
-            "menuBar": {
-                "showClose": false,
-                "title": "Mapping"
-            },
+            "component": "MappingInfo",
             "background": "#1e1e1e"
         },
         "selectedInfoContainer": {

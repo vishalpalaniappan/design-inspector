@@ -9,6 +9,7 @@ import GlobalProviders from "./Providers/GlobalProviders";
 import {store} from "./Store/store";
 
 import "./App.scss";
+import { MappingInfo } from "./Components/MappingInfo/MappingInfo";
 
 /**
  * Renders the application.
@@ -52,6 +53,10 @@ export function App () {
         SelectedInfo: () =>
             import("./Components/SelectedInfo/SelectedInfo").then((m) => ({
                 default: m.default || m.SelectedInfo,
+            })),
+        MappingInfo: () =>
+            import("./Components/MappingInfo/MappingInfo").then((m) => ({
+                default: m.default || m.MappingInfo,
             })),
     }), []);
 

@@ -3,12 +3,18 @@ import React, {useCallback, useContext, useEffect, useRef, useState} from "react
 import {useDispatch} from "react-redux";
 import {Editor} from "sample-ui-component-library";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
+import {useModalManager} from "ui-layout-manager-dev";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import ServerContext from "../../Providers/ServerContext";
 import {setActiveTab} from "../../Store/appSlice";
+import {mapStatementToBehaviorThunk} from "../../Store/appThunk";
 import {useEngineFiles} from "../../Store/useAppSelection";
-import {useActiveTab, useLastSaved} from "../../Store/useAppSelection";
+import {useActiveTab, useLastSaved, useSelectedBehavior} from "../../Store/useAppSelection";
+import {useSelectedParticipant} from "../../Store/useAppSelection";
+import {useSelectedMapping} from "../../Store/useAppSelection";
+import {useAppMode} from "../../Store/useAppSelection";
+import {MapParticipant} from "../Modals/MapParticipant";
 
 import "./EditorContainer.scss";
 
@@ -23,10 +29,16 @@ export function EditorContainer () {
     const parentIdRef = useRef(null);
     const files = useEngineFiles();
     const lastSaved = useLastSaved();
+    const {openModal} = useModalManager();
     const [editorLoaded, setEditorLoaded] = useState(false);
+
+    const selectedBehavior = useSelectedBehavior();
+    const selectedParticipant = useSelectedParticipant();
+    const selectedMapping = useSelectedMapping();
 
     const activeTab = useActiveTab();
     const dispatch = useDispatch();
+    const appMode = useAppMode();
 
     // Close tabs of files that were deleted, and update saved content
     useEffect(() => {
@@ -38,8 +50,36 @@ export function EditorContainer () {
                     editorRef.current.closeTab(_tab.uid);
                 }
             }
+            editorRef.current.layoutEditor();
         }
-    }, [files]);
+    }, [files, editorLoaded]);
+
+    useEffect(() => {
+        if (editorRef.current && editorLoaded) {
+            editorRef.current.setMode(appMode);
+        }
+    }, [appMode, editorLoaded]);
+
+    useEffect(() => {
+        if (selectedBehavior && editorRef.current) {
+            editorRef.current.setCurrentBehavior(selectedBehavior.getName());
+            editorRef.current.layoutEditor();
+        }
+    }, [selectedBehavior]);
+
+    useEffect(() => {
+        if (selectedMapping) {
+            const file = files.find((file) => file.uid === selectedMapping.fileUid);
+            editorRef.current.addTab(file, null, selectedMapping.lineNumber);
+        }
+    }, [selectedMapping]);
+
+    useEffect(() => {
+        if (selectedBehavior && editorRef.current) {
+            editorRef.current.setCurrentBehavior(selectedBehavior.getName());
+            editorRef.current.layoutEditor();
+        }
+    }, [selectedBehavior]);
 
     useEffect(() => {
         if (lastSaved && files && editorRef.current) {
@@ -113,12 +153,32 @@ export function EditorContainer () {
         }
     }, [dispatch, editorLoaded]);
 
+    const onSelectAbstraction = useCallback((abstraction, shiftKey) => {
+        if (shiftKey && abstraction?.behaviorId == selectedBehavior.getName()) {
+            if (!selectedParticipant) return;
+            openModal({
+                title: "Map Variable Onto Participant",
+                args: {
+                    abstraction: abstraction,
+                },
+                render: ({close, args}) => {
+                    return <MapParticipant close={close} args={args}/>;
+                },
+            });
+        } else {
+            dispatch(mapStatementToBehaviorThunk(abstraction));
+        }
+    }, [dispatch, selectedBehavior, selectedParticipant]);
+
     useEffect(() => {
         parentIdRef.current = crypto.randomUUID();
         editorRef.current.setTabGroupId(parentIdRef.current);
     }, [connectionStatus]);
 
     return (
-        <Editor ref={editorRef} onSelectTab={onSelectTab}/>
+        <Editor
+            ref={editorRef}
+            onSelectAbstraction={onSelectAbstraction}
+            onSelectTab={onSelectTab}/>
     );
 }
