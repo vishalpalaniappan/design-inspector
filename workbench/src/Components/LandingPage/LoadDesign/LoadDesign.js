@@ -32,7 +32,6 @@ export function LoadDesign () {
                 if (item.type === "file" && item.name.endsWith(".dal")) {
                     return item;
                 }
-                return null;
             }));
 
             const params = new URLSearchParams(window.location.search);
