@@ -28,11 +28,9 @@ export function LoadDesign () {
 
     useEffect(() => {
         if (workspace) {
-            setDesigns(workspace.map((item) => {
-                if (item.type === "file" && item.name.endsWith(".dal")) {
-                    return item;
-                }
-            }));
+            setDesigns(workspace.filter((item) => 
+                item.type === "file" && item.name.endsWith(".dal")
+            ));
 
             const params = new URLSearchParams(window.location.search);
             const designName = params.get("design");
