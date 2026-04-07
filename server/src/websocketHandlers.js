@@ -3,6 +3,7 @@ import saveFile from "./saveFile.js";
 import path from "node:path";
 import loadDir from "./loadDir.js"
 import createFile from "./createFile.js";
+import deleteFile from "./deleteFile.js";
 
 export class  WSMessageHandler {
     constructor(ws) {
@@ -28,7 +29,8 @@ export class  WSMessageHandler {
             save_engine: this.saveEngine.bind(this),
             terminal_input: this.onTerminalInput.bind(this),
             terminal_resize: this.onTerminalResize.bind(this),
-            create_design: this.createDesign.bind(this)
+            create_design: this.createDesign.bind(this),
+            delete_design: this.deleteDesign.bind(this)
         };
     }
 
@@ -59,6 +61,20 @@ export class  WSMessageHandler {
         .catch((err) => {
             this.ws.send(JSON.stringify({ type: "error", data: err.message }));
         });
+    }
+
+    deleteDesign = (msg) => {
+        deleteFile(msg.payload.fileName)
+            const workspacePath = path.join(process.cwd(), "workspace");
+            loadDir(workspacePath, workspacePath)
+                .then((folders) => {
+                    msg.type = "workspaces";
+                    msg.data = folders;
+                    this.ws.send(JSON.stringify(msg));
+            })
+            .catch((err) => {
+                this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+            });
     }
 
     workspaces = (msg) => {

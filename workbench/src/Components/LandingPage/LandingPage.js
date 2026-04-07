@@ -1,6 +1,7 @@
-import React, {useCallback, useContext, useEffect, useState} from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 
 import {Plus, Trash} from "react-bootstrap-icons";
+import {FileBrowser} from "sample-ui-component-library";
 
 import splashScreen from "../../Assets/splash_screen.png";
 import {useWorkspace} from "../../Providers/GlobalProviders";
@@ -46,9 +47,13 @@ export function LandingPage () {
     const deleteDesign = useCallback((e) => {
         e.stopPropagation();
         e.preventDefault();
-        console.log("Deleting selected design...");
-    }, []);
-
+        sendJsonMessage({
+            type: "delete_design",
+            payload: {
+                "fileName": selectedDesign.name,
+            },
+        });
+    }, [selectedDesign]);
 
     const selectFile = (e, design) => {
         e.stopPropagation();
