@@ -34,8 +34,7 @@ const loadDirRecursive = async function (rootPath, folderPath) {
                 name: entry.name,
                 type: 'file',
                 uid: "file-" + randomUUID(),
-                path: relativePath,
-                content: await fs.readFile(fullPath, 'utf-8'),
+                path: relativePath
             };
         }
     }));
