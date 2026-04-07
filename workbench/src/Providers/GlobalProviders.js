@@ -6,6 +6,7 @@ import useWebSocket, {ReadyState} from "react-use-websocket";
 
 import {setActiveTab, setLastSaved} from "../Store/appSlice";
 import {setStatusMsg} from "../Store/appSlice";
+import {setDesignLoaded} from "../Store/appSlice";
 import engine from "./DalEngine";
 import DalEngineContext from "./DalEngineContext";
 import ServerContext from "./ServerContext";
@@ -117,8 +118,7 @@ function GlobalProviders ({children}) {
         if (files.length > 0) {
             dispatch(setActiveTab(files[0].uid));
         }
-        engine.loaded = true;
-        console.log("Design loaded:", design.fileName, engine);
+        dispatch(setDesignLoaded(true));
     }, [design, engine]);
 
     // Set the engine ref and save fn for use in msg handler and other contexts.

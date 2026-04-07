@@ -1,10 +1,15 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 
 import {Trash} from "react-bootstrap-icons";
+import {LayoutManager} from "ui-layout-manager-dev";
 
 import splashScreen from "../../Assets/splash_screen.png";
+import layout from "../../layout.json";
 import {useWorkspace} from "../../Providers/GlobalProviders";
+import {useDalEngine} from "../../Providers/GlobalProviders";
 import ServerContext from "../../Providers/ServerContext";
+import {registry} from "../../Registry";
+import {useDesignLoaded} from "../../Store/useAppSelection";
 
 import "./LandingPage.scss";
 
@@ -18,6 +23,9 @@ export function LandingPage () {
     const [selectedDesign, setSelectedDesign] = useState(null);
     const {sendJsonMessage} = useContext(ServerContext);
     const [fileName, setFileName] = useState("");
+
+    const designLoaded = useDesignLoaded();
+    const dalEngine = useDalEngine();
 
     useEffect(() => {
         if (workspace) {
@@ -62,48 +70,61 @@ export function LandingPage () {
         sendMessage("load_design", {"fileName": selectedDesign.name});
     }, [selectedDesign]);
 
+
+    const registryList = useCallback(() => registry, []);
+
     return (
-        <div className="landing-page">
-            <div className="splash">
-                <div className="left">
-                    <img src={splashScreen} alt="Blueprint city" />
-                </div>
-                <div className="right">
-                    <div className="title-container">Design Workbench</div>
-                    <div className="create-design-row">
-                        <input
-                            className="file-name-input"
-                            placeholder="Enter design name..."
-                            value={fileName}
-                            onChange={(e) => setFileName(e.target.value)}
-                        />
-                        <div className="create-btn" onClick={newDesign}>+ Create</div>
-                    </div>
-                    <div className="file-selector-container" onClick={(e) => selectFile(e, null)}>
-                        <div className="files">
-                            {designs.map((design) => (
-                                <div key={design.uid}
-                                    onClick={(e) => selectFile(e, design)}
-                                    className="file"
-                                    style={design?.uid === selectedDesign?.uid ?
-                                        {backgroundColor: "#3a4a5c"} : {}}>
-                                    {design.name}
+        <>
+            {
+                designLoaded?
+                    <LayoutManager registry={registryList()} ldf={layout} /> :
+                    <div className="landing-page">
+                        <div className="splash">
+                            <div className="left">
+                                <img src={splashScreen} alt="Blueprint city" />
+                            </div>
+                            <div className="right">
+                                <div className="title-container">Design Workbench</div>
+                                <div className="create-design-row">
+                                    <input
+                                        className="file-name-input"
+                                        placeholder="Enter design name..."
+                                        value={fileName}
+                                        onChange={(e) => setFileName(e.target.value)}
+                                    />
+                                    <div className="create-btn" onClick={newDesign}>+ Create</div>
                                 </div>
-                            ))}
-                        </div>
-                    </div>
-                    <div className="button-row">
-                        <div className="buttons-left">
-                            <div className="icon-btn">
-                                <Trash onClick={deleteDesign} />
+                                <div
+                                    className="file-selector-container"
+                                    onClick={(e) => selectFile(e, null)}>
+                                    <div className="files">
+                                        {designs.map((design) => (
+                                            <div key={design.uid}
+                                                onClick={(e) => selectFile(e, design)}
+                                                className="file"
+                                                style={design?.uid === selectedDesign?.uid ?
+                                                    {backgroundColor: "#3a4a5c"} : {}}>
+                                                {design.name}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="button-row">
+                                    <div className="buttons-left">
+                                        <div className="icon-btn">
+                                            <Trash onClick={deleteDesign} />
+                                        </div>
+                                    </div>
+                                    <div className="buttons-right">
+                                        <span className="open-btn" onClick={loadDesign}>
+                                            Open Design
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div className="buttons-right">
-                            <span className="open-btn" onClick={loadDesign}>Open Design</span>
-                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
+            }
+        </>
     );
 }

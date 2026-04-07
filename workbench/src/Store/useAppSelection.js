@@ -7,6 +7,7 @@ import {
     selectActiveTab,
     selectAppMode,
     selectCounter,
+    selectDesignLoaded,
     selectLastSaved,
     selectSelectedBehaviorId,
     selectSelectedGraphId,
