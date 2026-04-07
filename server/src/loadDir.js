@@ -35,7 +35,7 @@ const loadDir = async function (rootPath, folderPath) {
                 type: 'file',
                 uid: "file-" + randomUUID(),
                 path: relativePath,
-                // content: await fs.readFile(fullPath, 'utf-8'),
+                content: await fs.readFile(fullPath, 'utf-8'),
             };
         }
     }));
