@@ -2,6 +2,7 @@ import { TerminalSession } from "./terminal.js";
 import saveFile from "./saveFile.js";
 import path from "node:path";
 import loadDir from "./loadDir.js"
+import createFile from "./createFile.js";
 
 export class  WSMessageHandler {
     constructor(ws) {
@@ -26,7 +27,8 @@ export class  WSMessageHandler {
             workspaces: this.workspaces.bind(this),
             save_engine: this.saveEngine.bind(this),
             terminal_input: this.onTerminalInput.bind(this),
-            terminal_resize: this.onTerminalResize.bind(this)
+            terminal_resize: this.onTerminalResize.bind(this),
+            create_design: this.createDesign.bind(this)
         };
     }
 
@@ -43,6 +45,20 @@ export class  WSMessageHandler {
         } catch (err) {
             console.error('Failed to process message:', err);
         }
+    }
+
+    createDesign = (msg) => {
+        createFile(msg.payload.fileName);
+        const workspacePath = path.join(process.cwd(), "workspace");
+        loadDir(workspacePath, workspacePath)
+            .then((folders) => {
+                msg.type = "workspaces";
+                msg.data = folders;
+                this.ws.send(JSON.stringify(msg));
+        })
+        .catch((err) => {
+            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+        });
     }
 
     workspaces = (msg) => {
