@@ -274,3 +274,15 @@ export const useEngineFiles = () => {
         return [...engine.getFiles()];
     }, [engine, selectedBehaviorId, activeTab, counter]);
 };
+
+/**
+ * Returns whether a design is loaded.
+ * @return {Boolean}
+ */
+export const useDesignLoaded = () => {
+    const designLoaded = useSelector(selectDesignLoaded);
+
+    return useMemo(() => {
+        return designLoaded;
+    }, [designLoaded]);
+};

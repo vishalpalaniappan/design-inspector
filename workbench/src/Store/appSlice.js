@@ -7,6 +7,7 @@ const appSlice = createSlice({
         counter: 0,
         lastSaved: null,
         appMode: 1,
+        designLoaded: false,
         selectedBehavior: null,
         selectedParticipant: null,
         selectedGraph: null,
@@ -66,6 +67,9 @@ const appSlice = createSlice({
         setSelectedMapping (state, action) {
             state.selectedMapping = action.payload;
         },
+        setDesignLoaded (state, action) {
+            state.designLoaded = action.payload;
+        },
     },
 });
 
@@ -81,6 +85,7 @@ export const {
     incrementCounter,
     setDesignMode,
     setSelectedMapping,
+    setDesignLoaded,
 } = appSlice.actions;
 
 export default appSlice.reducer;
