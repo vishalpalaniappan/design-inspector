@@ -118,7 +118,7 @@ function GlobalProviders ({children}) {
             dispatch(setActiveTab(files[0].uid));
         }
         engine.loaded = true;
-        console.log("Design loaded:", design.fileName);
+        console.log("Design loaded:", design.fileName, engine);
     }, [design, engine]);
 
     // Set the engine ref and save fn for use in msg handler and other contexts.
