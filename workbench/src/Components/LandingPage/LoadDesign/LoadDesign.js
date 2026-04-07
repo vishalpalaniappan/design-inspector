@@ -28,7 +28,7 @@ export function LoadDesign () {
 
     useEffect(() => {
         if (workspace) {
-            setDesigns(workspace.filter((item) => 
+            setDesigns(workspace.filter((item) =>
                 item.type === "file" && item.name.endsWith(".dal")
             ));
 
