@@ -59,6 +59,7 @@ export function LoadDesign () {
     const deleteDesign = useCallback((e) => {
         e.stopPropagation();
         e.preventDefault();
+        if (!selectedDesign) return;
         sendMessage("delete_design", {"fileName": selectedDesign.name});
     }, [selectedDesign, sendMessage]);
 
