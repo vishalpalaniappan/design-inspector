@@ -1,7 +1,6 @@
 import { TerminalSession } from "./terminal.js";
 import saveFile from "./saveFile.js";
-import path from "node:path";
-import loadDir from "./loadDir.js"
+import loadWorkspace from "./loadWorkspace.js"
 import createFile from "./createFile.js";
 import deleteFile from "./deleteFile.js";
 
@@ -51,40 +50,32 @@ export class  WSMessageHandler {
 
     createDesign = (msg) => {
         createFile(msg.payload.fileName);
-        const workspacePath = path.join(process.cwd(), "workspace");
-        loadDir(workspacePath, workspacePath)
-            .then((folders) => {
-                msg.type = "workspaces";
-                msg.data = folders;
-                this.ws.send(JSON.stringify(msg));
-        })
-        .catch((err) => {
+        loadWorkspace().then((folders) => {
+            msg.type = "workspaces";
+            msg.data = folders;
+            this.ws.send(JSON.stringify(msg));
+        }) .catch((err) => {
             this.ws.send(JSON.stringify({ type: "error", data: err.message }));
         });
     }
 
     deleteDesign = (msg) => {
         deleteFile(msg.payload.fileName)
-            const workspacePath = path.join(process.cwd(), "workspace");
-            loadDir(workspacePath, workspacePath)
-                .then((folders) => {
-                    msg.type = "workspaces";
-                    msg.data = folders;
-                    this.ws.send(JSON.stringify(msg));
-            })
-            .catch((err) => {
-                this.ws.send(JSON.stringify({ type: "error", data: err.message }));
-            });
+        loadWorkspace().then((folders) => {
+            msg.type = "workspaces";
+            msg.data = folders;
+            this.ws.send(JSON.stringify(msg));
+        }) .catch((err) => {
+            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+        });
     }
 
     workspaces = (msg) => {
-        const workspacePath = path.join(process.cwd(), "workspace");
-        loadDir(workspacePath, workspacePath)
-            .then((folders) => {
-                msg.data = folders;
-                this.ws.send(JSON.stringify(msg));
-        })
-        .catch((err) => {
+        loadWorkspace().then((folders) => {
+            msg.type = "workspaces";
+            msg.data = folders;
+            this.ws.send(JSON.stringify(msg));
+        }) .catch((err) => {
             this.ws.send(JSON.stringify({ type: "error", data: err.message }));
         });
     }

@@ -1,7 +1,6 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 
-import {Plus, Trash} from "react-bootstrap-icons";
-import {FileBrowser} from "sample-ui-component-library";
+import {Trash} from "react-bootstrap-icons";
 
 import splashScreen from "../../Assets/splash_screen.png";
 import {useWorkspace} from "../../Providers/GlobalProviders";

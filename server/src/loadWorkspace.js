@@ -9,7 +9,7 @@ import { randomUUID } from 'crypto';
  * @param {String} Path to the directory being read.
  * @returns {Object} Directory JSON
  */
-const loadDir = async function (rootPath, folderPath) {
+const loadDirRecursive = async function (rootPath, folderPath) {
     const entries = await fs.readdir(folderPath, { withFileTypes: true });
 
     return Promise.all(entries.map(async (entry) => {
@@ -41,4 +41,14 @@ const loadDir = async function (rootPath, folderPath) {
     }));
 };
 
-export default loadDir;
+const loadWorkspace = async function () {
+    const workspacePath = path.join(process.cwd(), "workspace");
+    return new Promise((resolve, reject) => {
+        loadDirRecursive(workspacePath, workspacePath)
+            .then((folders) => resolve(folders))
+            .catch((err) => reject(err));
+    });
+};
+
+
+export default loadWorkspace;
