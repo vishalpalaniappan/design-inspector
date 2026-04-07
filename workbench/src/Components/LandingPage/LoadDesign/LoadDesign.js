@@ -45,7 +45,7 @@ export function LoadDesign () {
                 }
             }
         }
-    }, [workspace, setSelectedDesign, loadDesign]);
+    }, [workspace, setSelectedDesign, sendMessage]);
 
     const newDesign = useCallback((e) => {
         e.stopPropagation();
@@ -54,13 +54,13 @@ export function LoadDesign () {
         const fName = fileName.endsWith(".dal") ? fileName : fileName + ".dal";
         sendMessage("create_design", {"fileName": fName});
         setFileName("");
-    }, [fileName]);
+    }, [fileName, sendMessage]);
 
     const deleteDesign = useCallback((e) => {
         e.stopPropagation();
         e.preventDefault();
         sendMessage("delete_design", {"fileName": selectedDesign.name});
-    }, [selectedDesign]);
+    }, [selectedDesign, sendMessage]);
 
     const selectFile = (e, design) => {
         e.stopPropagation();
@@ -70,7 +70,7 @@ export function LoadDesign () {
     const loadDesign = useCallback(() => {
         if (!selectedDesign) return;
         sendMessage("load_design", {"fileName": selectedDesign.name});
-    }, [selectedDesign]);
+    }, [selectedDesign, sendMessage]);
 
 
     return (
