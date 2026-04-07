@@ -33,7 +33,6 @@ export function LandingPage () {
     const newDesign = useCallback((e) => {
         e.stopPropagation();
         e.preventDefault();
-        console.log("Creating new design:", fileName);
         sendJsonMessage({
             type: "create_design",
             payload: {
