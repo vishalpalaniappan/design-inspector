@@ -39,11 +39,16 @@ export function LandingPage() {
                         </div>
                     </div>
                     <div className="button-row">
-                        <div className="open-btn">
-                            <PlusSquare />
+                        <div className="buttons-left">
+                            <div className="icon-btn">
+                                <PlusSquare />
+                            </div>
+                            <div className="icon-btn">
+                                <Trash />
+                            </div>
                         </div>
-                        <div className="open-btn">
-                            <Trash />
+                        <div className="buttons-right">
+                            <span className="open-button">Open Design</span>
                         </div>
                     </div>
                 </div>
