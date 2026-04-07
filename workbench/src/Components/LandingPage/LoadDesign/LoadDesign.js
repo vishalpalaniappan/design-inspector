@@ -19,6 +19,13 @@ export function LoadDesign () {
     const {sendJsonMessage} = useContext(ServerContext);
     const [fileName, setFileName] = useState("");
 
+    const sendMessage = useCallback((type, payload) => {
+        sendJsonMessage({
+            type: type,
+            payload: payload,
+        });
+    }, [sendJsonMessage]);
+
     useEffect(() => {
         if (workspace) {
             setDesigns(workspace.map((item) => {
@@ -40,13 +47,6 @@ export function LoadDesign () {
             }
         }
     }, [workspace, setSelectedDesign, loadDesign]);
-
-    const sendMessage = useCallback((type, payload) => {
-        sendJsonMessage({
-            type: type,
-            payload: payload,
-        });
-    }, [sendJsonMessage]);
 
     const newDesign = useCallback((e) => {
         e.stopPropagation();
