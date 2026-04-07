@@ -32,6 +32,47 @@
     display: flex;
     flex-direction: column;
 
+    .create-design-row {
+        display:flex;
+        flex-direction:row;
+        padding: 0 20px;
+        align-items: center;
+        margin-bottom: 10px;
+
+        .file-name-input {
+            flex:1;
+            font-size: 14px;
+            border: none;
+            background: none;
+            border: solid 1px #3d526f;
+            color:white;
+            padding: 3px;
+            border-radius: 0px;
+        }
+
+        .file-name-input::placeholder {
+            color: #576f92;
+            font-size:12px;
+        }
+
+        .create-btn {
+            font-family: "Inter", sans-serif;
+            color:#6a88b3;
+            display:flex;
+            align-items: center;
+            cursor: pointer;
+            padding:0 5px;
+
+            .btn-icon {
+                font-size: 24px;
+            }
+        }
+
+        .create-btn:hover {
+            color: #e6edf3;
+        }
+    }
+
     .title-container {
         font-family: "Inter", sans-serif;
         font-size: 32px;

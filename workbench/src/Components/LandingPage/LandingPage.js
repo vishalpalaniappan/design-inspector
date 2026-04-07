@@ -1,9 +1,10 @@
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 
-import {PlusSquare, Trash} from "react-bootstrap-icons";
+import {Plus, Trash} from "react-bootstrap-icons";
 
 import splashScreen from "../../Assets/splash_screen.png";
-import { useWorkspace } from "../../Providers/GlobalProviders";
+import {useWorkspace} from "../../Providers/GlobalProviders";
+import ServerContext from "../../Providers/ServerContext";
 
 import "./LandingPage.scss";
 
@@ -15,6 +16,7 @@ export function LandingPage () {
     const {workspace} = useWorkspace();
     const [designs, setDesigns] = useState([]);
     const [selectedDesign, setSelectedDesign] = useState(null);
+    const {sendJsonMessage} = useContext(ServerContext);
 
     useEffect(() => {
         if (workspace) {
@@ -26,6 +28,14 @@ export function LandingPage () {
             }));
         }
     }, [workspace]);
+
+    const newDesign = useCallback(() => {
+        console.log("Creating new design...");
+    }, []);
+
+    const deleteDesign = useCallback(() => {
+        console.log("Deleting selected design...");
+    }, []);
 
 
     const selectFile = (e, design) => {
@@ -42,7 +52,17 @@ export function LandingPage () {
                     <div className="title-container">
                         Design Workbench
                     </div>
-                    <div className="subtitle">Select Design</div>
+                    <div className="create-design-row">
+                        <span></span>
+                        <input 
+                            className="file-name-input"
+                            placeholder="Enter design name...">
+
+                        </input>
+                        <div className="create-btn" onClick={newDesign}>
+                            <span> + Create</span>
+                        </div>
+                    </div>
                     <div className="file-selector-container"
                         onClick={(e) => selectFile(e, null)}>
                         <div className="files">
@@ -60,10 +80,7 @@ export function LandingPage () {
                     <div className="button-row">
                         <div className="buttons-left">
                             <div className="icon-btn">
-                                <PlusSquare />
-                            </div>
-                            <div className="icon-btn">
-                                <Trash />
+                                <Trash onClick={newDesign} />
                             </div>
                         </div>
                         <div className="buttons-right">
