@@ -69,23 +69,17 @@ export function LandingPage () {
                     <img src={splashScreen} alt="Blueprint city" />
                 </div>
                 <div className="right">
-                    <div className="title-container">
-                        Design Workbench
-                    </div>
+                    <div className="title-container">Design Workbench</div>
                     <div className="create-design-row">
-                        <span></span>
                         <input
                             className="file-name-input"
                             placeholder="Enter design name..."
                             value={fileName}
                             onChange={(e) => setFileName(e.target.value)}
                         />
-                        <div className="create-btn" onClick={newDesign}>
-                            <span> + Create</span>
-                        </div>
+                        <div className="create-btn" onClick={newDesign}>+ Create</div>
                     </div>
-                    <div className="file-selector-container"
-                        onClick={(e) => selectFile(e, null)}>
+                    <div className="file-selector-container" onClick={(e) => selectFile(e, null)}>
                         <div className="files">
                             {designs.map((design) => (
                                 <div key={design.uid}
@@ -105,7 +99,7 @@ export function LandingPage () {
                             </div>
                         </div>
                         <div className="buttons-right">
-                            <span className="open-button" onClick={loadDesign}>Open Design</span>
+                            <span className="open-btn" onClick={loadDesign}>Open Design</span>
                         </div>
                     </div>
                 </div>

@@ -155,13 +155,13 @@
         .buttons-right {
             display: flex;
             flex-direction: row;
-            .open-button{
+            .open-btn{
                 padding:5px;
                 font-family: "Inter", sans-serif;
                 color:rgb(196, 196, 196);
                 cursor: pointer;
             }
-            .open-button:hover{
+            .open-btn:hover{
                 color:white;
             }   
         }
