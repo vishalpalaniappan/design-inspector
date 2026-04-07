@@ -9,7 +9,7 @@ import GlobalProviders from "./Providers/GlobalProviders";
 import {store} from "./Store/store";
 
 import "./App.scss";
-import { MappingInfo } from "./Components/MappingInfo/MappingInfo";
+import { LandingPage } from "./Components/LandingPage/LandingPage";
 
 /**
  * Renders the application.
@@ -65,7 +65,8 @@ export function App () {
             <LayoutEventProvider>
                 <GlobalProviders>
                     <div className="app-container">
-                        <LayoutManager registry={registry} ldf={layout}/>
+                        <LandingPage />
+                        {/* <LayoutManager registry={registry} ldf={layout}/> */}
                     </div>
                 </GlobalProviders>
             </LayoutEventProvider>

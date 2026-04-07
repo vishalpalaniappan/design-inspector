@@ -43,6 +43,10 @@ module.exports = {
                 type: "asset/resource",
                 dependency: {not: ["url"]},
             },
+            {
+                test: /\.png$/,
+                type: "asset/resource",
+            },
         ],
     },
     resolve: {
