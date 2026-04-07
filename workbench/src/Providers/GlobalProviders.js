@@ -118,6 +118,12 @@ function GlobalProviders ({children}) {
         if (files.length > 0) {
             dispatch(setActiveTab(files[0].uid));
         }
+
+        const params = new URLSearchParams(window.location.search);
+        params.set("design", design.fileName);
+        const newUrl = `${window.location.pathname}?${params.toString()}`;
+        window.history.pushState({}, "", newUrl);
+
         dispatch(setDesignLoaded(true));
     }, [design, engine]);
 
