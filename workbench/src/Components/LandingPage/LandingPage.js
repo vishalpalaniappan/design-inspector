@@ -30,28 +30,26 @@ export function LandingPage () {
         }
     }, [workspace]);
 
+    const sendMessage = useCallback((type, payload) => {
+        sendJsonMessage({
+            type: type,
+            payload: payload,
+        });
+    }, [sendJsonMessage]);
+
     const newDesign = useCallback((e) => {
         e.stopPropagation();
         e.preventDefault();
         if (!fileName) return;
-        sendJsonMessage({
-            type: "create_design",
-            payload: {
-                "fileName": fileName.endsWith(".dal") ? fileName : fileName + ".dal",
-            },
-        });
+        const fName = fileName.endsWith(".dal") ? fileName : fileName + ".dal";
+        sendMessage("create_design", {"fileName": fName});
         setFileName("");
     }, [fileName]);
 
     const deleteDesign = useCallback((e) => {
         e.stopPropagation();
         e.preventDefault();
-        sendJsonMessage({
-            type: "delete_design",
-            payload: {
-                "fileName": selectedDesign.name,
-            },
-        });
+        sendMessage("delete_design", {"fileName": selectedDesign.name});
     }, [selectedDesign]);
 
     const selectFile = (e, design) => {
@@ -61,12 +59,7 @@ export function LandingPage () {
 
     const loadDesign = useCallback(() => {
         if (!selectedDesign) return;
-        sendJsonMessage({
-            type: "load_design",
-            payload: {
-                "fileName": selectedDesign.name,
-            },
-        });
+        sendMessage("load_design", {"fileName": selectedDesign.name});
     }, [selectedDesign]);
 
     return (
