@@ -24,18 +24,10 @@ export function LandingPage() {
                     <div className="subtitle">Select Design</div>
                     <div className="file-selector-container">
                         <div className="files">
-                            <div className="file">Design 1</div>
-                            <div className="file">Design 2</div>
-                            <div className="file">Design 3</div>
-                            <div className="file">Design 1</div>
-                            <div className="file">Design 2</div>
-                            <div className="file">Design 3</div>
-                            <div className="file">Design 1</div>
-                            <div className="file">Design 2</div>
-                            <div className="file">Design 3</div>
-                            <div className="file">Design 1</div>
-                            <div className="file">Design 2</div>
-                            <div className="file">Design 3</div>
+                            <div className="file">Library Manager</div>
+                            <div className="file">Bubble Sort</div>
+                            <div className="file">Ticketing System</div>
+                            <div className="file">Render Farm</div>
                         </div>
                     </div>
                     <div className="button-row">
