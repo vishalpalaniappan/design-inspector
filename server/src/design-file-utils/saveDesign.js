@@ -1,8 +1,8 @@
 import fs from 'fs/promises';
-import path from "node:path";
 import {DALEngine} from "dal-engine-core-js-lib-dev";
 import statementMappingRunner from '../runners/statementMappingRunner.js';
 import { resolveDesignPath } from "./validateDesignName.js";
+import loadDesignInPlayground from './loadDesignInPlayground.js';
 
 /**
  * Saves the design to the workspace. However, it first checks
@@ -45,6 +45,9 @@ async function saveDesign(designName,  data) {
 
         const serializedEngine = engine.serialize();
         await fs.writeFile(filePath, serializedEngine);
+
+        // Write engine files to playground folder
+        await loadDesignInPlayground(engine.getFiles());
 
         return {
             files: engine.getFiles()
