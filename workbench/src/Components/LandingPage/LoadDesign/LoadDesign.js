@@ -20,6 +20,7 @@ export function LoadDesign () {
     const [fileName, setFileName] = useState("");
     const [error, setErrror] = useState(null);
 
+    // Helper function to send messages to server
     const sendMessage = useCallback((type, payload) => {
         sendJsonMessage({
             type: type,
@@ -27,6 +28,7 @@ export function LoadDesign () {
         });
     }, [sendJsonMessage]);
 
+    // Update designs when workspace changes and check design to load from URL
     useEffect(() => {
         if (workspace) {
             setDesigns(workspace.filter((item) =>
@@ -46,14 +48,15 @@ export function LoadDesign () {
         }
     }, [workspace, setSelectedDesign, sendMessage]);
 
+    // Create design (workspace is updated after creation by server)
     const newDesign = useCallback((e) => {
         e.stopPropagation();
         e.preventDefault();
         setErrror(null);
         if (!fileName) return;
         const fName = fileName.endsWith(".dal") ? fileName : fileName + ".dal";
-        const exists = designs.some((design) => design.name === fName);
-        if (exists) {
+        const fExists = designs.some((design) => design.name === fName);
+        if (fExists) {
             setErrror(`Design named ${fName} already exists`);
             return;
         }
@@ -61,6 +64,7 @@ export function LoadDesign () {
         setFileName("");
     }, [fileName, sendMessage]);
 
+    // Delete the design from server (workspace is updated after deletion)
     const deleteDesign = useCallback((e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -68,6 +72,7 @@ export function LoadDesign () {
         sendMessage("delete_design", {"fileName": selectedDesign.name});
     }, [selectedDesign, sendMessage]);
 
+    // Select file and load if flag is set (ex. double click)
     const selectFile = (e, design, load) => {
         e.stopPropagation();
         setSelectedDesign(design);
@@ -76,6 +81,7 @@ export function LoadDesign () {
         }
     };
 
+    // Load selected design from server
     const loadDesign = useCallback(() => {
         if (!selectedDesign) return;
         sendMessage("load_design", {"fileName": selectedDesign.name});
