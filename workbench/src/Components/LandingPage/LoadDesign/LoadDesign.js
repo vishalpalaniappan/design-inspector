@@ -10,7 +10,8 @@ import {setDesignLoaded} from "../../../Store/appSlice";
 import "./LoadDesign.scss";
 
 /**
- * Landing page of the viewer component.
+ * Presents the user with the option to load, create or delete
+ * a design from the server. Also shows a nice splash screen :)
  * @return {JSX.Element}
  */
 export function LoadDesign () {
