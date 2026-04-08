@@ -9,6 +9,7 @@ try {
     await init();
 } catch (err) {
     console.error("Error during initialization:", err);
+    process.exit(1);
 }
 
 //Port on which the http and websocket connections are established
