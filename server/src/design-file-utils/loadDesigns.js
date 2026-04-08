@@ -9,6 +9,12 @@ import { randomUUID } from 'crypto';
 async function loadDesigns() {
     try {
         const workspacePath = path.join(process.cwd(), "workspace");
+        try {
+            await fs.mkdir(workspacePath, { recursive: true });
+        } catch (err) {
+            // Directory exists.
+        }
+
         const entries = await fs.readdir(workspacePath, { withFileTypes: true });
 
         // Note: The reason I am saying path is simply the name is that the designs
