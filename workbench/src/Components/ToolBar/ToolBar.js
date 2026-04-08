@@ -51,14 +51,14 @@ export function ToolBar () {
         if (sendJsonMessage && engine) {
             if (hasEntryPoint) {
                 sendJsonMessage({
-                    type: "terminal_input",
-                    data: engine.implementation.getEntryPoint() + "\n",
+                    type: "terminal_run_entry_point",
+                    data: engine.implementation.getEntryPoint(),
                 });
             } else {
                 const failureMsg = "Failed to run design. Please ensure an entry point is set.";
                 sendJsonMessage({
-                    type: "terminal_input",
-                    data: `echo "${failureMsg}"\n\r`,
+                    type: "terminal_run_entry_point",
+                    data: `echo "${failureMsg}"`,
                 });
             }
         }

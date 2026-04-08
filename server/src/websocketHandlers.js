@@ -36,7 +36,8 @@ export class  WSMessageHandler {
             terminal_resize: this.onTerminalResize.bind(this),
             create_design: this.createDesign.bind(this),
             delete_design: this.deleteDesign.bind(this),
-            load_design: this.loadDesign.bind(this)
+            load_design: this.loadDesign.bind(this),
+            terminal_run_entry_point: this.onTerminalRunEntryPoint.bind(this),
         };
     }
 
@@ -144,5 +145,12 @@ export class  WSMessageHandler {
 
     onTerminalInput = (msg) => {
         this.terminal.write(msg.data);
+    }
+
+    onTerminalRunEntryPoint = (msg) => {
+        this.terminal.write("\x03");
+        setTimeout(() => {
+            this.terminal.write(`${msg.data}\r`);
+        }, 50);
     }
 }
