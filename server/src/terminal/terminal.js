@@ -1,6 +1,10 @@
 import pty from "node-pty";
 import os from "os";
 import { EventEmitter } from "events";
+import path from "node:path";
+
+const playgroundPath = path.join(process.cwd(), "playground");
+const bashRcFile = path.join(process.cwd(), "terminal.bashrc");
 
 /**
  * Class to interface with terminal. It exposes functions
@@ -18,7 +22,7 @@ export class TerminalSession extends EventEmitter {
             ? "powershell.exe"
             : process.env.SHELL || "bash");
 
-        this.cwd = options.cwd || process.cwd();
+        this.cwd = options.cwd || playgroundPath;
         this.env = options.env || process.env;
         this.cols = options.cols || 80;
         this.rows = options.rows || 24;
@@ -30,7 +34,7 @@ export class TerminalSession extends EventEmitter {
     start() {
         if (this.ptyProcess) return; 
 
-        this.ptyProcess = pty.spawn("/bin/bash", ["--rcfile", "./terminal.bashrc", "-i"], {
+        this.ptyProcess = pty.spawn("/bin/bash", ["--rcfile", bashRcFile, "-i"], {
             name: this.name,
             cwd: this.cwd,
             env: this.env,

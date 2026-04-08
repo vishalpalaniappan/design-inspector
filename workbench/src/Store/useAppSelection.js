@@ -8,6 +8,7 @@ import {
     selectAppMode,
     selectCounter,
     selectDesignLoaded,
+    selectHasEntryPoint,
     selectLastSaved,
     selectSelectedBehaviorId,
     selectSelectedGraphId,
@@ -286,4 +287,18 @@ export const useDesignLoaded = () => {
     return useMemo(() => {
         return designLoaded;
     }, [designLoaded]);
+};
+
+
+/**
+ * Returns whether the design has an entry point.
+ * @return {Boolean}
+ */
+export const useHasEntryPoint = () => {
+    const hasEntryPoint = useSelector(selectHasEntryPoint);
+    const counter = useSelector(selectCounter);
+
+    return useMemo(() => {
+        return hasEntryPoint;
+    }, [hasEntryPoint, counter]);
 };

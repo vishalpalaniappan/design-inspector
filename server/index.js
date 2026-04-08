@@ -3,6 +3,14 @@ import path from "node:path";
 import http from "node:http";
 import handleWSConnection from "./src/websocket.js";
 import { server as WebSocketServer } from "websocket";
+import init from "./init.js";
+
+try {
+    await init();
+} catch (err) {
+    console.error("Error during initialization:", err);
+    process.exit(1);
+}
 
 //Port on which the http and websocket connections are established
 const PORT = 3002;
@@ -29,4 +37,3 @@ wsServer.on('request', function(request) {
     console.log((new Date()) + ' Recieved a new connection from origin ' + request.origin + '.');
     handleWSConnection(request);
 });
-

@@ -1,8 +1,8 @@
 import fs from 'fs/promises';
-import path from "node:path";
 import {DALEngine} from "dal-engine-core-js-lib-dev";
 import statementMappingRunner from '../runners/statementMappingRunner.js';
 import { resolveDesignPath } from "./validateDesignName.js";
+import loadDesignInPlayground from './loadDesignInPlayground.js';
 
 /**
  * Saves the design to the workspace. However, it first checks
@@ -43,14 +43,27 @@ async function saveDesign(designName,  data) {
             file.content = file.updatedContent;
         });
 
+        // Write engine files to playground folder
+        await loadDesignInPlayground(engine.getFiles());
+
         const serializedEngine = engine.serialize();
         await fs.writeFile(filePath, serializedEngine);
 
         return {
             files: engine.getFiles()
         };
-    } catch (err) {
-        throw err;
+    } catch (writeErr) {
+        // File write failed; Restore playground from disk so they stay in sync.
+        // this is the same effect as reloading the application
+        try {
+            const diskData = await fs.readFile(filePath, 'utf-8');
+            const diskEngine = new DALEngine({ name: designName, description: "Default engine" });
+            diskEngine.deserialize(diskData);
+            await loadDesignInPlayground(diskEngine.getFiles());
+        } catch (recoveryErr) {
+            console.error("Playground recovery failed:", recoveryErr);
+        }
+        throw writeErr; 
     }
 }
 

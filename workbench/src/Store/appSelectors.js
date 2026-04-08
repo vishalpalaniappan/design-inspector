@@ -9,3 +9,4 @@ export const selectLastSaved = (state) => state.app.lastSaved;
 export const selectAppMode = (state) => state.app.appMode;
 export const selectSelectedMappingId = (state) => state.app.selectedMapping;
 export const selectDesignLoaded = (state) => state.app.designLoaded;
+export const selectHasEntryPoint = (state) => state.app.hasEntryPoint;

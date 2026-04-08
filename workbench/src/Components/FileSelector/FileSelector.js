@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useRef} from "react";
 
-import {Floppy, PlusSquare, Trash} from "react-bootstrap-icons";
+import {Floppy, PlusSquare, TerminalPlus, Trash} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 import {FileBrowser} from "sample-ui-component-library";
 import {useModalManager} from "ui-layout-manager-dev";
@@ -9,6 +9,7 @@ import {useDalEngine} from "../../Providers/GlobalProviders";
 import {setActiveTab, setStatusMsg} from "../../Store/appSlice";
 import {deleteFileThunk} from "../../Store/appThunk";
 import {useActiveTab, useEngineFiles} from "../../Store/useAppSelection";
+import {AddEntryPoint} from "../Modals/AddEntryPoint";
 import {AddFile} from "../Modals/AddFile";
 
 import "./FileSelector.scss";
@@ -68,15 +69,27 @@ export function FileSelector () {
         }
     }, [engine, dispatch]);
 
+    const setEntryPoint = useCallback(() => {
+        openModal({
+            title: "Add Entry Point",
+            render: ({close}) => {return <AddEntryPoint close={close} />;},
+        });
+    }, []);
+
     return (
         <div className="filebrowser-container">
             <div className="browser-container">
                 <FileBrowser ref={fileBrowserRef} onSelectFile={onSelectFile}/>
             </div>
             <div className="menu">
-                <Floppy onClick={saveFiles} className="icon"/>
-                <PlusSquare onClick={createFile} className="icon"/>
-                <Trash onClick={deleteFile} className="icon"/>
+                <div className="left-menu">
+                    <TerminalPlus onClick={setEntryPoint} className="icon"/>
+                </div>
+                <div className="right-menu">
+                    <Floppy onClick={saveFiles} className="icon"/>
+                    <PlusSquare onClick={createFile} className="icon"/>
+                    <Trash onClick={deleteFile} className="icon"/>
+                </div>
             </div>
         </div>
     );
