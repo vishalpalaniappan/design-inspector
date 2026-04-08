@@ -1,17 +1,22 @@
 import fs from 'fs/promises';
 import path from "node:path";
 
-async function loadDesign(fileName) {
+/**
+ * Loads a design from the workspace with the given name.
+ * @param {String} designName 
+ * @returns {Object} Design data including fileName, path and data.
+ */
+async function loadDesign(designName) {
     try {
-        if (!fileName) {
-            console.error("File name is required to load a design.");
+        if (!designName) {
+            console.error("Design name is required to load a design.");
             return;
         }
         const workspacePath = path.join(process.cwd(), "workspace");
-        const filePath = path.join(workspacePath, fileName);
+        const filePath = path.join(workspacePath, designName);
         const data = await fs.readFile(filePath, "utf-8");
         return {
-            fileName: fileName,
+            fileName: designName,
             path: filePath,
             data: data
         };
