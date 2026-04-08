@@ -85,6 +85,9 @@ function GlobalProviders ({children}) {
         termWriteRef.current = fn;
     };
 
+    // When a design is saved, the server sends back the updated content
+    // and mapping of the saved files in the design, this function saves
+    // those changes to the engien instance.
     const loadSavedDesign = useCallback((files) => {
         if (!engineRef.current) return;
         files.forEach((file) => {
@@ -92,7 +95,8 @@ function GlobalProviders ({children}) {
                 (f) => f.name === file.name
             );
             if (engineFile) {
-                engineFile.content = file.updatedContent;
+                engineFile.updatedContent = file.updatedContent;
+                engineFile.content = file.content;
                 engineFile.mapping = file.mapping;
             }
         });
