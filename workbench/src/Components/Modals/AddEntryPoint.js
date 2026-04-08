@@ -39,12 +39,9 @@ export function AddEntryPoint ({close}) {
 
     const handleSubmit = useCallback(() => {
         try {
-            engine.implementation.setEntryPoint(entryPoint);
-            if (entryPoint.trim() === "") {
-                dispatch(setHasEntryPointThunk(false));
-            } else {
-                dispatch(setHasEntryPointThunk(true));
-            }
+            const normalizedEntryPoint = entryPoint.trim();
+            engine.implementation.setEntryPoint(normalizedEntryPoint);
+            dispatch(setHasEntryPointThunk(normalizedEntryPoint.length > 0));
             close();
         } catch (err) {
             setError(err.toString());
