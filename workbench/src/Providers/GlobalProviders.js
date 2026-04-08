@@ -6,10 +6,12 @@ import useWebSocket, {ReadyState} from "react-use-websocket";
 
 import {setActiveTab, setLastSaved} from "../Store/appSlice";
 import {setStatusMsg} from "../Store/appSlice";
+import {setDesignLoaded} from "../Store/appSlice";
 import engine from "./DalEngine";
 import DalEngineContext from "./DalEngineContext";
 import ServerContext from "./ServerContext";
 import TerminalContext from "./TerminalContext";
+import WorkspaceContext from "./WorkspaceContext";
 
 GlobalProviders.propTypes = {
     children: PropTypes.node,
@@ -22,6 +24,7 @@ GlobalProviders.propTypes = {
  */
 function GlobalProviders ({children}) {
     const [workspace, setWorkspace] = useState();
+    const [design, setDesign] = useState();
     const termWriteRef = useRef(null);
     const engineRef = useRef(null);
 
@@ -49,6 +52,9 @@ function GlobalProviders ({children}) {
             case "workspaces":
                 setWorkspace(msg.data);
                 break;
+            case "load_design":
+                setDesign(msg.data);
+                break;
             case "terminal_output":
                 termWriteRef.current?.(msg.data);
                 break;
@@ -59,6 +65,9 @@ function GlobalProviders ({children}) {
                 break;
             case "design_save_failed":
                 dispatch(setStatusMsg("Failed to save design."));
+                break;
+            case "error":
+                console.error("Error message from server:", msg.data);
                 break;
             default:
                 break;
@@ -79,6 +88,9 @@ function GlobalProviders ({children}) {
         termWriteRef.current = fn;
     };
 
+    // When a design is saved, the server sends back the updated content
+    // and mapping of the saved files in the design, this function saves
+    // those changes to the engien instance.
     const loadSavedDesign = useCallback((files) => {
         if (!engineRef.current) return;
         files.forEach((file) => {
@@ -87,6 +99,7 @@ function GlobalProviders ({children}) {
             );
             if (engineFile) {
                 engineFile.content = file.updatedContent;
+                engineFile.updatedContent = file.updatedContent;
                 engineFile.mapping = file.mapping;
             }
         });
@@ -99,25 +112,27 @@ function GlobalProviders ({children}) {
             type: "save_engine",
             payload: {
                 "data": engineRef.current.serialize(),
-                "fileName": "engine.dal",
+                "fileName": design.fileName,
             },
         });
-    }, [sendJsonMessage]);
+    }, [sendJsonMessage, design]);
 
     // When the workspace is first loaded, find the engine and deserialize it.
     useEffect(() => {
-        if (!workspace) return;
-
-        const file = workspace.find((file) => file.name === "engine.dal");
-        if (!file) return;
-
-        engine.deserialize(file.content);
+        if (!design) return;
+        engine.deserialize(design.data);
         const files = engine.getFiles();
         if (files.length > 0) {
             dispatch(setActiveTab(files[0].uid));
         }
-        console.log("Engine loaded: ", engine);
-    }, [workspace, engine]);
+
+        const params = new URLSearchParams(window.location.search);
+        params.set("design", design.fileName);
+        const newUrl = `${window.location.pathname}?${params.toString()}`;
+        window.history.pushState({}, "", newUrl);
+
+        dispatch(setDesignLoaded(true));
+    }, [design, engine]);
 
     // Set the engine ref and save fn for use in msg handler and other contexts.
     useEffect(() => {
@@ -127,13 +142,15 @@ function GlobalProviders ({children}) {
 
     return (
         // eslint-disable-next-line max-len
-        <DalEngineContext.Provider value={{engine}}>
-            <TerminalContext.Provider value={{setTermWriter}}>
-                <ServerContext.Provider value={{sendJsonMessage, messageHistory, connectionStatus}}>
-                    {children}
-                </ServerContext.Provider>
-            </TerminalContext.Provider>
-        </DalEngineContext.Provider>
+        <ServerContext.Provider value={{sendJsonMessage, messageHistory, connectionStatus}}>
+            <DalEngineContext.Provider value={{engine}}>
+                <WorkspaceContext.Provider value={{workspace}}>
+                    <TerminalContext.Provider value={{setTermWriter}}>
+                        {children}
+                    </TerminalContext.Provider>
+                </WorkspaceContext.Provider>
+            </DalEngineContext.Provider>
+        </ServerContext.Provider>
     );
 };
 
@@ -141,6 +158,15 @@ export const useDalEngine = function () {
     const context = useContext(DalEngineContext);
     if (!context) {
         throw new Error("useDalEngine must be used within a GlobalProvider");
+    }
+    return context;
+};
+
+
+export const useWorkspace = function () {
+    const context = useContext(WorkspaceContext);
+    if (!context) {
+        throw new Error("useWorkspace must be used within a GlobalProvider");
     }
     return context;
 };
