@@ -52,13 +52,18 @@ async function saveDesign(designName,  data) {
         return {
             files: engine.getFiles()
         };
-    } catch (err) {
-        // TODO: If the write fails, load the design currently on file and write to
-        // playground so that it contains the latest files in the engine as stored on
-        // the disk (undoing the load design in playground with the unsaved changes).
-        // Not implementing it now because its not critical and the user can simply 
-        // reload the design to achieve the same effect.
-        throw err;
+    } catch (writeErr) {
+        // File write failed; Restore playground from disk so they stay in sync.
+        // this is the same effect as reloading the application
+        try {
+            const diskData = await fs.readFile(filePath, 'utf-8');
+            const diskEngine = new DALEngine({ name: designName, description: "Default engine" });
+            diskEngine.deserialize(diskData);
+            await loadDesignInPlayground(diskEngine.getFiles());
+        } catch (recoveryErr) {
+            console.error("Playground recovery failed:", recoveryErr);
+        }
+        throw writeErr; 
     }
 }
 
