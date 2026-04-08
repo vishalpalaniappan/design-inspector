@@ -15,7 +15,14 @@ export function resolveDesignPath(designName) {
     // if (!VALID_NAME.test(designName)) {
     //     throw new Error("Invalid design name. Only alphanumeric characters, underscores, hyphens and the .dal extension are allowed.");
     // }
+
+    if (path.basename(designName) !== designName || !designName.endsWith(".dal")) {
+        throw new Error("Invalid design name.");
+    }
+    
     const filePath = path.resolve(WORKSPACE, designName);
+
+    // This check might be redundant with the path.basename check, but it's an extra layer of security that I'll keep.
     if (!filePath.startsWith(WORKSPACE + path.sep)) {
         throw new Error("Invalid design name.");
     }
