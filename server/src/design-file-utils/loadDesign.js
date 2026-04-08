@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from "node:path";
 
-async function loadFile(fileName) {
+async function loadDesign(fileName) {
     try {
         if (!fileName) {
             console.error("File name is required to load a design.");
@@ -19,4 +19,4 @@ async function loadFile(fileName) {
         console.error(err);
     }
 }
-export default loadFile;
+export default loadDesign;

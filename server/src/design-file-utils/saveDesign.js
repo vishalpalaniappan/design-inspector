@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from "node:path";
 import {DALEngine} from "dal-engine-core-js-lib-dev";
-import getMapping from './getMapping.js';
+import getMapping from '../getMapping.js';
 
 async function saveDesign(fileName, folderPath, data) {
     const filePath = path.join(folderPath, fileName);

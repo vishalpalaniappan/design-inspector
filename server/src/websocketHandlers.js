@@ -1,9 +1,9 @@
 import { TerminalSession } from "./terminal.js";
-import saveDesign from "./saveDesign.js";
-import loadWorkspace from "./loadWorkspace.js"
-import createDesign from "./createDesign.js";
-import deleteFile from "./deleteFile.js";
-import loadFile from "./loadFile.js";
+import createDesign from "./design-file-utils/createDesign.js";
+import deleteDesign from "./design-file-utils/deleteDesign.js";
+import loadDesigns from "./design-file-utils/loadDesigns.js"
+import loadDesign from "./design-file-utils/loadDesign.js";
+import saveDesign from "./design-file-utils/saveDesign.js";
 
 export class  WSMessageHandler {
     constructor(ws) {
@@ -59,19 +59,8 @@ export class  WSMessageHandler {
             return;
         }
 
-        loadWorkspace().then((folders) => {
-            msg.type = "workspaces";
-            msg.data = folders;
-            this.ws.send(JSON.stringify(msg));
-        }) .catch((err) => {
-            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
-        });
-    }
-
-    deleteDesign = async (msg) => {
         try {
-            await deleteFile(msg.payload.fileName);
-            const folders = await loadWorkspace();
+            const folders = await loadDesigns();
             msg.type = "workspaces";
             msg.data = folders;
             this.ws.send(JSON.stringify(msg));
@@ -80,19 +69,32 @@ export class  WSMessageHandler {
         }
     }
 
-    loadDesign = (msg) => {
-        loadFile(msg.payload.fileName).then((file) => {
+    deleteDesign = async (msg) => {
+        try {
+            await deleteDesign(msg.payload.fileName);
+            const folders = await loadDesigns();
+            msg.type = "workspaces";
+            msg.data = folders;
+            this.ws.send(JSON.stringify(msg));
+        } catch (err) {
+            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+        }
+    }
+
+    loadDesign = async (msg) => {
+        try {
+            const file = await loadDesign(msg.payload.fileName)
             msg.type = "load_design";
             msg.data = file;
             this.ws.send(JSON.stringify(msg));
-        }) .catch((err) => {
+        } catch (err) {
             this.ws.send(JSON.stringify({ type: "error", data: err.message }));
-        });
+        }
     }
 
     workspaces = async (msg) => {
         try {
-            const folders = await loadWorkspace();
+            const folders = await loadDesigns();
             msg.type = "workspaces";
             msg.data = folders;
             this.ws.send(JSON.stringify(msg));

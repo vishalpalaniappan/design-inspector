@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from "node:path";
 
-async function deleteFile(fileName) {
+async function deleteDesign(fileName) {
     try {
         if (!fileName) {
             console.error("File name is required to delete a design.");
@@ -10,7 +10,7 @@ async function deleteFile(fileName) {
         const filePath = path.join(process.cwd(), "workspace", fileName);
         await fs.unlink(filePath);
     } catch (err) {
-        console.error(err);
+        throw new Error(err);
     }
 }
-export default deleteFile;
+export default deleteDesign;
