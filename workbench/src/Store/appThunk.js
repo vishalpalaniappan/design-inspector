@@ -5,6 +5,7 @@ import {incrementCounter} from "./appSlice";
 import {setSelectedParticipant} from "./appSlice";
 import {setSelectedBehavior} from "./appSlice";
 import {setSelectedInvariant} from "./appSlice";
+import {setHasEntryPoint} from "./appSlice";
 
 /**
  * Called to delete a file given a file ID.
@@ -304,5 +305,16 @@ export const mapAbstractionThunk = ({absId, varName}) => (dispatch, getState, {e
         abstractionId: absId,
         variableName: varName,
     });
+    dispatch(incrementCounter());
+};
+
+/**
+ * Sets whether the design has an entry point, which enables or disables the run
+ * button and functionality.
+ * @param {Boolean} hasEntryPoint Whether the design has an entry point.
+ * @return {Function} Thunk function.
+ */
+export const setHasEntryPointThunk = (hasEntryPoint) => (dispatch, getState, {engine}) => {
+    dispatch(setHasEntryPoint(hasEntryPoint));
     dispatch(incrementCounter());
 };
