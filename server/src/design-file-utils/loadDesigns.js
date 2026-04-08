@@ -1,6 +1,6 @@
 import path from "node:path";
 import fs from 'fs/promises';
-import { initWorkspaceFolder } from "./initFolders";
+import { initWorkspaceFolder } from './initFolders.js';
 
 /**
  * Returns the list of designs in the workspace.
