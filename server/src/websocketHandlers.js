@@ -1,4 +1,4 @@
-import { TerminalSession } from "./terminal.js";
+import { TerminalSession } from "./terminal/terminal.js";
 import createDesign from "./design-file-utils/createDesign.js";
 import deleteDesign from "./design-file-utils/deleteDesign.js";
 import loadDesigns from "./design-file-utils/loadDesigns.js"
