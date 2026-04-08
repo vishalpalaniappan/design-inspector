@@ -14,8 +14,15 @@ async function createDesign(fileName) {
         });
         const workspacePath = path.join(process.cwd(), "workspace");
         const name = path.join(workspacePath, fileName);
-        console.log(name);
-        await fs.writeFile(name, engine.serialize());
+
+        try {
+            await fs.access(name);
+            console.error("File already exists:", name);
+            return;
+        } catch {
+            // File does not exist, safe to create
+            await fs.writeFile(name, engine.serialize());
+        }
     } catch (err) {
         console.error(err);
     }
