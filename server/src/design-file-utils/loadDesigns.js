@@ -1,6 +1,5 @@
 import path from "node:path";
 import fs from 'fs/promises';
-import { initWorkspaceFolder } from './initFolders.js';
 
 /**
  * Returns the list of designs in the workspace.
@@ -8,7 +7,6 @@ import { initWorkspaceFolder } from './initFolders.js';
  */
 async function loadDesigns() {
     try {
-        await initWorkspaceFolder();
         const workspacePath = path.join(process.cwd(), "workspace");
         const entries = await fs.readdir(workspacePath, { withFileTypes: true });
         const designs = entries.map((entry) => {
