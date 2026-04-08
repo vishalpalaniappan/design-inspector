@@ -7,6 +7,8 @@ import {useModalManager} from "ui-layout-manager-dev";
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import {useServer} from "../../Providers/GlobalProviders";
 import {setStatusMsg} from "../../Store/appSlice";
+import {setHasEntryPointThunk} from "../../Store/appThunk";
+import {useHasEntryPoint} from "../../Store/useAppSelection";
 import {AddBehavior} from "../Modals/AddBehavior";
 
 import "./ToolBar.scss";
@@ -20,14 +22,14 @@ export function ToolBar () {
     const {engine} = useDalEngine();
     const dispatch = useDispatch();
     const {sendJsonMessage} = useServer();
-    const [hasEntryPoint, setHasEntryPoint] = React.useState(false);
+    const hasEntryPoint = useHasEntryPoint();
 
     useEffect(() => {
         if (engine) {
             const entryPoint = engine.implementation.getEntryPoint();
-            setHasEntryPoint(Boolean(entryPoint));
+            dispatch(setHasEntryPointThunk(Boolean(entryPoint)));
         }
-    }, [engine]);
+    }, [engine, dispatch]);
 
     const saveGraph = useCallback(() => {
         if (engine) {
@@ -47,9 +49,8 @@ export function ToolBar () {
 
     const runDesign = useCallback(() => {
         if (sendJsonMessage && engine) {
-            const _hasEntryPoint = Boolean(engine.implementation.getEntryPoint());
             const failureMsg = "Failed to run design. Please ensure an entry point is set.";
-            const cmd = (_hasEntryPoint)?
+            const cmd = (hasEntryPoint)?
                 engine.implementation.getEntryPoint():
                 `echo "${failureMsg}"`;
             sendJsonMessage({
