@@ -12,7 +12,11 @@ async function loadDesigns() {
         try {
             await fs.mkdir(workspacePath, { recursive: true });
         } catch (err) {
-            // Directory exists.
+            if (err.code === "EEXIST") {
+                // Directory already exists.
+            } else {
+                throw err;
+            }
         }
 
         const entries = await fs.readdir(workspacePath, { withFileTypes: true });
