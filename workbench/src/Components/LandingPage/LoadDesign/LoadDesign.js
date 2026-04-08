@@ -16,7 +16,6 @@ export function LoadDesign () {
     const {workspace} = useWorkspace();
     const [designs, setDesigns] = useState([]);
     const [selectedDesign, setSelectedDesign] = useState(null);
-    const [designContainer, setDesignContainer] = useState(null);
     const {sendJsonMessage, connectionStatus} = useContext(ServerContext);
     const [fileName, setFileName] = useState("");
     const [error, setErrror] = useState(null);
@@ -53,6 +52,7 @@ export function LoadDesign () {
     const newDesign = useCallback((e) => {
         e.stopPropagation();
         e.preventDefault();
+        if (connectionStatus !== "Connected") return;
         setErrror(null);
         if (!fileName) return;
         const fName = fileName.endsWith(".dal") ? fileName : fileName + ".dal";
@@ -63,15 +63,16 @@ export function LoadDesign () {
         }
         sendMessage("create_design", {"fileName": fName});
         setFileName("");
-    }, [fileName, sendMessage]);
+    }, [fileName, sendMessage, connectionStatus]);
 
     // Delete the design from server (workspace is updated after deletion)
     const deleteDesign = useCallback((e) => {
         e.stopPropagation();
         e.preventDefault();
+        if (connectionStatus !== "Connected") return;
         if (!selectedDesign) return;
         sendMessage("delete_design", {"fileName": selectedDesign.name});
-    }, [selectedDesign, sendMessage]);
+    }, [selectedDesign, sendMessage, connectionStatus]);
 
     // Select file and load if flag is set (ex. double click)
     const selectFile = (e, design, load) => {
