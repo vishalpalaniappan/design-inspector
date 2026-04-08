@@ -47,6 +47,7 @@ export function LoadDesign () {
                     sendMessage("load_design", {"fileName": design.name});
                 }
             }
+            // Set last updated and unselect design if it was deleted.
             setLastUpdated(new Date().toLocaleString());
             if (!workspace.some((item) => item.name === selectedDesign?.name)) {
                 setDesignLoaded(null);
