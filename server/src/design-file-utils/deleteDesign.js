@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import path from "node:path";
+import { resolveDesignPath } from "./validateDesignName.js";
 
 /**
  * Deletes the design with the name from the workspace.
@@ -7,13 +7,7 @@ import path from "node:path";
  */
 async function deleteDesign(designName) {
     try {
-        if (!designName) {
-            throw new Error("Design name is required to delete a design.");
-        }
-        if (path.basename(designName) !== designName || !designName.endsWith(".dal")) {
-            throw new Error("Invalid design name.");
-        }
-        const filePath = path.resolve(process.cwd(), "workspace", designName);
+        const filePath = resolveDesignPath(designName);
         await fs.unlink(filePath);
     } catch (err) {
         throw new Error(err);

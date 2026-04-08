@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from "node:path";
 import {DALEngine} from "dal-engine-core-js-lib-dev";
 import statementMappingRunner from '../runners/statementMappingRunner.js';
+import { resolveDesignPath } from "./validateDesignName.js";
 
 /**
  * Saves the design to the workspace. However, it first checks
@@ -15,8 +16,7 @@ import statementMappingRunner from '../runners/statementMappingRunner.js';
  */
 async function saveDesign(designName,  data) {
     try {
-        const workspacePath = path.join(process.cwd(), "workspace");
-        const filePath = path.join(workspacePath, designName);
+        const filePath = resolveDesignPath(designName);
 
         const engine = new DALEngine({
             name: "default",

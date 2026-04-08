@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import path from "node:path";
+import { resolveDesignPath } from "./validateDesignName.js";
 
 /**
  * Loads a design from the workspace with the given name.
@@ -8,12 +8,7 @@ import path from "node:path";
  */
 async function loadDesign(designName) {
     try {
-        if (!designName) {
-            console.error("Design name is required to load a design.");
-            return;
-        }
-        const workspacePath = path.join(process.cwd(), "workspace");
-        const filePath = path.join(workspacePath, designName);
+        const filePath = resolveDesignPath(designName);
         const data = await fs.readFile(filePath, "utf-8");
         return {
             fileName: designName,
