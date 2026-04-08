@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
 
-import {Trash} from "react-bootstrap-icons";
+import {ArrowRightSquare, Trash} from "react-bootstrap-icons";
 
 import splashScreen from "../../../Assets/splash_screen.png";
 import {useWorkspace} from "../../../Providers/GlobalProviders";
@@ -50,6 +50,11 @@ export function LoadDesign () {
         e.preventDefault();
         if (!fileName) return;
         const fName = fileName.endsWith(".dal") ? fileName : fileName + ".dal";
+        const exists = designs.some((design) => design.name === fName);
+        if (exists) {
+            alert("A design with this name already exists. Please choose a different name.");
+            return;
+        }
         sendMessage("create_design", {"fileName": fName});
         setFileName("");
     }, [fileName, sendMessage]);
@@ -95,6 +100,7 @@ export function LoadDesign () {
                             {designs.map((design) => (
                                 <div key={design.uid}
                                     onClick={(e) => selectFile(e, design)}
+                                    onDoubleClick={(e) => {selectFile(e, design);loadDesign()}}
                                     className="file"
                                     style={design?.uid === selectedDesign?.uid ?
                                         {backgroundColor: "#3a4a5c"} : {}}>
@@ -105,14 +111,17 @@ export function LoadDesign () {
                     </div>
                     <div className="button-row">
                         <div className="buttons-left">
-                            <div className="icon-btn">
-                                <Trash onClick={deleteDesign} />
-                            </div>
                         </div>
                         <div className="buttons-right">
-                            <span className="open-btn" onClick={loadDesign}>
-                                Open Design
-                            </span>
+                            <div className="icon-btn">
+                                <Trash size={16} onClick={deleteDesign} />
+                            </div>
+                            {
+                                selectedDesign &&
+                                <div className="icon-btn" onClick={loadDesign}>
+                                    <ArrowRightSquare size={16} />
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

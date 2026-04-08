@@ -140,29 +140,21 @@
             display: flex;
             flex-direction: row;
             padding-left:20px;
-            .icon-btn{
-                padding:5px;
-                font-family: "Inter", sans-serif;
-                color:rgb(196, 196, 196);
-                cursor: pointer;
-            }
-            .icon-btn:hover{
-                color:white;
-            }
         }
         
         .buttons-right {
             display: flex;
             flex-direction: row;
-            .open-btn{
-                padding:5px;
+            align-items: center;
+            .icon-btn{
                 font-family: "Inter", sans-serif;
                 color:rgb(196, 196, 196);
                 cursor: pointer;
+                padding: 5px;
             }
-            .open-btn:hover{
+            .icon-btn:hover{
                 color:white;
-            }   
+            }
         }
     }
 }
