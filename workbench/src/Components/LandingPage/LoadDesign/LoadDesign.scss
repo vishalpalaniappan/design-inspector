@@ -64,8 +64,7 @@
             font-size:12px;
         }
 
-        .create-btn {
-            font-family: "Inter", sans-serif;
+        .create-btn {            
             color:#6a88b3;
             display:flex;
             align-items: center;
@@ -91,8 +90,7 @@
         margin-bottom: 5px;
     }
 
-    .title-container {
-        font-family: "Inter", sans-serif;
+    .title-container {        
         font-size: 32px;
         font-weight: 600;
         color: #e6edf3;
@@ -104,8 +102,7 @@
         justify-content: center;
     }
 
-    .subtitle {
-        font-family: "Inter", sans-serif;
+    .subtitle {        
         font-size: 14px;
         font-weight: 400;
         color: #9aa4b2;
@@ -127,16 +124,14 @@
         font-size:14px;
         border: solid 1px #2a3948;
 
-        .no-designs {
-            font-family: "Inter", sans-serif;
+        .no-designs {            
             color: #9aa4b2;
             padding: 20px;
             display:flex;
             align-self: center;
         }
         
-        .no-connection {
-            font-family: "Inter", sans-serif;
+        .no-connection {            
             color: #f57d7d;
             padding: 20px;
             display:flex;
@@ -147,8 +142,7 @@
             flex: 1;
             flex-direction: column;
 
-            .file {
-                font-family: "Inter", sans-serif;
+            .file {                
                 font-size: 13px;
                 font-weight: 500;
                 color: #e6edf3;
@@ -190,7 +184,7 @@
             flex-direction: row;
             align-items: center;
             .icon-btn{
-                font-family: "Inter", sans-serif;
+                
                 color:rgb(196, 196, 196);
                 cursor: pointer;
                 padding: 5px;
