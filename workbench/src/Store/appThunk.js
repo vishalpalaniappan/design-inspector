@@ -306,14 +306,16 @@ export const mapAbstractionThunk = ({absId, varName}) => (dispatch, getState, {e
         variableName: varName,
     });
 
-    /**
-     * TODO: Add the variable name to the mapping entry in the file as well.
-     * This also requires that when a behavior is unmapped, the variable name
-     * is removed from the mapping entry. In addition, when the variable mapping
-     * is removed from the participant, it should also be removed from the
-     * mapping entry. This means that the mapping object will contain everything
-     * needed to instrument the code.
-     */
+    // Assign the varaible name to the mapping entry in the file.
+    for (const file of engine.getFiles()) {
+        if (!file.mapping) continue;
+        for (const entry of file.mapping) {
+            if (entry.uid === absId) {
+                entry.variableName = varName;
+                break;
+            }
+        };
+    }
     dispatch(incrementCounter());
 };
 
