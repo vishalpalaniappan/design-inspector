@@ -13,7 +13,6 @@ const INSTRUMENTER_PATH = path.resolve(__dirname, "../../tools/instrumenter/inst
  */
 function statementMappingRunner(source, args = []) {
     return new Promise((resolve, reject) => {
-        console.log(source);
         const process = spawn("python3", [INSTRUMENTER_PATH, "parser_stream", ...args]);
         let settled = false;
 
