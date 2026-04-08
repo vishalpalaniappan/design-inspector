@@ -255,7 +255,26 @@ export const selectMappingThunk = (abstraction) => (dispatch, getState, {engine}
 };
 
 /**
- * Deletes the mapping.
+ * Deletes the mapping. There are two types of mapping:
+ * - A behavior onto an abstraction in the file.
+ * - A participant onto a variable name in an abstraction in the file.
+ *
+ * Currently, the mapping is saved in the behavior/participant AND in the
+ * mapping entry in the file. This makes this process a convolutedand I will
+ * streamline it soon. So current the process of deletion is as follows:
+ *
+ * If the mapping is type behavior, the mapping is removed from the behavior
+ * and the mapping entry in the file is updated to remove the behaviorId and
+ * the varaiables key. Meaning this mapping entry is no longer mapped onto any
+ * behavior or participant
+ *
+ * If the mapping is a participant, the abstraction is unmapped from the
+ * participant and the mapping entry is updated to remove the variable name from
+ * its variables key, which is a list of variable names to long. In this case,
+ * the mapping entry is still mapped onto a behavior and could still be mapped
+ * onto other participants.
+ *
+ * Finally, the selected mapping is set to null.
  * @param {Object} abstraction See useSelectedBehaviorAbstractions selector.
  * @return {Function} Thunk function.
  */
@@ -282,6 +301,8 @@ export const deleteMappingThunk = (abstraction) => (dispatch, getState, {engine}
         // Using this because, it doesn't have remove mapping function.
         // TODO: Standardize the method names.
         behavior.getParticipant(selectedParticipantId).mapAbstraction(null);
+
+        // TODO: Remove the variable name from the mapping entry.
     }
     dispatch(setSelectedMapping(null));
     dispatch(incrementCounter());
@@ -312,7 +333,11 @@ export const mapAbstractionThunk = ({absId, varName}) => (dispatch, getState, {e
         if (!file.mapping) continue;
         for (const entry of file.mapping) {
             if (entry.uid === absId) {
-                entry.variableName = varName;
+                if ("variables" in entry) {
+                    entry.variables.push(varName);
+                } else {
+                    entry.variables = [varName];
+                }
                 break;
             }
         };
