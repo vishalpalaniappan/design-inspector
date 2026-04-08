@@ -139,7 +139,14 @@
         .buttons-left {
             display: flex;
             flex-direction: row;
+            align-items: center;
             padding-left:20px;
+
+            .error {
+                color: #f57d7d;
+                font-size: 12px;
+                font-family: "Inter", sans-serif;
+            }
         }
         
         .buttons-right {

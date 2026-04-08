@@ -18,6 +18,7 @@ export function LoadDesign () {
     const [selectedDesign, setSelectedDesign] = useState(null);
     const {sendJsonMessage} = useContext(ServerContext);
     const [fileName, setFileName] = useState("");
+    const [error, setErrror] = useState(null);
 
     const sendMessage = useCallback((type, payload) => {
         sendJsonMessage({
@@ -48,11 +49,12 @@ export function LoadDesign () {
     const newDesign = useCallback((e) => {
         e.stopPropagation();
         e.preventDefault();
+        setErrror(null);
         if (!fileName) return;
         const fName = fileName.endsWith(".dal") ? fileName : fileName + ".dal";
         const exists = designs.some((design) => design.name === fName);
         if (exists) {
-            alert("A design with this name already exists. Please choose a different name.");
+            setErrror(`Design named ${fName} already exists`);
             return;
         }
         sendMessage("create_design", {"fileName": fName});
@@ -111,6 +113,7 @@ export function LoadDesign () {
                     </div>
                     <div className="button-row">
                         <div className="buttons-left">
+                            {error && <div className="error">{error}</div>}
                         </div>
                         <div className="buttons-right">
                             <div className="icon-btn">
