@@ -140,7 +140,6 @@ export function LoadDesign () {
                         className="file-selector-container"
                         onClick={(e) => selectFile(e, null)}>
                         {getDesignList()}
-                        
                     </div>
                     <div className="button-row">
                         <div className="buttons-left">
