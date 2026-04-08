@@ -50,6 +50,8 @@ export function LoadDesign () {
             }
             // Set last updated and unselect design if it was deleted.
             setLastUpdated(new Date().toLocaleString());
+
+            // If the selected design is not in workspace, unselect it.
             if (!workspace.some((item) => item.name === selectedDesign?.name)) {
                 setDesignLoaded(null);
             }
@@ -70,7 +72,7 @@ export function LoadDesign () {
             return;
         }
         sendMessage("create_design", {"fileName": fName});
-        setFileName("");
+        setSelectedDesign(null);
     }, [fileName, sendMessage, connectionStatus]);
 
     // Delete the design from server (workspace is updated after deletion)
