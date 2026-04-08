@@ -11,6 +11,10 @@ async function loadDesigns() {
         const workspacePath = path.join(process.cwd(), "workspace");
         const entries = await fs.readdir(workspacePath, { withFileTypes: true });
 
+        // Note: The reason I am saying path is simply the name is that the designs
+        // are stored in a flat structure in the workspace and not in any subfolders.
+        // So the path to access the design is simply the name of the design file.
+        // When this changes, this mapping will need to be updated.
         const designs = entries.map((entry) => {
             if (!entry.isDirectory() && entry.name.endsWith(".dal")) {
                 return {
