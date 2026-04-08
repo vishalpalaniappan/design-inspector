@@ -30,7 +30,7 @@ async function createRequiredFolders() {
     // Create workspace folder if it doesn't exist
     const workspacePath = path.join(process.cwd(), "workspace");
     try {
-        await fs.mkdir(workspacePath, { recursive: true });
+        await fs.mkdir(workspacePath);
     } catch (err) {
         if (err.code === "EEXIST") {
             // Directory already exists.
@@ -41,7 +41,7 @@ async function createRequiredFolders() {
     // Create playground folder if it doesn't exist
     const playgroundPath = path.join(process.cwd(), "playground");
     try {
-        await fs.mkdir(playgroundPath, { recursive: true });
+        await fs.mkdir(playgroundPath);
     } catch (err) {
         if (err.code === "EEXIST") {
             // Already exists, clear the folder
