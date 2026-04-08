@@ -8,6 +8,7 @@ const appSlice = createSlice({
         lastSaved: null,
         appMode: 1,
         designLoaded: false,
+        hasEntryPoint: false,
         selectedBehavior: null,
         selectedParticipant: null,
         selectedGraph: null,
@@ -70,6 +71,9 @@ const appSlice = createSlice({
         setDesignLoaded (state, action) {
             state.designLoaded = action.payload;
         },
+        setHasEntryPoint (state, action) {
+            state.hasEntryPoint = action.payload;
+        },
     },
 });
 
@@ -86,6 +90,7 @@ export const {
     setDesignMode,
     setSelectedMapping,
     setDesignLoaded,
+    setHasEntryPoint,
 } = appSlice.actions;
 
 export default appSlice.reducer;
