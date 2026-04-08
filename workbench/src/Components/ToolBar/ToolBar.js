@@ -49,14 +49,18 @@ export function ToolBar () {
 
     const runDesign = useCallback(() => {
         if (sendJsonMessage && engine) {
-            const failureMsg = "Failed to run design. Please ensure an entry point is set.";
-            const cmd = (hasEntryPoint)?
-                engine.implementation.getEntryPoint():
-                `echo "${failureMsg}"`;
-            sendJsonMessage({
-                type: "terminal_input",
-                data: cmd + "\n",
-            });
+            if (hasEntryPoint) {
+                sendJsonMessage({
+                    type: "terminal_input",
+                    data: engine.implementation.getEntryPoint() + "\n",
+                });
+            } else {
+                const failureMsg = "Failed to run design. Please ensure an entry point is set.";
+                sendJsonMessage({
+                    type: "terminal_input",
+                    data: `echo "${failureMsg}"\n\r`,
+                });
+            }
         }
     }, [sendJsonMessage, hasEntryPoint, engine]);
 
