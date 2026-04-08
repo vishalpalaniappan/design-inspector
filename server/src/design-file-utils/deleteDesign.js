@@ -8,10 +8,12 @@ import path from "node:path";
 async function deleteDesign(designName) {
     try {
         if (!designName) {
-            console.error("Design name is required to delete a design.");
-            return;
+            throw new Error("Design name is required to delete a design.");
         }
-        const filePath = path.join(process.cwd(), "workspace", designName);
+        if (path.basename(designName) !== designName || !designName.endsWith(".dal")) {
+            throw new Error("Invalid design name.");
+        }
+        const filePath = path.resolve(process.cwd(), "workspace", designName);
         await fs.unlink(filePath);
     } catch (err) {
         throw new Error(err);
