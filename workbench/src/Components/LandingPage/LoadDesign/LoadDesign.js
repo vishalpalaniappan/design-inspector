@@ -100,6 +100,7 @@ export function LoadDesign () {
                             className="file-name-input"
                             placeholder="Enter design name..."
                             value={fileName}
+                            onKeyDown={(e) => (e.key === "Enter") && newDesign(e)}
                             onChange={(e) => setFileName(e.target.value)}
                         />
                         <div className="create-btn" onClick={newDesign}>+ Create</div>
