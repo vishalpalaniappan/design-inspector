@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
+import {setHasEntryPointThunk} from "../../Store/appThunk";
 
 import "./AddValue.scss";
 
@@ -37,12 +38,13 @@ export function AddEntryPoint ({close}) {
     }, [engine]);
 
     const handleSubmit = useCallback(() => {
-        if (entryPoint.trim() === "") {
-            setError("Entry point must not be empty.");
-            return;
-        }
         try {
             engine.implementation.setEntryPoint(entryPoint);
+            if (entryPoint.trim() === "") {
+                dispatch(setHasEntryPointThunk(false));
+            } else {
+                dispatch(setHasEntryPointThunk(true));
+            }
             close();
         } catch (err) {
             setError(err.toString());
