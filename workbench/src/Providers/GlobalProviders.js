@@ -173,7 +173,7 @@ export const useWorkspace = function () {
 export const useServer = function () {
     const context = useContext(ServerContext);
     if (!context) {
-        throw new Error("useWorkspace must be used within a GlobalProvider");
+        throw new Error("useServer must be used within a GlobalProvider");
     }
     return context;
 };
