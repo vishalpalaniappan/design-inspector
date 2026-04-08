@@ -1,10 +1,10 @@
 import path from 'path';
 import fs from 'fs/promises';
-import { initPlaygroundFolder } from "./initFolders.js";
+import { clearPlaygroundFolder } from "./initFolders.js";
 
 async function loadDesignInPlayground(files) {
-    // Create playground folder if it doesn't exist
-    await initPlaygroundFolder();
+    // Clear playground folder
+    await clearPlaygroundFolder();
 
     // Write engine files to playground folder
     const playgroundPath = path.join(process.cwd(), "playground");
