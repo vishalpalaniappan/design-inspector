@@ -68,9 +68,12 @@ export function LoadDesign () {
         sendMessage("delete_design", {"fileName": selectedDesign.name});
     }, [selectedDesign, sendMessage]);
 
-    const selectFile = (e, design) => {
+    const selectFile = (e, design, load) => {
         e.stopPropagation();
         setSelectedDesign(design);
+        if (load) {
+            loadDesign();
+        }
     };
 
     const loadDesign = useCallback(() => {
@@ -102,7 +105,7 @@ export function LoadDesign () {
                             {designs.map((design) => (
                                 <div key={design.uid}
                                     onClick={(e) => selectFile(e, design)}
-                                    onDoubleClick={(e) => {selectFile(e, design);loadDesign()}}
+                                    onDoubleClick={(e) => selectFile(e, design, true)}
                                     className="file"
                                     style={design?.uid === selectedDesign?.uid ?
                                         {backgroundColor: "#3a4a5c"} : {}}>
