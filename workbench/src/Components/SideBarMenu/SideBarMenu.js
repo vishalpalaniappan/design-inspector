@@ -19,11 +19,13 @@ export function SideBarMenu () {
 
     const downloadDesign = useCallback(() => {
         const engineSerialized = engine.serialize();
-        const blob = new Blob([engineSerialized], {type: "application/json"});
+        const blob = new Blob([engineSerialized], {type: "application/x-dal+json"});
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = `${engine._name}`;
+        console.log(engine);
+        const fileName = engine._name.toLowerCase().replace(/\s+/g, "_");;
+        link.download = fileName.endsWith(".dal") ? fileName : `${fileName}.dal`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
