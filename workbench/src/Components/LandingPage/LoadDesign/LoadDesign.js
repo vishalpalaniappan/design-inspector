@@ -71,7 +71,6 @@ export function LoadDesign () {
         sendMessage("load_design", {"fileName": selectedDesign.name});
     }, [selectedDesign, sendMessage]);
 
-
     return (
         <div className="landing-page">
             <div className="splash">
