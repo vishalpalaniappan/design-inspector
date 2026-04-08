@@ -98,10 +98,6 @@ export function LoadDesign () {
         sendMessage("load_design", {"fileName": selectedDesign.name});
     }, [selectedDesign, sendMessage]);
 
-    useEffect(() => {
-        console.log("Connection status:", connectionStatus);
-    }, [connectionStatus]);
-
     const getDesignList = useCallback(() => {
         if (connectionStatus === "Connected" && designs.length > 0) {
             return <div className="files">
