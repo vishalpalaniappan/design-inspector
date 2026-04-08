@@ -25,7 +25,7 @@ async function loadDesigns() {
                 return {
                     name: entry.name,
                     type: 'file',
-                    uid: "file-" + randomUUID()
+                    uid: entry.name
                 };
             }
         }).filter(Boolean);
