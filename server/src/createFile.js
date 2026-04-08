@@ -5,8 +5,7 @@ import {DALEngine} from "dal-engine-core-js-lib-dev";
 async function createDesign(fileName) {
     try {
         if (!fileName) {
-            console.error("File name is required to create a design.");
-            return;
+            throw new Error("File name is required to create a design.");
         }
         const engine = new DALEngine({
             name: "default",
@@ -15,16 +14,13 @@ async function createDesign(fileName) {
         const workspacePath = path.join(process.cwd(), "workspace");
         const name = path.join(workspacePath, fileName);
 
-        try {
-            await fs.access(name);
-            console.error("File already exists:", name);
-            return;
-        } catch {
-            // File does not exist, safe to create
-            await fs.writeFile(name, engine.serialize());
-        }
+        await fs.writeFile(name, engine.serialize(), { flag: "wx" });
     } catch (err) {
-        console.error(err);
+        if (err.code === "EEXIST") {
+            throw new Error("File already exists.");
+        } else {
+            throw err;
+        }
     }
 }
 export default createDesign;

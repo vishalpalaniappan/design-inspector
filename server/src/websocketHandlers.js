@@ -51,7 +51,14 @@ export class  WSMessageHandler {
     }
 
     createDesign = async (msg) => {
-        await createDesign(msg.payload.fileName);
+        try {
+            await createDesign(msg.payload.fileName)
+        } catch (err) {
+            console.error("Failed to create design:", err.message);
+            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+            return;
+        }
+
         loadWorkspace().then((folders) => {
             msg.type = "workspaces";
             msg.data = folders;
