@@ -83,6 +83,7 @@ export function LoadDesign () {
     // Select file and load if flag is set (ex. double click)
     const selectFile = (e, design, load) => {
         e.stopPropagation();
+        setErrror(null);
         setSelectedDesign(design);
         if (load) {
             loadDesign();
