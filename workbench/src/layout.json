@@ -104,7 +104,7 @@
                         "min": { "value": 170, "unit": "px"},
                         "max": { "value": 320, "unit": "px"}
                     },
-                    "collapse": { "value": 700, "condition": "lessThan", "relative": "parent" }
+                    "collapse": { "value": 900, "condition": "lessThan", "relative": "parent" }
                 },
                 {
                     "type": "handleBar",
@@ -139,7 +139,7 @@
                         "min": { "value": 170, "unit": "px"},
                         "max": { "value": 320, "unit": "px"}
                     },
-                    "collapse": { "value": 700, "condition": "lessThan", "relative": "parent" }
+                    "collapse": { "value": 900, "condition": "lessThan", "relative": "parent" }
                 }
             ]
         },
