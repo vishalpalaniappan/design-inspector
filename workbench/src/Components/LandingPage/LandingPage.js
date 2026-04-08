@@ -10,7 +10,9 @@ import {LoadDesign} from "./LoadDesign/LoadDesign";
 import "./LandingPage.scss";
 
 /**
- * Landing page of the viewer component.
+ * Landing page for the design workbench. Renders the workbench
+ * if a design is loaded, if not presents a page to load, create
+ * or delete a design from the server.
  * @return {JSX.Element}
  */
 export function LandingPage () {
