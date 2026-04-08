@@ -43,16 +43,21 @@ async function saveDesign(designName,  data) {
             file.content = file.updatedContent;
         });
 
-        const serializedEngine = engine.serialize();
-        await fs.writeFile(filePath, serializedEngine);
-
         // Write engine files to playground folder
         await loadDesignInPlayground(engine.getFiles());
+
+        const serializedEngine = engine.serialize();
+        await fs.writeFile(filePath, serializedEngine);
 
         return {
             files: engine.getFiles()
         };
     } catch (err) {
+        // TODO: If the write fails, load the design currently on file and write to
+        // playground so that it contains the latest files in the engine as stored on
+        // the disk (undoing the load design in playground with the unsaved changes).
+        // Not implementing it now because its not critical and the user can simply 
+        // reload the design to achieve the same effect.
         throw err;
     }
 }
