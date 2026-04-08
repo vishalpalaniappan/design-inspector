@@ -6,6 +6,7 @@
     width: 100vw;
     background: #1a1a1a;
     overflow-x:auto;
+    font-family: "Inter", sans-serif;
 }
 
 .splash {
@@ -46,7 +47,7 @@
         flex-direction:row;
         padding: 0 20px;
         align-items: center;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
 
         .file-name-input {
             flex:1;
@@ -79,6 +80,15 @@
         .create-btn:hover {
             color: #e6edf3;
         }
+    }
+
+    
+
+    .error {
+        color: #f57d7d;
+        font-size: 12px;
+        margin-left:20px;
+        margin-bottom: 5px;
     }
 
     .title-container {
@@ -167,10 +177,10 @@
             align-items: center;
             padding-left:20px;
 
-            .error {
-                color: #f57d7d;
+            .last-updated {
                 font-size: 12px;
-                font-family: "Inter", sans-serif;
+                color: #8aa0b8;
+                opacity: 0.8;
             }
         }
         

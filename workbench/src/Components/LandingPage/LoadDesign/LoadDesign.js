@@ -5,6 +5,7 @@ import {ArrowRightSquare, Trash} from "react-bootstrap-icons";
 import splashScreen from "../../../Assets/splash_screen.png";
 import {useWorkspace} from "../../../Providers/GlobalProviders";
 import ServerContext from "../../../Providers/ServerContext";
+import {setDesignLoaded} from "../../../Store/appSlice";
 
 import "./LoadDesign.scss";
 
@@ -19,6 +20,7 @@ export function LoadDesign () {
     const {sendJsonMessage, connectionStatus} = useContext(ServerContext);
     const [fileName, setFileName] = useState("");
     const [error, setErrror] = useState(null);
+    const [lastUpdated, setLastUpdated] = useState("");
 
     // Helper function to send messages to server
     const sendMessage = useCallback((type, payload) => {
@@ -44,6 +46,10 @@ export function LoadDesign () {
                 if (design) {
                     sendMessage("load_design", {"fileName": design.name});
                 }
+            }
+            setLastUpdated(new Date().toLocaleString());
+            if (!workspace.some((item) => item.name === selectedDesign?.name)) {
+                setDesignLoaded(null);
             }
         }
     }, [workspace, setSelectedDesign, sendMessage]);
@@ -136,6 +142,7 @@ export function LoadDesign () {
                         />
                         <div className="create-btn" onClick={newDesign}>+ Create</div>
                     </div>
+                    {error && <div className="error">{error}</div>}
                     <div
                         className="file-selector-container"
                         onClick={(e) => selectFile(e, null)}>
@@ -143,19 +150,20 @@ export function LoadDesign () {
                     </div>
                     <div className="button-row">
                         <div className="buttons-left">
-                            {error && <div className="error">{error}</div>}
-                        </div>
-                        <div className="buttons-right">
-                            <div className="icon-btn">
-                                <Trash size={16} onClick={deleteDesign} />
+                            <div className="last-updated">
+                                Last updated: {lastUpdated && <span>{lastUpdated}</span>}
                             </div>
-                            {
-                                selectedDesign &&
+                        </div>
+                        {selectedDesign &&
+                            <div className="buttons-right">
+                                <div className="icon-btn">
+                                    <Trash size={16} onClick={deleteDesign} />
+                                </div>
                                 <div className="icon-btn" onClick={loadDesign}>
                                     <ArrowRightSquare size={16} />
                                 </div>
-                            }
-                        </div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
