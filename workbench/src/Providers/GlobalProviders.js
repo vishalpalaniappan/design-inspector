@@ -162,9 +162,16 @@ export const useDalEngine = function () {
     return context;
 };
 
-
 export const useWorkspace = function () {
     const context = useContext(WorkspaceContext);
+    if (!context) {
+        throw new Error("useWorkspace must be used within a GlobalProvider");
+    }
+    return context;
+};
+
+export const useServer = function () {
+    const context = useContext(ServerContext);
     if (!context) {
         throw new Error("useWorkspace must be used within a GlobalProvider");
     }
