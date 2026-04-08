@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from "node:path";
 import {DALEngine} from "dal-engine-core-js-lib-dev";
-import getMapping from '../getMapping.js';
+import statementMappingRunner from '../runners/statementMappingRunner.js';
 
 /**
  * Saves the design to the workspace. However, it first checks
@@ -31,7 +31,7 @@ async function saveDesign(designName,  data) {
 
         await Promise.all(
             pythonFiles.map(async (file) => {
-                const mapping = await getMapping(file.updatedContent);
+                const mapping = await statementMappingRunner(file.updatedContent);
                 file.mapping = mapping;
             })
         );
@@ -50,6 +50,7 @@ async function saveDesign(designName,  data) {
             files: engine.getFiles()
         };
     } catch (err) {
+        console.log(err);
         throw new Error(err);
     }
 }
