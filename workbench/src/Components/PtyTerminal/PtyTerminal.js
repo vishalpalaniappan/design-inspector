@@ -25,7 +25,7 @@ export function PtyTerminal () {
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowTerminal(true);
-        }, 200);
+        }, 25);
 
         return () => clearTimeout(timer);
     }, []);

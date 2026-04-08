@@ -1,12 +1,19 @@
-import { TerminalSession } from "./terminal.js";
-import saveFile from "./saveFile.js";
-import path from "node:path";
-import loadDir from "./loadDir.js"
+import { TerminalSession } from "./terminal/terminal.js";
+import createDesign from "./design-file-utils/createDesign.js";
+import deleteDesign from "./design-file-utils/deleteDesign.js";
+import loadDesigns from "./design-file-utils/loadDesigns.js"
+import loadDesign from "./design-file-utils/loadDesign.js";
+import saveDesign from "./design-file-utils/saveDesign.js";
 
 export class  WSMessageHandler {
     constructor(ws) {
         this.ws = ws;
 
+        // TODO: Eventually there will be support for multiple terminals,
+        // so I will have to set a UID to each terminal instance and use
+        // that mapping to connect to the correct session. It will also be
+        // necessary to recall sessions when switching tabs. For now, only
+        // one terminal is supported.
         this.terminal = new TerminalSession();
         this.terminal.on("data", this.onTerminalData);
         this.terminal.on("exit", this.onTerminalExit);
@@ -26,7 +33,10 @@ export class  WSMessageHandler {
             workspaces: this.workspaces.bind(this),
             save_engine: this.saveEngine.bind(this),
             terminal_input: this.onTerminalInput.bind(this),
-            terminal_resize: this.onTerminalResize.bind(this)
+            terminal_resize: this.onTerminalResize.bind(this),
+            create_design: this.createDesign.bind(this),
+            delete_design: this.deleteDesign.bind(this),
+            load_design: this.loadDesign.bind(this)
         };
     }
 
@@ -45,24 +55,67 @@ export class  WSMessageHandler {
         }
     }
 
-    workspaces = (msg) => {
-        const workspacePath = path.join(process.cwd(), "workspace");
-        loadDir(workspacePath, workspacePath)
-            .then((folders) => {
-                msg.data = folders;
-                this.ws.send(JSON.stringify(msg));
-        })
-        .catch((err) => {
+    createDesign = async (msg) => {
+        try {
+            await createDesign(msg.payload.fileName)
+        } catch (err) {
+            console.error("Failed to create design:", err.message);
             this.ws.send(JSON.stringify({ type: "error", data: err.message }));
-        });
+            return;
+        }
+
+        try {
+            const folders = await loadDesigns();
+            msg.type = "workspaces";
+            msg.data = folders;
+            this.ws.send(JSON.stringify(msg));
+        } catch (err) {
+            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+        }
     }
 
-    saveEngine = (msg) => {
-        saveFile(msg.payload.fileName, "workspace", msg.payload.data).then((serializedEngine) => {
+    deleteDesign = async (msg) => {
+        try {
+            await deleteDesign(msg.payload.fileName);
+            const folders = await loadDesigns();
+            msg.type = "workspaces";
+            msg.data = folders;
+            this.ws.send(JSON.stringify(msg));
+        } catch (err) {
+            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+        }
+    }
+
+    loadDesign = async (msg) => {
+        try {
+            const file = await loadDesign(msg.payload.fileName)
+            msg.type = "load_design";
+            msg.data = file;
+            this.ws.send(JSON.stringify(msg));
+        } catch (err) {
+            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+        }
+    }
+
+    workspaces = async (msg) => {
+        try {
+            const folders = await loadDesigns();
+            msg.type = "workspaces";
+            msg.data = folders;
+            this.ws.send(JSON.stringify(msg));
+        } catch (err) {
+            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+        }
+    }
+
+    saveEngine = async (msg) => {
+        try {
+            const serializedEngine = await saveDesign(msg.payload.fileName, msg.payload.data);
             this.ws.send(JSON.stringify({ type: "design_save_successful", data: serializedEngine }));
-        }).catch((err) => {
+        } catch (err) {
             this.ws.send(JSON.stringify({ type: "design_save_failed" }));
-        });
+            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+        }
     }
 
     onTerminalData = (data) => {

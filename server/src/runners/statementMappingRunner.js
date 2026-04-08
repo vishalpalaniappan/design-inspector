@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const INSTRUMENTER_PATH = path.resolve(__dirname, "../tools/instrumenter/instrumenter.py");
+const INSTRUMENTER_PATH = path.resolve(__dirname, "../../tools/instrumenter/instrumenter.py");
 
 /**
  * Gets the mapping for the given python source by invoking the instrumenter in stream mode.
@@ -11,7 +11,7 @@ const INSTRUMENTER_PATH = path.resolve(__dirname, "../tools/instrumenter/instrum
  * @param {Array} args The arguments to pass to the instrumenter.
  * @returns {Promise<String>} A promise that resolves with the output of the instrumenter.
  */
-function getMapping(source, args = []) {
+function statementMappingRunner(source, args = []) {
     return new Promise((resolve, reject) => {
         const process = spawn("python3", [INSTRUMENTER_PATH, "parser_stream", ...args]);
         let settled = false;
@@ -59,4 +59,4 @@ function getMapping(source, args = []) {
     });
 }
 
-export default getMapping;
+export default statementMappingRunner;

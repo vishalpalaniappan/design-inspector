@@ -7,6 +7,7 @@ import {
     selectActiveTab,
     selectAppMode,
     selectCounter,
+    selectDesignLoaded,
     selectLastSaved,
     selectSelectedBehaviorId,
     selectSelectedGraphId,
@@ -273,4 +274,16 @@ export const useEngineFiles = () => {
         if (!engine) return null;
         return [...engine.getFiles()];
     }, [engine, selectedBehaviorId, activeTab, counter]);
+};
+
+/**
+ * Returns whether a design is loaded.
+ * @return {Boolean}
+ */
+export const useDesignLoaded = () => {
+    const designLoaded = useSelector(selectDesignLoaded);
+
+    return useMemo(() => {
+        return designLoaded;
+    }, [designLoaded]);
 };
