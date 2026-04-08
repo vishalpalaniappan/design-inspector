@@ -95,8 +95,8 @@ function GlobalProviders ({children}) {
                 (f) => f.name === file.name
             );
             if (engineFile) {
+                engineFile.content = file.updatedContent;
                 engineFile.updatedContent = file.updatedContent;
-                engineFile.content = file.content;
                 engineFile.mapping = file.mapping;
             }
         });
