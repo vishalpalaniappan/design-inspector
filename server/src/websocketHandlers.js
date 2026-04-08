@@ -114,6 +114,7 @@ export class  WSMessageHandler {
             this.ws.send(JSON.stringify({ type: "design_save_successful", data: serializedEngine }));
         } catch (err) {
             this.ws.send(JSON.stringify({ type: "design_save_failed" }));
+            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
         }
     }
 

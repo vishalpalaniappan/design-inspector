@@ -66,6 +66,9 @@ function GlobalProviders ({children}) {
             case "design_save_failed":
                 dispatch(setStatusMsg("Failed to save design."));
                 break;
+            case "error":
+                console.error("Error message from server:", msg.data);
+                break;
             default:
                 break;
         }
