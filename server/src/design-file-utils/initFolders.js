@@ -5,7 +5,7 @@ import path from "node:path";
  * Clears the playground folder.
  */
 async function clearPlaygroundFolder() {
-    // Remove playground folder if it exists
+    // Remove contents of playground folder if it exists
     const playgroundPath = path.join(process.cwd(), "playground");
     const entries = await fs.readdir(playgroundPath);
 
@@ -38,7 +38,18 @@ async function createRequiredFolders() {
             throw err;
         }
     }
-    clearPlaygroundFolder();
+    // Create playground folder if it doesn't exist
+    const playgroundPath = path.join(process.cwd(), "playground");
+    try {
+        await fs.mkdir(playgroundPath, { recursive: true });
+    } catch (err) {
+        if (err.code === "EEXIST") {
+            // Already exists, clear the folder
+            await clearPlaygroundFolder();
+        } else {
+            throw err;
+        }
+    }
 }
 
 export { clearPlaygroundFolder, createRequiredFolders };
