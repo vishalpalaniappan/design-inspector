@@ -19,7 +19,7 @@ async function saveDesign(designName,  data) {
         const filePath = resolveDesignPath(designName);
 
         const engine = new DALEngine({
-            name: "default",
+            name: designName,
             description: "Default engine",
         });
 
