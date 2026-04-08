@@ -47,8 +47,9 @@ export function ToolBar () {
 
     const runDesign = useCallback(() => {
         if (sendJsonMessage && engine) {
+            const _hasEntryPoint = Boolean(engine.implementation.getEntryPoint());
             const failureMsg = "Failed to run design. Please ensure an entry point is set.";
-            const cmd = (hasEntryPoint)?
+            const cmd = (_hasEntryPoint)?
                 engine.implementation.getEntryPoint():
                 `echo "${failureMsg}"`;
             sendJsonMessage({
@@ -56,7 +57,7 @@ export function ToolBar () {
                 data: cmd + "\n",
             });
         }
-    }, [sendJsonMessage, hasEntryPoint,engine]);
+    }, [sendJsonMessage, hasEntryPoint, engine]);
 
     return (
         <div className="toolbarWrapper">
