@@ -3,8 +3,10 @@ import path from "node:path";
 import {DALEngine} from "dal-engine-core-js-lib-dev";
 import getMapping from '../getMapping.js';
 
-async function saveDesign(fileName, folderPath, data) {
-    const filePath = path.join(folderPath, fileName);
+
+async function saveDesign(designName,  data) {
+    const workspacePath = path.join(process.cwd(), "workspace");
+    const filePath = path.join(workspacePath, designName);
 
     const engine = new DALEngine({
         name: "default",
