@@ -3,7 +3,7 @@ import path from "node:path";
 import {DALEngine} from "dal-engine-core-js-lib-dev";
 import getMapping from './getMapping.js';
 
-async function saveFile(fileName, folderPath, data) {
+async function saveDesign(fileName, folderPath, data) {
     const filePath = path.join(folderPath, fileName);
 
     const engine = new DALEngine({
@@ -35,4 +35,4 @@ async function saveFile(fileName, folderPath, data) {
         files: engine.getFiles()
     };
 }
-export default saveFile;
+export default saveDesign;

@@ -1,5 +1,5 @@
 import { TerminalSession } from "./terminal.js";
-import saveFile from "./saveFile.js";
+import saveDesign from "./saveDesign.js";
 import loadWorkspace from "./loadWorkspace.js"
 import createDesign from "./createDesign.js";
 import deleteFile from "./deleteFile.js";
@@ -103,7 +103,7 @@ export class  WSMessageHandler {
 
     saveEngine = async (msg) => {
         try {
-            const serializedEngine = await saveFile(msg.payload.fileName, "workspace", msg.payload.data);
+            const serializedEngine = await saveDesign(msg.payload.fileName, "workspace", msg.payload.data);
             this.ws.send(JSON.stringify({ type: "design_save_successful", data: serializedEngine }));
         } catch (err) {
             this.ws.send(JSON.stringify({ type: "design_save_failed" }));
