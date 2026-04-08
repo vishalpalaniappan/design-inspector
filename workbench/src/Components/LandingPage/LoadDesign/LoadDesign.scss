@@ -107,6 +107,22 @@
         font-size:14px;
         border: solid 1px #2a3948;
 
+        .no-designs {
+            font-family: "Inter", sans-serif;
+            color: #9aa4b2;
+            padding: 20px;
+            display:flex;
+            align-self: center;
+        }
+        
+        .no-connection {
+            font-family: "Inter", sans-serif;
+            color: #f57d7d;
+            padding: 20px;
+            display:flex;
+            align-self: center;
+        }
+
         .files {
             flex: 1;
             flex-direction: column;

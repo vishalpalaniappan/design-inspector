@@ -16,7 +16,8 @@ export function LoadDesign () {
     const {workspace} = useWorkspace();
     const [designs, setDesigns] = useState([]);
     const [selectedDesign, setSelectedDesign] = useState(null);
-    const {sendJsonMessage} = useContext(ServerContext);
+    const [designContainer, setDesignContainer] = useState(null);
+    const {sendJsonMessage, connectionStatus} = useContext(ServerContext);
     const [fileName, setFileName] = useState("");
     const [error, setErrror] = useState(null);
 
@@ -87,6 +88,35 @@ export function LoadDesign () {
         sendMessage("load_design", {"fileName": selectedDesign.name});
     }, [selectedDesign, sendMessage]);
 
+    useEffect(() => {
+        console.log("Connection status:", connectionStatus);
+    }, [connectionStatus]);
+
+    const getDesignList = useCallback(() => {
+        if (connectionStatus === "Connected" && designs.length > 0) {
+            return <div className="files">
+                {designs.map((design) => (
+                    <div key={design.uid}
+                        onClick={(e) => selectFile(e, design)}
+                        onDoubleClick={(e) => selectFile(e, design, true)}
+                        className="file"
+                        style={design?.uid === selectedDesign?.uid ?
+                            {backgroundColor: "#3a4a5c"} : {}}>
+                        {design.name}
+                    </div>
+                ))}
+            </div>;
+        } else if (connectionStatus === "Connected" && designs.length === 0) {
+            return <div className="no-designs">
+                No designs found.
+            </div>;
+        } else {
+            return <div className="no-connection">
+                Not connected to server...
+            </div>;
+        }
+    }, [connectionStatus, selectFile, designs]);
+
     return (
         <div className="landing-page">
             <div className="splash">
@@ -108,18 +138,8 @@ export function LoadDesign () {
                     <div
                         className="file-selector-container"
                         onClick={(e) => selectFile(e, null)}>
-                        <div className="files">
-                            {designs.map((design) => (
-                                <div key={design.uid}
-                                    onClick={(e) => selectFile(e, design)}
-                                    onDoubleClick={(e) => selectFile(e, design, true)}
-                                    className="file"
-                                    style={design?.uid === selectedDesign?.uid ?
-                                        {backgroundColor: "#3a4a5c"} : {}}>
-                                    {design.name}
-                                </div>
-                            ))}
-                        </div>
+                        {getDesignList()}
+                        
                     </div>
                     <div className="button-row">
                         <div className="buttons-left">
