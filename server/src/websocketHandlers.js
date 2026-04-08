@@ -9,6 +9,11 @@ export class  WSMessageHandler {
     constructor(ws) {
         this.ws = ws;
 
+        // TODO: Eventually there will be support for multiple terminals,
+        // so I will have to set a UID to each terminal instance and use
+        // that mapping to connect to the correct session. It will also be
+        // necessary to recall sessions when switching tabs. For now, only
+        // one terminal is supported.
         this.terminal = new TerminalSession();
         this.terminal.on("data", this.onTerminalData);
         this.terminal.on("exit", this.onTerminalExit);
