@@ -11,10 +11,10 @@ export function resolveDesignPath(designName) {
     if (!designName) {
         throw new Error("Design name is required.");
     }
-    // Disabling this check for now because it requires front end feedback support.
-    // if (!VALID_NAME.test(designName)) {
-    //     throw new Error("Invalid design name. Only alphanumeric characters, underscores, hyphens and the .dal extension are allowed.");
-    // }
+
+    if (!VALID_NAME.test(designName)) {
+        throw new Error("Invalid design name. Only alphanumeric characters, underscores, hyphens and the .dal extension are allowed.");
+    }
 
     if (path.basename(designName) !== designName || !designName.endsWith(".dal")) {
         throw new Error("Invalid design name.");
