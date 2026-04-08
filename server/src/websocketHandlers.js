@@ -1,7 +1,7 @@
 import { TerminalSession } from "./terminal.js";
 import saveFile from "./saveFile.js";
 import loadWorkspace from "./loadWorkspace.js"
-import createFile from "./createFile.js";
+import createDesign from "./createDesign.js";
 import deleteFile from "./deleteFile.js";
 import loadFile from "./loadFile.js";
 
@@ -51,7 +51,7 @@ export class  WSMessageHandler {
     }
 
     createDesign = async (msg) => {
-        await createFile(msg.payload.fileName);
+        await createDesign(msg.payload.fileName);
         loadWorkspace().then((folders) => {
             msg.type = "workspaces";
             msg.data = folders;

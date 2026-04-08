@@ -1,9 +1,8 @@
 import fs from 'fs/promises';
 import path from "node:path";
 import {DALEngine} from "dal-engine-core-js-lib-dev";
-import getMapping from './getMapping.js';
 
-async function createFile(fileName) {
+async function createDesign(fileName) {
     try {
         if (!fileName) {
             console.error("File name is required to create a design.");
@@ -21,4 +20,4 @@ async function createFile(fileName) {
         console.error(err);
     }
 }
-export default createFile;
+export default createDesign;
