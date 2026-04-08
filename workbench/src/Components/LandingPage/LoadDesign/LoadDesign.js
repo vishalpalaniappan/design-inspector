@@ -62,15 +62,31 @@ export function LoadDesign () {
     const newDesign = useCallback((e) => {
         e.stopPropagation();
         e.preventDefault();
-        if (connectionStatus !== "Connected") return;
         setErrror(null);
-        if (!fileName) return;
-        const fName = fileName.endsWith(".dal") ? fileName : fileName + ".dal";
+
+        // Note connected to server.
+        if (connectionStatus !== "Connected") return;
+
+        // No file name provided.
+        if (!fileName || !fileName.trim()) return;
+
+        // Validate file name.
+        const fName = fileName.endsWith(".dal")
+            ? fileName
+            : `${fileName}.dal`;
+        if (!/^[A-Za-z0-9_-]+\.dal$/.test(fName)) {
+            setErrror("Use letters, numbers, underscores, or dashes only.");
+            return;
+        }
+
+        // Check if design with same name already exists.
         const fExists = designs.some((design) => design.name === fName);
         if (fExists) {
             setErrror(`Design named ${fName} already exists`);
             return;
         }
+
+        // If all checks pass, create design.
         sendMessage("create_design", {"fileName": fName});
         setSelectedDesign(null);
     }, [fileName, sendMessage, connectionStatus]);
