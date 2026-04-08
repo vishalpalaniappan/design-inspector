@@ -5,6 +5,12 @@ import handleWSConnection from "./src/websocket.js";
 import { server as WebSocketServer } from "websocket";
 import init from "./init.js";
 
+try {
+    await init();
+} catch (err) {
+    console.error("Error during initialization:", err);
+}
+
 //Port on which the http and websocket connections are established
 const PORT = 3002;
 const app = express();
@@ -30,9 +36,3 @@ wsServer.on('request', function(request) {
     console.log((new Date()) + ' Recieved a new connection from origin ' + request.origin + '.');
     handleWSConnection(request);
 });
-
-try {
-    await init();
-} catch (err) {
-    console.error("Error during initialization:", err);
-}
