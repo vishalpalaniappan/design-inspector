@@ -272,6 +272,7 @@ export const deleteMappingThunk = (abstraction) => (dispatch, getState, {engine}
             file.mapping.forEach((entry) => {
                 if (entry.uid === abstraction.uid) {
                     entry.behaviorId = null;
+                    entry.variableName = null;
                 }
             });
         };
