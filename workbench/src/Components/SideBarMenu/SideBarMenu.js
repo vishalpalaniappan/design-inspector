@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useCallback} from "react";
 
-import { BoxArrowLeft, Download } from "react-bootstrap-icons";
+import {BoxArrowLeft} from "react-bootstrap-icons";
 
 import "./SideBarMenu.scss";
 
@@ -8,7 +8,7 @@ import "./SideBarMenu.scss";
  * Side bar menu of app.
  * @return {JSX.Element}
  */
-export function SideBarMenu() {
+export function SideBarMenu () {
     const returnToMenu = () => {
         window.location.href = "/";
     };
@@ -17,7 +17,6 @@ export function SideBarMenu() {
         <div className="side-bar">
             <div className="top"></div>
             <div className="bottom">
-                <Download title="Download Design" size={20} className="icon" />
                 <BoxArrowLeft
                     title="Return to Design Menu"
                     onClick={returnToMenu}
