@@ -12,11 +12,12 @@
         .icon {
             cursor: pointer;
             color: rgb(196, 196, 196);
-            margin: 10px 0;
+            padding: 10px;
         }
 
         .icon:hover {
             color: white;
+            background-color: rgb(88, 88, 88);
         }
     }
 }
