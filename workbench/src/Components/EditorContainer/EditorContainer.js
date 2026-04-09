@@ -99,16 +99,8 @@ export function EditorContainer () {
 
     useEffect(() => {
         if (activeTab && engine && editorRef.current) {
-            const activeTabFile = engine.getFileV2(activeTab);
-            console.log(activeTabFile);
-            const f = {
-                name: activeTabFile._name,
-                uid: activeTabFile._uid,
-                content: activeTabFile.getContent(),
-                type: "file",
-                updatedContent: activeTabFile.getUpdatedContent(),
-            };
-            editorRef.current.addTab(f);
+            const activeTabFile = engine.getFile(activeTab);
+            editorRef.current.addTab(activeTabFile);
         }
     }, [activeTab, editorLoaded, engine]);
 
