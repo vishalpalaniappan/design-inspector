@@ -99,8 +99,12 @@ export function EditorContainer () {
 
     useEffect(() => {
         if (activeTab && engine && editorRef.current) {
-            const activeTabFile = engine.getFile(activeTab);
-            editorRef.current.addTab(activeTabFile);
+            const foundFile = files.find((file) => file.uid === activeTab);
+            if (!foundFile) {
+                console.error("Active tab file not found in engine files");
+                return;
+            }
+            editorRef.current.addTab(foundFile);
         }
     }, [activeTab, editorLoaded, engine]);
 
