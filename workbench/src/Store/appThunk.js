@@ -32,8 +32,8 @@ export const deleteFileThunk = (fileId) => (dispatch, getState, {engine}) => {
  * @return {Function} Thunk function.
  */
 export const addFileThunk = (fileName) => (dispatch, getState, {engine}) => {
-    const newFile = engine.addFile(fileName, fileName, "");
-    dispatch(setActiveTab(newFile.uid));
+    const newFile = engine.addFileV2(fileName, fileName, "");
+    dispatch(setActiveTab(newFile._uid));
     dispatch(incrementCounter());
 };
 
