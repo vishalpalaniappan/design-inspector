@@ -25,8 +25,8 @@ async function saveDesign(designName,  data) {
 
         engine.deserialize(data);
 
-        const pythonFiles = engine.getFiles().filter((file) => {
-            return (file.name.endsWith(".py") && file.getUpdatedContent() !== file.getContent());
+        const pythonFiles = engine.getFilesV2().filter((file) => {
+            return (file._name.endsWith(".py") && file.getUpdatedContent() !== file.getContent());
         });
 
         await Promise.all(
