@@ -271,6 +271,10 @@ export const useEngineFiles = () => {
     const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
     const activeTab = useSelector(selectActiveTab);
 
+    // TODO: Process files to provide format accepted by UI. This further
+    // decouples the engine from the UI. This makes it easier to
+    // change the engine implementation without affecting the UI.
+
     return useMemo(() => {
         if (!engine) return null;
         return [...engine.getFiles()];
