@@ -277,7 +277,17 @@ export const useEngineFiles = () => {
 
     return useMemo(() => {
         if (!engine) return null;
-        return [...engine.getFiles()];
+        return engine.getFilesV2().map((file) => {
+            return {
+                name: file._name,
+                path: file.getKey(),
+                content: file.getContent(),
+                updatedContent: file.getUpdatedContent(),
+                type: "file",
+                uid: file._uid,
+                mapping: file.getStatementIndex(),
+            };
+        });
     }, [engine, selectedBehaviorId, activeTab, counter]);
 };
 

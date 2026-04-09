@@ -21,7 +21,7 @@ export const deleteFileThunk = (fileId) => (dispatch, getState, {engine}) => {
     } else if (index > 0) {
         newUid = files[index - 1].uid;
     }
-    engine.removeFile(fileId);
+    engine.removeFileV2(fileId);
     dispatch(setActiveTab(newUid));
     dispatch(incrementCounter());
 };
@@ -32,8 +32,8 @@ export const deleteFileThunk = (fileId) => (dispatch, getState, {engine}) => {
  * @return {Function} Thunk function.
  */
 export const addFileThunk = (fileName) => (dispatch, getState, {engine}) => {
-    const newFile = engine.addFile(fileName, fileName, "");
-    dispatch(setActiveTab(newFile.uid));
+    const newFile = engine.addFileV2(fileName, fileName, "");
+    dispatch(setActiveTab(newFile._uid));
     dispatch(incrementCounter());
 };
 
@@ -355,3 +355,24 @@ export const setHasEntryPointThunk = (hasEntryPoint) => (dispatch, getState, {en
     dispatch(setHasEntryPoint(hasEntryPoint));
     dispatch(incrementCounter());
 };
+
+
+/**
+ * Sets whether the design has an entry point, which enables or disables the run
+ * button and functionality.
+ * @param {String} fileId ID of the file to update.
+ * @param {String} content Updated content for the file.
+ * @return {Function} Thunk function.
+ */
+export const setUpdatedContentThunk = (fileId, content) => (dispatch, getState, {engine}) => {
+    let file;
+    try {
+        file = engine.getFileV2(fileId);
+    } catch (e) {
+        console.error("File not found in engine files");
+        return;
+    }
+    file.setUpdatedContent(content);
+    dispatch(incrementCounter());
+};
+

@@ -8,6 +8,7 @@ import {useModalManager} from "ui-layout-manager-dev";
 import ServerContext from "../../Providers/ServerContext";
 import {setActiveTab} from "../../Store/appSlice";
 import {mapStatementToBehaviorThunk} from "../../Store/appThunk";
+import {setUpdatedContentThunk} from "../../Store/appThunk";
 import {useEngineFiles} from "../../Store/useAppSelection";
 import {useActiveTab, useLastSaved, useSelectedBehavior} from "../../Store/useAppSelection";
 import {useSelectedParticipant} from "../../Store/useAppSelection";
@@ -41,11 +42,15 @@ export function EditorContainer () {
     // Close tabs of files that were deleted, and update saved content
     useEffect(() => {
         if (files) {
+            console.log("Files changed, updating editor tabs", files);
             const _tabs = editorRef.current.getTabs();
             for (let i = 0; i < _tabs.length; i++) {
                 const _tab = _tabs[i];
-                if (!files.find((file) => file.uid === _tab.uid)) {
+                const found = files.find((file) => file.uid === _tab.uid);
+                if (!found) {
                     editorRef.current.closeTab(_tab.uid);
+                } else {
+                    editorRef.current.setUpdatedContent(_tab, found.updatedContent);
                 }
             }
             editorRef.current.layoutEditor();
@@ -97,6 +102,7 @@ export function EditorContainer () {
 
     useEffect(() => {
         if (activeTab && editorRef.current) {
+            console.log(activeTab, files);
             const foundFile = files.find((file) => file.uid === activeTab);
             if (!foundFile) {
                 console.error("Active tab file not found in engine files");
@@ -177,9 +183,16 @@ export function EditorContainer () {
         editorRef.current.setTabGroupId(parentIdRef.current);
     }, [connectionStatus]);
 
+    const onContentChange = useCallback((tab, newContent) => {
+        if (files) {
+            dispatch(setUpdatedContentThunk(tab.uid, newContent));
+        }
+    }, [dispatch, files]);
+
     return (
         <Editor
             ref={editorRef}
+            onContentChange={onContentChange}
             onSelectAbstraction={onSelectAbstraction}
             onSelectTab={onSelectTab}/>
     );
