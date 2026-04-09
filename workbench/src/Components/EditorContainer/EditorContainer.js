@@ -5,7 +5,6 @@ import {Editor} from "sample-ui-component-library";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 import {useModalManager} from "ui-layout-manager-dev";
 
-import {useDalEngine} from "../../Providers/GlobalProviders";
 import ServerContext from "../../Providers/ServerContext";
 import {setActiveTab} from "../../Store/appSlice";
 import {mapStatementToBehaviorThunk} from "../../Store/appThunk";
@@ -24,7 +23,6 @@ import "./EditorContainer.scss";
  */
 export function EditorContainer () {
     const {connectionStatus} = useContext(ServerContext);
-    const {engine} = useDalEngine();
     const editorRef = useRef(null);
     const parentIdRef = useRef(null);
     const files = useEngineFiles();
@@ -98,7 +96,7 @@ export function EditorContainer () {
     }, [lastSaved]);
 
     useEffect(() => {
-        if (activeTab && engine && editorRef.current) {
+        if (activeTab && editorRef.current) {
             const foundFile = files.find((file) => file.uid === activeTab);
             if (!foundFile) {
                 console.error("Active tab file not found in engine files");
@@ -106,7 +104,7 @@ export function EditorContainer () {
             }
             editorRef.current.addTab(foundFile);
         }
-    }, [activeTab, editorLoaded, engine]);
+    }, [activeTab, editorLoaded]);
 
     useLayoutEventSubscription("drag:drop", (event) => {
         const drop = event.payload;
