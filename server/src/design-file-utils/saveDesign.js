@@ -26,21 +26,21 @@ async function saveDesign(designName,  data) {
         engine.deserialize(data);
 
         const pythonFiles = engine.getFiles().filter((file) => {
-            return (file.name.endsWith(".py") && file.updatedContent !== file.content);
+            return (file.name.endsWith(".py") && file.getUpdatedContent() !== file.getContent());
         });
 
         await Promise.all(
             pythonFiles.map(async (file) => {
-                const mapping = await statementMappingRunner(file.updatedContent);
-                file.mapping = mapping;
+                const mapping = await statementMappingRunner(file.getUpdatedContent());
+                file.addStatementIndex(mapping);
             })
         );
 
         // This marks the file as not dirty. If the content does not match
         // the update content, then the file is considered dirty and the UI
         // will reflect this.
-        engine.getFiles().forEach((file) => {
-            file.content = file.updatedContent;
+        engine.getFilesV2().forEach((file) => {
+            file.setContent(file.getUpdatedContent());
         });
 
         // Write engine files to playground folder
@@ -50,9 +50,10 @@ async function saveDesign(designName,  data) {
         await fs.writeFile(filePath, serializedEngine);
 
         return {
-            files: engine.getFiles()
+            files: engine.getFilesV2()
         };
     } catch (writeErr) {
+        console.log(writeErr);
         // File write failed; Restore playground from disk so they stay in sync.
         // this is the same effect as reloading the application
         try {

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 import useWebSocket, {ReadyState} from "react-use-websocket";
 
-import {setActiveTab, setLastSaved} from "../Store/appSlice";
+import {incrementCounter, setActiveTab, setLastSaved} from "../Store/appSlice";
 import {setStatusMsg} from "../Store/appSlice";
 import {setDesignLoaded} from "../Store/appSlice";
 import engine from "./DalEngine";
@@ -93,17 +93,20 @@ function GlobalProviders ({children}) {
     // those changes to the engien instance.
     const loadSavedDesign = useCallback((files) => {
         if (!engineRef.current) return;
+        console.log(files);
         files.forEach((file) => {
             const engineFile = engineRef.current.getFiles().find(
                 (f) => f.name === file.name
             );
             if (engineFile) {
-                engineFile.content = file.updatedContent;
-                engineFile.updatedContent = file.updatedContent;
-                engineFile.mapping = file.mapping;
+                engineFile.setContent(file.updatedContent);
+                engineFile.setUpdatedContent(file.updatedContent);
+                // TODO: Change API in engine to use setStatementIndex
+                engineFile.addStatementIndex(file.mapping);
             }
         });
-    }, []);
+        dispatch(incrementCounter());
+    }, [dispatch]);
 
     // Called to save the engine to the server.
     const saveEngine = useCallback(() => {
