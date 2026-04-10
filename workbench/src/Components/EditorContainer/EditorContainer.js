@@ -42,15 +42,12 @@ export function EditorContainer () {
     // Close tabs of files that were deleted, and update saved content
     useEffect(() => {
         if (files) {
-            console.log("Files changed, updating editor tabs", files);
             const _tabs = editorRef.current.getTabs();
             for (let i = 0; i < _tabs.length; i++) {
                 const _tab = _tabs[i];
-                const found = files.find((file) => file.uid === _tab.uid);
-                if (!found) {
+                const file = files.find((file) => file.uid === _tab.uid);
+                if (!file) {
                     editorRef.current.closeTab(_tab.uid);
-                } else {
-                    editorRef.current.setUpdatedContent(_tab, found.updatedContent);
                 }
             }
             editorRef.current.layoutEditor();
@@ -94,18 +91,26 @@ export function EditorContainer () {
              * is set to the content key of the file, so we need to update
              * the content of the tab to reflect that.
              */
-            editorRef.current.getTabs().forEach((tab) => {
-                editorRef.current.setContent(tab, tab.content);
+            const tabs = editorRef.current.getTabs();
+            files.forEach((file) => {
+                if (tabs.some((tab) => tab.uid === file.uid)) {
+                    console.log(file);
+                    editorRef.current.updateTab(file);
+                }
             });
         }
     }, [lastSaved]);
 
     useEffect(() => {
         if (activeTab && editorRef.current) {
-            console.log(activeTab, files);
             const foundFile = files.find((file) => file.uid === activeTab);
             if (!foundFile) {
                 console.error("Active tab file not found in engine files");
+                return;
+            }
+            const found = editorRef.current.getTabs().some((tab) => tab.uid === activeTab);
+            if (found) {
+                editorRef.current.selectTab(foundFile.uid);
                 return;
             }
             editorRef.current.addTab(foundFile);
@@ -155,11 +160,13 @@ export function EditorContainer () {
 
     const onSelectTab = useCallback((tab) => {
         if (editorLoaded) {
-            dispatch(setActiveTab(tab && tab.uid));
+            if (tab !== activeTab) {
+                dispatch(setActiveTab(tab && tab.uid));
+            }
         } else {
             setEditorLoaded(true);
         }
-    }, [dispatch, editorLoaded]);
+    }, [dispatch, activeTab, editorLoaded]);
 
     const onSelectAbstraction = useCallback((abstraction, shiftKey) => {
         if (shiftKey && abstraction?.behaviorId == selectedBehavior.getName()) {
@@ -184,9 +191,7 @@ export function EditorContainer () {
     }, [connectionStatus]);
 
     const onContentChange = useCallback((tab, newContent) => {
-        if (files) {
-            dispatch(setUpdatedContentThunk(tab.uid, newContent));
-        }
+        dispatch(setUpdatedContentThunk(tab.uid, newContent));
     }, [dispatch, files]);
 
     return (
