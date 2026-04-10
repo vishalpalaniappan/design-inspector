@@ -21,7 +21,7 @@ async function loadDesign(designName) {
         engine.deserialize(data);
 
         // Write engine files to playground folder
-        await loadDesignInPlayground(engine.getFiles());
+        await loadDesignInPlayground(engine.getFilesV2());
 
         return {
             fileName: designName,
