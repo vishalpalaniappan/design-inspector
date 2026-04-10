@@ -373,6 +373,5 @@ export const setUpdatedContentThunk = (fileId, content) => (dispatch, getState, 
         return;
     }
     file.setUpdatedContent(content);
-    dispatch(incrementCounter());
 };
 
