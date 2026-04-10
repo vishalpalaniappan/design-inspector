@@ -325,30 +325,9 @@ export const mapAbstractionThunk = ({absId, varName}) => (dispatch, getState, {e
     }
 
     // Map the participant+varName to the statement in the source file.
-    const f = engine.getFileV2(selectedFileId);
-    f.setParticipant(absId, selectedParticipantId, varName);
+    const file = engine.getFileV2(selectedFileId);
+    file.setParticipant(absId, selectedParticipantId, varName);
 
-    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
-    const participant = behavior.getParticipant(selectedParticipantId);
-    participant.mapAbstraction({
-        abstractionId: absId,
-        variableName: varName,
-    });
-
-    // Assign the varaible name to the mapping entry in the file.
-    for (const file of engine.getFiles()) {
-        if (!file.mapping) continue;
-        for (const entry of file.mapping) {
-            if (entry.uid === absId) {
-                if ("variables" in entry) {
-                    entry.variables.push(varName);
-                } else {
-                    entry.variables = [varName];
-                }
-                break;
-            }
-        };
-    }
     dispatch(incrementCounter());
 };
 
