@@ -235,7 +235,11 @@ export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {
         return;
     }
 
-    file.setBehavior(statement.uid, selectedBehaviorId);
+    if (file.getMappedStatement(statement.uid)?.getBehavior() === selectedBehaviorId) {
+        file.setBehavior(statement.uid, null);
+    } else {
+        file.setBehavior(statement.uid, selectedBehaviorId);
+    }
 
     // Statement is mapped to another behavior.
     if (statement?.behaviorId && statement.behaviorId !== selectedBehaviorId) {

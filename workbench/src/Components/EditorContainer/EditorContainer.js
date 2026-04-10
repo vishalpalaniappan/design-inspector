@@ -48,6 +48,8 @@ export function EditorContainer () {
                 const file = files.find((file) => file.uid === _tab.uid);
                 if (!file) {
                     editorRef.current.closeTab(_tab.uid);
+                } else {
+                    editorRef.current.updateTab(file);
                 }
             }
             editorRef.current.layoutEditor();
