@@ -257,54 +257,22 @@ export const selectMappingThunk = (abstraction) => (dispatch, getState, {engine}
 
 /**
  * Deletes the mapping. There are two types of mapping:
- * - A behavior onto an abstraction in the file.
- * - A participant onto a variable name in an abstraction in the file.
- *
- * Currently, the mapping is saved in the behavior/participant AND in the
- * mapping entry in the file. This makes this process a convolutedand I will
- * streamline it soon. So current the process of deletion is as follows:
- *
- * If the mapping is type behavior, the mapping is removed from the behavior
- * and the mapping entry in the file is updated to remove the behaviorId and
- * the varaiables key. Meaning this mapping entry is no longer mapped onto any
- * behavior or participant
- *
- * If the mapping is a participant, the abstraction is unmapped from the
- * participant and the mapping entry is updated to remove the variable name from
- * its variables key, which is a list of variable names to long. In this case,
- * the mapping entry is still mapped onto a behavior and could still be mapped
- * onto other participants.
- *
- * Finally, the selected mapping is set to null.
+ * - A behavior onto an statement in the file.
+ * - A participant onto a variable name in an statement in the file.
  * @param {Object} abstraction See useSelectedBehaviorAbstractions selector.
  * @return {Function} Thunk function.
  */
 export const deleteMappingThunk = (abstraction) => (dispatch, getState, {engine}) => {
-    const files = engine.getFiles();
-    const selectedBehaviorId = getState().app.selectedBehavior;
     const selectedParticipantId = getState().app.selectedParticipant;
-    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+    const selectActiveTabId = getState().app.activeTab;
+    const file = engine.getFileV2(selectActiveTabId);
 
     if (abstraction.type === "behavior") {
-        behavior.removeMapping(abstraction.uid);
-        for (const file of files) {
-            if (!file?.mapping) continue;
-            file.mapping.forEach((entry) => {
-                if (entry.uid === abstraction.uid) {
-                    entry.behaviorId = null;
-                    entry.variableName = null;
-                }
-            });
-        };
+        file.clearBehavior(abstraction.uid);
+    } else if (abstraction.type === "participant") {
+        file.removeParticipant(abstraction.uid, selectedParticipantId);
     }
 
-    if (selectedParticipantId && abstraction.type === "participant") {
-        // Using this because, it doesn't have remove mapping function.
-        // TODO: Standardize the method names.
-        behavior.getParticipant(selectedParticipantId).mapAbstraction(null);
-
-        // TODO: Remove the variable name from the mapping entry.
-    }
     dispatch(setSelectedMapping(null));
     dispatch(incrementCounter());
 };
