@@ -224,7 +224,6 @@ export const deleteBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}
 export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {engine}) => {
     const selectedBehaviorId = getState().app.selectedBehavior;
     const selectedActiveTabId = getState().app.activeTab;
-
     if (!selectedBehaviorId) {
         console.info("No behavior selected, cannot map statement to behavior.");
         return;
@@ -235,6 +234,8 @@ export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {
         console.error("File not found in engine files");
         return;
     }
+
+    // TODO: Check if statement is mapped onto other behavior.
 
     if (file.getMappedStatement(statement.uid)?.getBehavior() === selectedBehaviorId) {
         file.setBehavior(statement.uid, null);
