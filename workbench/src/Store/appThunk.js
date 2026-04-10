@@ -318,10 +318,16 @@ export const deleteMappingThunk = (abstraction) => (dispatch, getState, {engine}
 export const mapAbstractionThunk = ({absId, varName}) => (dispatch, getState, {engine}) => {
     const selectedBehaviorId = getState().app.selectedBehavior;
     const selectedParticipantId = getState().app.selectedParticipant;
+    const selectedFileId = getState().app.activeTab;
     if (!selectedBehaviorId || !selectedParticipantId) {
         console.info("No behavior or participant selected, cannot map abstraction.");
         return;
     }
+
+    // Map the participant+varName to the statement in the source file.
+    const f = engine.getFileV2(selectedFileId);
+    f.setParticipant(absId, selectedParticipantId, varName);
+
     const behavior = engine.getNode(selectedBehaviorId).getBehavior();
     const participant = behavior.getParticipant(selectedParticipantId);
     participant.mapAbstraction({
