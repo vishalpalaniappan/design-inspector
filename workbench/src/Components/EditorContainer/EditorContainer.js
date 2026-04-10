@@ -61,14 +61,8 @@ export function EditorContainer () {
     }, [appMode, editorLoaded]);
 
     useEffect(() => {
-        if (selectedBehavior && editorRef.current) {
-            editorRef.current.setCurrentBehavior(selectedBehavior.getName());
-            editorRef.current.layoutEditor();
-        }
-    }, [selectedBehavior]);
-
-    useEffect(() => {
         if (selectedMapping) {
+            // Mapping selected in the mapping container.
             const file = files.find((file) => file.uid === selectedMapping.fileUid);
             editorRef.current.addTab(file, null, selectedMapping.lineNumber);
         }
@@ -76,6 +70,7 @@ export function EditorContainer () {
 
     useEffect(() => {
         if (selectedBehavior && editorRef.current) {
+            // Behvaior selected in graph by clicking on node.
             editorRef.current.setCurrentBehavior(selectedBehavior.getName());
             editorRef.current.layoutEditor();
         }
