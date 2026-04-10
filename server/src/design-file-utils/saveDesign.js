@@ -53,7 +53,6 @@ async function saveDesign(designName,  data) {
             files: engine.getFilesV2()
         };
     } catch (writeErr) {
-        console.log(writeErr);
         // File write failed; Restore playground from disk so they stay in sync.
         // this is the same effect as reloading the application
         try {
