@@ -155,7 +155,6 @@ export const useSelectedBehaviorAbstractions = () => {
     const {engine} = useDalEngine();
     const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
 
-    // -------Begin migrating to v2 methods------
     // Get statements with chosen behavior from implementation.
     const stmts = engine.implementationV2.getStatementsWithBehavior(selectedBehaviorId);
     const abstractions = [];
@@ -181,50 +180,6 @@ export const useSelectedBehaviorAbstractions = () => {
     }
 
     return abstractions;
-
-
-    /**
-     * TODO: This entire function is overly complicated. This is because I am
-     * implementing logic that should be in the engine here. I will refactor
-     * this to make it much easier to understand.
-     **/
-    const counter = useSelector(selectCounter);
-    return useMemo(() => {
-        if (!selectedBehaviorId) return null;
-        const selections = [];
-        const behavior = engine.getNode(selectedBehaviorId)?.getBehavior();
-        if (!behavior) return selections;
-        if (!behavior._abstractionIds) return selections;
-
-        // From the files, get the mapping info for behavior and participants
-        for (const file of engine.getFiles()) {
-            if (!file?.mapping) continue;
-            for (const entry of file.mapping) {
-                if (behavior._abstractionIds.includes(entry.uid)) {
-                    selections.push({
-                        type: "behavior",
-                        uid: entry.uid,
-                        fileUid: file.uid,
-                        lineNumber: entry.start_line,
-                        source: (Array.isArray(entry.source)) ? entry.source[0] : entry.source,
-                    });
-                }
-                const participant = behavior.getParticipants().find(
-                    (p) => p._abstractionId?.abstractionId === entry.uid
-                );
-                if (!participant) continue;
-                selections.push({
-                    type: "participant",
-                    uid: entry.uid,
-                    fileUid: file.uid,
-                    lineNumber: entry.start_line,
-                    participantName: participant.getName(),
-                    variableName: participant._abstractionId?.variableName,
-                });
-            };
-        };
-        return selections;
-    }, [engine, selectedBehaviorId, counter]);
 };
 
 /**
