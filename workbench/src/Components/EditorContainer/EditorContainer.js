@@ -39,9 +39,9 @@ export function EditorContainer () {
     const dispatch = useDispatch();
     const appMode = useAppMode();
 
-    // Close tabs of files that were deleted, and update saved content
     useEffect(() => {
         if (files) {
+            // Close tabs of files that were deleted
             const _tabs = editorRef.current.getTabs();
             for (let i = 0; i < _tabs.length; i++) {
                 const _tab = _tabs[i];
@@ -114,13 +114,8 @@ export function EditorContainer () {
 
     useLayoutEventSubscription("drag:drop", (event) => {
         const drop = event.payload;
-        if (!drop?.overId) {
-            return;
-        }
-
-        if (!drop.activeData?.node || !drop.overData) {
-            return;
-        }
+        if (!drop?.overId) return;
+        if (!drop.activeData?.node || !drop.overData) return;
 
         const activeType = drop.activeData.type;
         const overType = drop.overData.type;
@@ -128,9 +123,7 @@ export function EditorContainer () {
         const overParent = drop.overData.parentId;
 
         // Only drop files, not folders.
-        if (drop.activeData.node.type !== "file") {
-            return;
-        }
+        if (drop.activeData.node.type !== "file") return;
 
         if (activeType === "EditorTab" && overType === "EditorTabGutter") {
             if (activeParent === overParent) {
