@@ -20,12 +20,12 @@ async function loadDesignInPlayground(files) {
         // TODO: Replace file name with key to create subfolders For now all files
         // exist on the same level with unique names. This requires changes to
         // the create file functions so it can create directories and not just files.
-        const filePath = path.resolve(playgroundPath, file.name);
+        const filePath = path.resolve(playgroundPath, file.getName());
         if (!filePath.startsWith(playgroundPath + path.sep)) {
-            throw new Error(`Invalid file path: ${file.name}`);
+            throw new Error(`Invalid file path: ${file.getName()}`);
         }
         await fs.mkdir(path.dirname(filePath), { recursive: true });
-        await fs.writeFile(filePath, file.content, { flag: "w" });
+        await fs.writeFile(filePath, file.getContent(), { flag: "w" });
     }));
 }
 
