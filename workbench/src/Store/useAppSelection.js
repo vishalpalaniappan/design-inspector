@@ -155,6 +155,34 @@ export const useSelectedBehaviorAbstractions = () => {
     const {engine} = useDalEngine();
     const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
 
+    // -------Begin migrating to v2 methods------
+    // Get statements with chosen behavior from implementation.
+    const stmts = engine.implementationV2.getStatementsWithBehavior(selectedBehaviorId);
+    const abstractions = [];
+    for (const stmt of stmts) {
+        abstractions.push({
+            type: "behavior",
+            uid: stmt._uid,
+            fileUid: null,
+            lineNumber: stmt._start_line,
+            source: stmt._source,
+        });
+
+        for (const participant of stmt.getParticipants()) {
+            abstractions.push({
+                type: "participant",
+                uid: stmt._uid,
+                fileUid: null,
+                lineNumber: stmt._start_line,
+                participantName: participant.participantName,
+                variableName: participant.variableName,
+            });
+        }
+    }
+
+    return abstractions;
+
+
     /**
      * TODO: This entire function is overly complicated. This is because I am
      * implementing logic that should be in the engine here. I will refactor
