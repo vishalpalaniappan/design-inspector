@@ -13,6 +13,7 @@ import ServerContext from "./ServerContext";
 import TerminalContext from "./TerminalContext";
 import WorkspaceContext from "./WorkspaceContext";
 
+
 GlobalProviders.propTypes = {
     children: PropTypes.node,
 };
@@ -35,6 +36,7 @@ function GlobalProviders ({children}) {
     const {sendJsonMessage, lastMessage, lastJsonMessage, readyState} = useWebSocket(socketUrl, {
         onOpen: () => sendJsonMessage({"type": "workspaces"}),
         shouldReconnect: (closeEvent) => true,
+        onClose: (e) => console.log("Websocket closed, attempting to reconnect...", e),
     });
 
     // Sets the message history and processes received message.
@@ -93,19 +95,17 @@ function GlobalProviders ({children}) {
     // those changes to the engien instance.
     const loadSavedDesign = useCallback((files) => {
         if (!engineRef.current) return;
-        console.log(files);
         files.forEach((file) => {
-            const engineFile = engineRef.current.getFiles().find(
-                (f) => f.name === file.name
+            const engineFile = engineRef.current.getFilesV2().find(
+                (f) => f._name === file._name
             );
             if (engineFile) {
-                engineFile.setContent(file.updatedContent);
-                engineFile.setUpdatedContent(file.updatedContent);
-                // TODO: Change API in engine to use setStatementIndex
-                engineFile.addStatementIndex(file.mapping);
+                engineFile.setContent(file._versions[0]._content);
+                engineFile.setUpdatedContent(file._versions[0]._updatedContent);
+                engineFile.setStatementIndex(file._versions[0]._statementIndex);
+                dispatch(incrementCounter());
             }
         });
-        dispatch(incrementCounter());
     }, [dispatch]);
 
     // Called to save the engine to the server.
