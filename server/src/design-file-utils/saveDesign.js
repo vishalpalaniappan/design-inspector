@@ -32,7 +32,7 @@ async function saveDesign(designName,  data) {
         await Promise.all(
             pythonFiles.map(async (file) => {
                 const mapping = await statementMappingRunner(file.getUpdatedContent());
-                file.addStatementIndex(mapping);
+                file.setStatementIndex(mapping);
             })
         );
 
