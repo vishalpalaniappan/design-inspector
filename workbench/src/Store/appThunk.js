@@ -224,6 +224,7 @@ export const deleteBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}
 export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {engine}) => {
     const selectedBehaviorId = getState().app.selectedBehavior;
     const selectedActiveTabId = getState().app.activeTab;
+
     if (!selectedBehaviorId) {
         console.info("No behavior selected, cannot map statement to behavior.");
         return;
@@ -239,20 +240,6 @@ export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {
         file.setBehavior(statement.uid, null);
     } else {
         file.setBehavior(statement.uid, selectedBehaviorId);
-    }
-
-    // Statement is mapped to another behavior.
-    if (statement?.behaviorId && statement.behaviorId !== selectedBehaviorId) {
-        return;
-    }
-    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
-    const hasStatementId = behavior._abstractionIds.includes(statement.uid);
-    if (hasStatementId) {
-        behavior.removeMapping(statement.uid);
-        statement.behaviorId = null;
-    } else {
-        behavior.addMapping(statement.uid);
-        statement.behaviorId = selectedBehaviorId;
     }
     dispatch(incrementCounter());
 };
