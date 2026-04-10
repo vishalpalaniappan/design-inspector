@@ -278,6 +278,16 @@ export const useEngineFiles = () => {
     return useMemo(() => {
         if (!engine) return null;
         return engine.getFilesV2().map((file) => {
+            // Convert map into format accepted by UI.
+            const index = file.getStatementIndex().map((entry) => {
+                return {
+                    uid: entry._uid,
+                    start_line: entry._start_line,
+                    end_line: entry._end_line,
+                    source: entry._source,
+                };
+            });
+            // Return file info in format accepted by UI.
             return {
                 name: file._name,
                 path: file.getKey(),
@@ -285,7 +295,7 @@ export const useEngineFiles = () => {
                 updatedContent: file.getUpdatedContent(),
                 type: "file",
                 uid: file._uid,
-                mapping: file.getStatementIndex(),
+                mapping: index,
             };
         });
     }, [engine, selectedBehaviorId, activeTab, counter]);
