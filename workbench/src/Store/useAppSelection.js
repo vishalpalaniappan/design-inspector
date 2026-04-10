@@ -285,6 +285,7 @@ export const useEngineFiles = () => {
                     start_line: entry._start_line,
                     end_line: entry._end_line,
                     source: entry._source,
+                    behaviorId: entry._behaviorId,
                 };
             });
             // Return file info in format accepted by UI.
