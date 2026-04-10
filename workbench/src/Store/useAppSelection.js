@@ -158,11 +158,13 @@ export const useSelectedBehaviorAbstractions = () => {
     // Get statements with chosen behavior from implementation.
     const stmts = engine.implementationV2.getStatementsWithBehavior(selectedBehaviorId);
     const abstractions = [];
-    for (const stmt of stmts) {
+    for (const entry of stmts) {
+        const stmt = entry.statement;
+        const file = entry.file;
         abstractions.push({
             type: "behavior",
             uid: stmt._uid,
-            fileUid: null,
+            fileUid: file.getUid(),
             lineNumber: stmt._start_line,
             source: stmt._source,
         });
@@ -171,7 +173,7 @@ export const useSelectedBehaviorAbstractions = () => {
             abstractions.push({
                 type: "participant",
                 uid: stmt._uid,
-                fileUid: null,
+                fileUid: file.getUid(),
                 lineNumber: stmt._start_line,
                 participantName: participant.participantName,
                 variableName: participant.variableName,
