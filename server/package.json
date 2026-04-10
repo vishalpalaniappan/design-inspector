@@ -14,7 +14,7 @@
     "ws": "^8.8.0"
   },
   "devDependencies": {
-    "dal-engine-core-js-lib-dev": "0.0.31-dev",
+    "dal-engine-core-js-lib-dev": "0.0.32-dev",
     "vitest": "^4.1.0"
   }
 }
