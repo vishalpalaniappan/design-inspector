@@ -299,6 +299,11 @@ export const mapAbstractionThunk = ({absId, varName}) => (dispatch, getState, {e
 
     // Map the participant+varName to the statement in the source file.
     const file = engine.getFile(selectedFileId);
+
+    if (!file) {
+        console.error("File not found in engine files");
+        return;
+    }
     file.setParticipant(absId, selectedParticipantId, varName);
 
     dispatch(incrementCounter());
