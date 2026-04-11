@@ -44,7 +44,7 @@ async function saveDesign(designName,  data) {
         });
 
         // Write engine files to playground folder
-        await loadDesignInPlayground(engine.getFiles());
+        await loadDesignInPlayground(engine);
 
         const serializedEngine = engine.serialize();
         await fs.writeFile(filePath, serializedEngine);

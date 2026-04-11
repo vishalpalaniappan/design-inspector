@@ -2,7 +2,10 @@ import path from 'path';
 import fs from 'fs/promises';
 import { clearPlaygroundFolder } from "./initFolders.js";
 
-async function loadDesignInPlayground(files) {
+async function loadDesignInPlayground(engine) {
+    // Get files from engine.
+    const files = engine.getFiles();
+
     // Clear playground folder
     await clearPlaygroundFolder();
 
@@ -14,6 +17,7 @@ async function loadDesignInPlayground(files) {
     // Instrument program by calling the relevant runner before writing the 
     // files to the playground. This way, the instrumented code can be executed
     // in the playground and the generated traces can be stored in the engine.
+    
 
 
     await Promise.all(files.map(async (file) => {
