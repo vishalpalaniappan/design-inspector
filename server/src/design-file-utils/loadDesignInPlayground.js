@@ -13,12 +13,10 @@ async function loadDesignInPlayground(engine) {
     const playgroundPath = path.join(process.cwd(), "playground");
 
 
-    // TODO: 
-    // Instrument program by calling the relevant runner before writing the 
-    // files to the playground. This way, the instrumented code can be executed
-    // in the playground and the generated traces can be stored in the engine.
+    const instrumentationPkg = engine.implementation.exportForInstrumentation();
     
-
+    // TODO:
+    // Call runner here and accept the returned instrumented sources.
 
     await Promise.all(files.map(async (file) => {
         // TODO: Replace file name with key to create subfolders For now all files
