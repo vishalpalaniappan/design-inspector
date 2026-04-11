@@ -1,6 +1,6 @@
 import path from 'path';
-import fs from 'fs/promises';
 import { clearPlaygroundFolder } from "./initFolders.js";
+import fs from 'fs/promises';
 
 async function loadDesignInPlayground(engine) {
     // Get files from engine.
@@ -14,6 +14,9 @@ async function loadDesignInPlayground(engine) {
 
 
     const instrumentationPkg = engine.implementation.exportForInstrumentation();
+
+    // Temporarily write to temp folder for accesing instrumentation package
+    await fs.writeFile(path.join("temp",engine._name + ".json"), instrumentationPkg);
     
     // TODO:
     // Call runner here and accept the returned instrumented sources.
