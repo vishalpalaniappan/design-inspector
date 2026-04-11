@@ -322,8 +322,7 @@ export const setHasEntryPointThunk = (hasEntryPoint) => (dispatch, getState, {en
 
 
 /**
- * Sets whether the design has an entry point, which enables or disables the run
- * button and functionality.
+ * Sets updated content for a file given the file ID and the updated content.
  * @param {String} fileId ID of the file to update.
  * @param {String} content Updated content for the file.
  * @return {Function} Thunk function.
