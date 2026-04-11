@@ -96,7 +96,7 @@ function GlobalProviders ({children}) {
     const loadSavedDesign = useCallback((files) => {
         if (!engineRef.current) return;
         files.forEach((file) => {
-            const engineFile = engineRef.current.getFilesV2().find(
+            const engineFile = engineRef.current.getFiles().find(
                 (f) => f._name === file._name
             );
             if (engineFile) {

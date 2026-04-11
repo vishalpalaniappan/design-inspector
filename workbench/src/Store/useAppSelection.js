@@ -156,10 +156,10 @@ export const useSelectedBehaviorAbstractions = () => {
     const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
 
     // Get statements with chosen behavior from implementation.
-    const stmts = engine.implementationV2.getStatementsWithBehavior(selectedBehaviorId);
+    const stmts = engine.implementation.getStatementsWithBehavior(selectedBehaviorId);
     const abstractions = [];
     for (const stmt of stmts) {
-        const file = engine.implementationV2.getFileContainingStmtWithUid(stmt._uid);
+        const file = engine.implementation.getFileContainingStmtWithUid(stmt._uid);
         abstractions.push({
             type: "behavior",
             uid: stmt._uid,
@@ -257,7 +257,7 @@ export const useEngineFiles = () => {
 
     return useMemo(() => {
         if (!engine) return null;
-        return engine.getFilesV2().map((file) => {
+        return engine.getFiles().map((file) => {
             // Convert map into format accepted by UI.
             const index = file.getStatementIndex().map((entry) => {
                 return {

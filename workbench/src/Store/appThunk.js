@@ -21,7 +21,7 @@ export const deleteFileThunk = (fileId) => (dispatch, getState, {engine}) => {
     } else if (index > 0) {
         newUid = files[index - 1].uid;
     }
-    engine.removeFileV2(fileId);
+    engine.removeFile(fileId);
     dispatch(setActiveTab(newUid));
     dispatch(incrementCounter());
 };
@@ -32,7 +32,7 @@ export const deleteFileThunk = (fileId) => (dispatch, getState, {engine}) => {
  * @return {Function} Thunk function.
  */
 export const addFileThunk = (fileName) => (dispatch, getState, {engine}) => {
-    const newFile = engine.addFileV2(fileName, fileName, "");
+    const newFile = engine.addFile(fileName, fileName, "");
     dispatch(setActiveTab(newFile._uid));
     dispatch(incrementCounter());
 };
@@ -229,7 +229,7 @@ export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {
         return;
     }
 
-    const file = engine.getFileV2(selectedActiveTabId);
+    const file = engine.getFile(selectedActiveTabId);
     if (!file) {
         console.error("File not found in engine files");
         return;
@@ -265,7 +265,7 @@ export const selectMappingThunk = (abstraction) => (dispatch, getState, {engine}
 export const deleteMappingThunk = (abstraction) => (dispatch, getState, {engine}) => {
     const selectedParticipantId = getState().app.selectedParticipant;
     const selectActiveTabId = getState().app.activeTab;
-    const file = engine.getFileV2(selectActiveTabId);
+    const file = engine.getFile(selectActiveTabId);
 
     if (abstraction.type === "behavior") {
         file.clearBehavior(abstraction.uid);
@@ -293,7 +293,7 @@ export const mapAbstractionThunk = ({absId, varName}) => (dispatch, getState, {e
     }
 
     // Map the participant+varName to the statement in the source file.
-    const file = engine.getFileV2(selectedFileId);
+    const file = engine.getFile(selectedFileId);
     file.setParticipant(absId, selectedParticipantId, varName);
 
     dispatch(incrementCounter());
@@ -321,7 +321,7 @@ export const setHasEntryPointThunk = (hasEntryPoint) => (dispatch, getState, {en
 export const setUpdatedContentThunk = (fileId, content) => (dispatch, getState, {engine}) => {
     let file;
     try {
-        file = engine.getFileV2(fileId);
+        file = engine.getFile(fileId);
     } catch (e) {
         console.error("File not found in engine files");
         return;
