@@ -50,7 +50,7 @@ async function saveDesign(designName,  data) {
         await fs.writeFile(filePath, serializedEngine);
 
         return {
-            files: engine.getFilesV2()
+            files: engine.getFiles()
         };
     } catch (writeErr) {
         throw writeErr; 
