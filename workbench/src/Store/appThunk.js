@@ -267,6 +267,11 @@ export const deleteMappingThunk = (abstraction) => (dispatch, getState, {engine}
     const selectActiveTabId = getState().app.activeTab;
     const file = engine.getFile(selectActiveTabId);
 
+    if (!file) {
+        console.error("File not found in engine files");
+        return;
+    }
+
     if (abstraction.type === "behavior") {
         file.clearBehavior(abstraction.uid);
     } else if (abstraction.type === "participant") {
