@@ -109,6 +109,8 @@ function GlobalProviders ({children}) {
     }, [dispatch]);
 
     // Called to save the engine to the server.
+    // TODO: File size getting too big for one message,
+    // need some compression or send in chunks!!!
     const saveEngine = useCallback(() => {
         if (!engineRef.current) return;
         sendJsonMessage({
