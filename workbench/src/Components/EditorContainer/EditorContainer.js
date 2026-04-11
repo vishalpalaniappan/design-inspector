@@ -5,10 +5,10 @@ import {Editor} from "sample-ui-component-library";
 import {useLayoutEventSubscription} from "ui-layout-manager-dev";
 import {useModalManager} from "ui-layout-manager-dev";
 
-import {useDalEngine} from "../../Providers/GlobalProviders";
 import ServerContext from "../../Providers/ServerContext";
 import {setActiveTab} from "../../Store/appSlice";
 import {mapStatementToBehaviorThunk} from "../../Store/appThunk";
+import {setUpdatedContentThunk} from "../../Store/appThunk";
 import {useEngineFiles} from "../../Store/useAppSelection";
 import {useActiveTab, useLastSaved, useSelectedBehavior} from "../../Store/useAppSelection";
 import {useSelectedParticipant} from "../../Store/useAppSelection";
@@ -24,7 +24,6 @@ import "./EditorContainer.scss";
  */
 export function EditorContainer () {
     const {connectionStatus} = useContext(ServerContext);
-    const {engine} = useDalEngine();
     const editorRef = useRef(null);
     const parentIdRef = useRef(null);
     const files = useEngineFiles();
@@ -40,14 +39,18 @@ export function EditorContainer () {
     const dispatch = useDispatch();
     const appMode = useAppMode();
 
-    // Close tabs of files that were deleted, and update saved content
     useEffect(() => {
         if (files) {
+            console.log(files);
+            // Close tabs of files that were deleted
             const _tabs = editorRef.current.getTabs();
             for (let i = 0; i < _tabs.length; i++) {
                 const _tab = _tabs[i];
-                if (!files.find((file) => file.uid === _tab.uid)) {
+                const file = files.find((file) => file.uid === _tab.uid);
+                if (!file) {
                     editorRef.current.closeTab(_tab.uid);
+                } else {
+                    editorRef.current.updateTab(file);
                 }
             }
             editorRef.current.layoutEditor();
@@ -61,14 +64,8 @@ export function EditorContainer () {
     }, [appMode, editorLoaded]);
 
     useEffect(() => {
-        if (selectedBehavior && editorRef.current) {
-            editorRef.current.setCurrentBehavior(selectedBehavior.getName());
-            editorRef.current.layoutEditor();
-        }
-    }, [selectedBehavior]);
-
-    useEffect(() => {
         if (selectedMapping) {
+            // Mapping selected in the mapping container.
             const file = files.find((file) => file.uid === selectedMapping.fileUid);
             editorRef.current.addTab(file, null, selectedMapping.lineNumber);
         }
@@ -76,6 +73,7 @@ export function EditorContainer () {
 
     useEffect(() => {
         if (selectedBehavior && editorRef.current) {
+            // Behvaior selected in graph by clicking on node.
             editorRef.current.setCurrentBehavior(selectedBehavior.getName());
             editorRef.current.layoutEditor();
         }
@@ -91,28 +89,36 @@ export function EditorContainer () {
              * is set to the content key of the file, so we need to update
              * the content of the tab to reflect that.
              */
-            editorRef.current.getTabs().forEach((tab) => {
-                editorRef.current.setContent(tab, tab.content);
+            const tabs = editorRef.current.getTabs();
+            files.forEach((file) => {
+                if (tabs.some((tab) => tab.uid === file.uid)) {
+                    console.log(file);
+                    editorRef.current.updateTab(file);
+                }
             });
         }
     }, [lastSaved]);
 
     useEffect(() => {
-        if (activeTab && engine && editorRef.current) {
-            const activeTabFile = engine.getFile(activeTab);
-            editorRef.current.addTab(activeTabFile);
+        if (activeTab && editorRef.current) {
+            const foundFile = files.find((file) => file.uid === activeTab);
+            if (!foundFile) {
+                console.error("Active tab file not found in engine files");
+                return;
+            }
+            const found = editorRef.current.getTabs().some((tab) => tab.uid === activeTab);
+            if (found) {
+                editorRef.current.selectTab(foundFile.uid);
+                return;
+            }
+            editorRef.current.addTab(foundFile);
         }
-    }, [activeTab, editorLoaded, engine]);
+    }, [activeTab, editorLoaded]);
 
     useLayoutEventSubscription("drag:drop", (event) => {
         const drop = event.payload;
-        if (!drop?.overId) {
-            return;
-        }
-
-        if (!drop.activeData?.node || !drop.overData) {
-            return;
-        }
+        if (!drop?.overId) return;
+        if (!drop.activeData?.node || !drop.overData) return;
 
         const activeType = drop.activeData.type;
         const overType = drop.overData.type;
@@ -120,9 +126,7 @@ export function EditorContainer () {
         const overParent = drop.overData.parentId;
 
         // Only drop files, not folders.
-        if (drop.activeData.node.type !== "file") {
-            return;
-        }
+        if (drop.activeData.node.type !== "file") return;
 
         if (activeType === "EditorTab" && overType === "EditorTabGutter") {
             if (activeParent === overParent) {
@@ -147,11 +151,13 @@ export function EditorContainer () {
 
     const onSelectTab = useCallback((tab) => {
         if (editorLoaded) {
-            dispatch(setActiveTab(tab && tab.uid));
+            if (tab !== activeTab) {
+                dispatch(setActiveTab(tab && tab.uid));
+            }
         } else {
             setEditorLoaded(true);
         }
-    }, [dispatch, editorLoaded]);
+    }, [dispatch, activeTab, editorLoaded]);
 
     const onSelectAbstraction = useCallback((abstraction, shiftKey) => {
         if (shiftKey && abstraction?.behaviorId == selectedBehavior.getName()) {
@@ -175,9 +181,14 @@ export function EditorContainer () {
         editorRef.current.setTabGroupId(parentIdRef.current);
     }, [connectionStatus]);
 
+    const onContentChange = useCallback((tab, newContent) => {
+        dispatch(setUpdatedContentThunk(tab.uid, newContent));
+    }, [dispatch, files]);
+
     return (
         <Editor
             ref={editorRef}
+            onContentChange={onContentChange}
             onSelectAbstraction={onSelectAbstraction}
             onSelectTab={onSelectTab}/>
     );

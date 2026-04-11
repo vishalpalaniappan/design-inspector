@@ -8,17 +8,24 @@ async function loadDesignInPlayground(files) {
 
     // Write engine files to playground folder
     const playgroundPath = path.join(process.cwd(), "playground");
+
+
+    // TODO: 
+    // Instrument program by calling the relevant runner before writing the 
+    // files to the playground. This way, the instrumented code can be executed
+    // in the playground and the generated traces can be stored in the engine.
+
+
     await Promise.all(files.map(async (file) => {
-        // TODO: Replace file.name with the key of the file in the
-        // implementaiton class of engine. Using the key, I can specify
-        // subdirectors in the playground folder. For now, this is ok
-        // because I am simply working with a flat structure of files in the engine.
-        const filePath = path.resolve(playgroundPath, file.name);
+        // TODO: Replace file name with key to create subfolders For now all files
+        // exist on the same level with unique names. This requires changes to
+        // the create file functions so it can create directories and not just files.
+        const filePath = path.resolve(playgroundPath, file.getName());
         if (!filePath.startsWith(playgroundPath + path.sep)) {
-            throw new Error(`Invalid file path: ${file.name}`);
+            throw new Error(`Invalid file path: ${file.getName()}`);
         }
         await fs.mkdir(path.dirname(filePath), { recursive: true });
-        await fs.writeFile(filePath, file.content, { flag: "w" });
+        await fs.writeFile(filePath, file.getContent(), { flag: "w" });
     }));
 }
 

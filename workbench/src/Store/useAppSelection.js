@@ -155,48 +155,32 @@ export const useSelectedBehaviorAbstractions = () => {
     const {engine} = useDalEngine();
     const selectedBehaviorId = useSelector(selectSelectedBehaviorId);
 
-    /**
-     * TODO: This entire function is overly complicated. This is because I am
-     * implementing logic that should be in the engine here. I will refactor
-     * this to make it much easier to understand.
-     **/
-    const counter = useSelector(selectCounter);
-    return useMemo(() => {
-        if (!selectedBehaviorId) return null;
-        const selections = [];
-        const behavior = engine.getNode(selectedBehaviorId)?.getBehavior();
-        if (!behavior) return selections;
-        if (!behavior._abstractionIds) return selections;
+    // Get statements with chosen behavior from implementation.
+    const stmts = engine.implementation.getStatementsWithBehavior(selectedBehaviorId);
+    const abstractions = [];
+    for (const stmt of stmts) {
+        const file = engine.implementation.getFileContainingStmtWithUid(stmt._uid);
+        abstractions.push({
+            type: "behavior",
+            uid: stmt._uid,
+            fileUid: file.getUid(),
+            lineNumber: stmt._start_line,
+            source: stmt._source,
+        });
 
-        // From the files, get the mapping info for behavior and participants
-        for (const file of engine.getFiles()) {
-            if (!file?.mapping) continue;
-            for (const entry of file.mapping) {
-                if (behavior._abstractionIds.includes(entry.uid)) {
-                    selections.push({
-                        type: "behavior",
-                        uid: entry.uid,
-                        fileUid: file.uid,
-                        lineNumber: entry.start_line,
-                        source: (Array.isArray(entry.source)) ? entry.source[0] : entry.source,
-                    });
-                }
-                const participant = behavior.getParticipants().find(
-                    (p) => p._abstractionId?.abstractionId === entry.uid
-                );
-                if (!participant) continue;
-                selections.push({
-                    type: "participant",
-                    uid: entry.uid,
-                    fileUid: file.uid,
-                    lineNumber: entry.start_line,
-                    participantName: participant.getName(),
-                    variableName: participant._abstractionId?.variableName,
-                });
-            };
-        };
-        return selections;
-    }, [engine, selectedBehaviorId, counter]);
+        for (const participant of stmt.getParticipants()) {
+            abstractions.push({
+                type: "participant",
+                uid: stmt._uid,
+                fileUid: file.getUid(),
+                lineNumber: stmt._start_line,
+                participantName: participant.participantName,
+                variableName: participant.variableName,
+            });
+        }
+    }
+
+    return abstractions;
 };
 
 /**
@@ -273,7 +257,28 @@ export const useEngineFiles = () => {
 
     return useMemo(() => {
         if (!engine) return null;
-        return [...engine.getFiles()];
+        return engine.getFiles().map((file) => {
+            // Convert map into format accepted by UI.
+            const index = file.getStatementIndex().map((entry) => {
+                return {
+                    uid: entry._uid,
+                    start_line: entry._start_line,
+                    end_line: entry._end_line,
+                    source: entry._source,
+                    behaviorId: entry._behaviorId,
+                };
+            });
+            // Return file info in format accepted by UI.
+            return {
+                name: file._name,
+                path: file.getKey(),
+                content: file.getContent(),
+                updatedContent: file.getUpdatedContent(),
+                type: "file",
+                uid: file._uid,
+                mapping: index,
+            };
+        });
     }, [engine, selectedBehaviorId, activeTab, counter]);
 };
 

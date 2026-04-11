@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 import useWebSocket, {ReadyState} from "react-use-websocket";
 
-import {setActiveTab, setLastSaved} from "../Store/appSlice";
+import {incrementCounter, setActiveTab, setLastSaved} from "../Store/appSlice";
 import {setStatusMsg} from "../Store/appSlice";
 import {setDesignLoaded} from "../Store/appSlice";
 import engine from "./DalEngine";
@@ -12,6 +12,7 @@ import DalEngineContext from "./DalEngineContext";
 import ServerContext from "./ServerContext";
 import TerminalContext from "./TerminalContext";
 import WorkspaceContext from "./WorkspaceContext";
+
 
 GlobalProviders.propTypes = {
     children: PropTypes.node,
@@ -35,6 +36,7 @@ function GlobalProviders ({children}) {
     const {sendJsonMessage, lastMessage, lastJsonMessage, readyState} = useWebSocket(socketUrl, {
         onOpen: () => sendJsonMessage({"type": "workspaces"}),
         shouldReconnect: (closeEvent) => true,
+        onClose: (e) => console.log("Websocket closed, attempting to reconnect...", e),
     });
 
     // Sets the message history and processes received message.
@@ -95,15 +97,16 @@ function GlobalProviders ({children}) {
         if (!engineRef.current) return;
         files.forEach((file) => {
             const engineFile = engineRef.current.getFiles().find(
-                (f) => f.name === file.name
+                (f) => f._name === file._name
             );
             if (engineFile) {
-                engineFile.content = file.updatedContent;
-                engineFile.updatedContent = file.updatedContent;
-                engineFile.mapping = file.mapping;
+                engineFile.setContent(file._versions[0]._content);
+                engineFile.setUpdatedContent(file._versions[0]._updatedContent);
+                engineFile.setStatementIndex(file._versions[0]._statementIndex);
+                dispatch(incrementCounter());
             }
         });
-    }, []);
+    }, [dispatch]);
 
     // Called to save the engine to the server.
     const saveEngine = useCallback(() => {

@@ -33,7 +33,7 @@ export const deleteFileThunk = (fileId) => (dispatch, getState, {engine}) => {
  */
 export const addFileThunk = (fileName) => (dispatch, getState, {engine}) => {
     const newFile = engine.addFile(fileName, fileName, "");
-    dispatch(setActiveTab(newFile.uid));
+    dispatch(setActiveTab(newFile._uid));
     dispatch(incrementCounter());
 };
 
@@ -223,23 +223,24 @@ export const deleteBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}
  */
 export const mapStatementToBehaviorThunk = (statement) => (dispatch, getState, {engine}) => {
     const selectedBehaviorId = getState().app.selectedBehavior;
+    const selectedActiveTabId = getState().app.activeTab;
     if (!selectedBehaviorId) {
         console.info("No behavior selected, cannot map statement to behavior.");
         return;
     }
 
-    // Statement is mapped to another behavior.
-    if (statement?.behaviorId && statement.behaviorId !== selectedBehaviorId) {
+    const file = engine.getFile(selectedActiveTabId);
+    if (!file) {
+        console.error("File not found in engine files");
         return;
     }
-    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
-    const hasStatementId = behavior._abstractionIds.includes(statement.uid);
-    if (hasStatementId) {
-        behavior.removeMapping(statement.uid);
-        statement.behaviorId = null;
+
+    // TODO: Check if statement is mapped onto other behavior.
+
+    if (file.getMappedStatement(statement.uid)?.getBehavior() === selectedBehaviorId) {
+        file.setBehavior(statement.uid, null);
     } else {
-        behavior.addMapping(statement.uid);
-        statement.behaviorId = selectedBehaviorId;
+        file.setBehavior(statement.uid, selectedBehaviorId);
     }
     dispatch(incrementCounter());
 };
@@ -255,33 +256,28 @@ export const selectMappingThunk = (abstraction) => (dispatch, getState, {engine}
 };
 
 /**
- * Deletes the mapping.
+ * Deletes the mapping. There are two types of mapping:
+ * - A behavior onto an statement in the file.
+ * - A participant onto a variable name in an statement in the file.
  * @param {Object} abstraction See useSelectedBehaviorAbstractions selector.
  * @return {Function} Thunk function.
  */
 export const deleteMappingThunk = (abstraction) => (dispatch, getState, {engine}) => {
-    const files = engine.getFiles();
-    const selectedBehaviorId = getState().app.selectedBehavior;
     const selectedParticipantId = getState().app.selectedParticipant;
-    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+    const selectActiveTabId = getState().app.activeTab;
+    const file = engine.getFile(selectActiveTabId);
+
+    if (!file) {
+        console.error("File not found in engine files");
+        return;
+    }
 
     if (abstraction.type === "behavior") {
-        behavior.removeMapping(abstraction.uid);
-        for (const file of files) {
-            if (!file?.mapping) continue;
-            file.mapping.forEach((entry) => {
-                if (entry.uid === abstraction.uid) {
-                    entry.behaviorId = null;
-                }
-            });
-        };
+        file.clearBehavior(abstraction.uid);
+    } else if (abstraction.type === "participant") {
+        file.removeParticipant(abstraction.uid, selectedParticipantId);
     }
 
-    if (selectedParticipantId && abstraction.type === "participant") {
-        // Using this because, it doesn't have remove mapping function.
-        // TODO: Standardize the method names.
-        behavior.getParticipant(selectedParticipantId).mapAbstraction(null);
-    }
     dispatch(setSelectedMapping(null));
     dispatch(incrementCounter());
 };
@@ -295,16 +291,21 @@ export const deleteMappingThunk = (abstraction) => (dispatch, getState, {engine}
 export const mapAbstractionThunk = ({absId, varName}) => (dispatch, getState, {engine}) => {
     const selectedBehaviorId = getState().app.selectedBehavior;
     const selectedParticipantId = getState().app.selectedParticipant;
+    const selectedFileId = getState().app.activeTab;
     if (!selectedBehaviorId || !selectedParticipantId) {
         console.info("No behavior or participant selected, cannot map abstraction.");
         return;
     }
-    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
-    const participant = behavior.getParticipant(selectedParticipantId);
-    participant.mapAbstraction({
-        abstractionId: absId,
-        variableName: varName,
-    });
+
+    // Map the participant+varName to the statement in the source file.
+    const file = engine.getFile(selectedFileId);
+
+    if (!file) {
+        console.error("File not found in engine files");
+        return;
+    }
+    file.setParticipant(absId, selectedParticipantId, varName);
+
     dispatch(incrementCounter());
 };
 
@@ -318,3 +319,22 @@ export const setHasEntryPointThunk = (hasEntryPoint) => (dispatch, getState, {en
     dispatch(setHasEntryPoint(hasEntryPoint));
     dispatch(incrementCounter());
 };
+
+
+/**
+ * Sets updated content for a file given the file ID and the updated content.
+ * @param {String} fileId ID of the file to update.
+ * @param {String} content Updated content for the file.
+ * @return {Function} Thunk function.
+ */
+export const setUpdatedContentThunk = (fileId, content) => (dispatch, getState, {engine}) => {
+    let file;
+    try {
+        file = engine.getFile(fileId);
+    } catch (e) {
+        console.error("File not found in engine files");
+        return;
+    }
+    file.setUpdatedContent(content);
+};
+
