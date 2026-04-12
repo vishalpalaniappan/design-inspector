@@ -46,11 +46,9 @@ export class  WSMessageHandler {
     handleMessage(message) {
         try {
             if (message.type === "binary") {
-                console.log("received save message");
                 this.saveEngine(message);
                 return;
             }
-            console.log(message);
             message = JSON.parse(message.utf8Data);
             const handler = this.handlers[message.type];
 
