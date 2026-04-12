@@ -125,7 +125,7 @@ function GlobalProviders ({children}) {
     // When the workspace is first loaded, find the engine and deserialize it.
     useEffect(() => {
         if (!design) return;
-        engine.deserialize(design.data);
+        engine.deserialize(new Uint8Array(design.data.data));
         const files = engine.getFiles();
         if (files.length > 0) {
             dispatch(setActiveTab(files[0].uid));
