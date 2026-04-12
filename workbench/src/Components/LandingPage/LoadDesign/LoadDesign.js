@@ -34,7 +34,7 @@ export function LoadDesign () {
 
             const params = new URLSearchParams(window.location.search);
             const designName = params.get("design");
-            if (designName && design && design?.fileName && designName !== design.fileName) {
+            if (designName && !design) {
                 // Given http://localhost:3011/?design=test.dal
                 // Load test.dal if it exists in the workspace
                 const _design = workspace.find((item) => item.name === designName);
