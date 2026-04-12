@@ -1,13 +1,14 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 
 import PropTypes from "prop-types";
-
-import { CircleFill } from "react-bootstrap-icons";
-import "./TraceSelectRow.scss";
-
+import {CircleFill, Trash} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
+
 import {setSelectedTraceIdThunk} from "../../../Store/appThunk";
-import { useSelectedTraceId } from "../../../Store/useAppSelection";
+import {useSelectedTraceId} from "../../../Store/useAppSelection";
+import {deleteTraceThunk} from "../../../Store/appThunk";
+
+import "./TraceSelectRow.scss";
 
 TraceSelectRow.propTypes = {
     trace: PropTypes.object.isRequired,
@@ -47,6 +48,14 @@ export function TraceSelectRow ({trace}) {
         }
     };
 
+    const deleteTrace = () => {
+        if (trace?.uid) {
+            dispatch(deleteTraceThunk(trace.uid));
+        } else {
+            console.warn("Trace does not have a valid UID:", trace);
+        }
+    };
+
     return (
         <div className="trace-select-row-container"
             onClick={selectTrace}>
@@ -55,6 +64,9 @@ export function TraceSelectRow ({trace}) {
             </div>
             <div className="date-container">
                 {dateRenered}
+            </div>
+            <div className="trash-icon-container">
+                <Trash title="Delete Trace" size={25} color="grey" onClick={deleteTrace} />
             </div>
         </div>
     );

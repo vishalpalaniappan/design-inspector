@@ -316,10 +316,11 @@ export const useHasEntryPoint = () => {
  */
 export const useTraces = () => {
     const {engine} = useDalEngine();
+    const counter = useSelector(selectCounter);
 
     return useMemo(() => {
-        return engine.implementation?._traces;
-    }, [engine]);
+        return {...engine.implementation?._traces};
+    }, [engine, counter]);
 };
 
 
@@ -329,8 +330,9 @@ export const useTraces = () => {
  */
 export const useSelectedTraceId = () => {
     const selectedTraceId = useSelector(selectSelectedTraceId);
+    const counter = useSelector(selectCounter);
 
     return useMemo(() => {
         return selectedTraceId;
-    }, [selectedTraceId]);
+    }, [selectedTraceId, counter]);
 };

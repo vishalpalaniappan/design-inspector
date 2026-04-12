@@ -60,6 +60,10 @@ async function saveTraceInEngine() {
 
     const traceFilePath = clpZstFiles[0].path;
     const traceData = await fs.readFile(traceFilePath);
+    const traceEntry = {
+        uid: clpZstFiles[0].name,
+        trace: traceData
+    }
 
     try {
         const engine = new DALEngine({
@@ -69,18 +73,15 @@ async function saveTraceInEngine() {
 
         const engineData = await fs.readFile(designPath);
         engine.deserialize(engineData);
-        engine.implementation.addTrace({
-            uid: clpZstFiles[0].name,
-            trace: traceData
-        });
+        engine.implementation.addTrace(traceEntry);
         await fs.writeFile(designPath, engine.serialize());
-
-        // TODO: Send the updated traces to the front end.
         
         console.log("Trace saved successfully in engine.");
     } catch (err) {
         console.error("Error saving trace in engine:", err);
     }
+
+    return traceEntry;
 }
 
 

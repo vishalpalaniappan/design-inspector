@@ -159,9 +159,13 @@ export class  WSMessageHandler {
         this.terminal.write(msg.data);
     }
 
-    onEntryPointFinished = (msg) => { 
-        console.log("Entry point execution finished.");
-        saveTraceInEngine();
+    onEntryPointFinished = async (msg) => { 
+        const traceEntry = await saveTraceInEngine();
+        if (traceEntry) {
+            this.sendMessage({ type: "add_trace", data: traceEntry });
+        } else {
+            console.warn("No trace entry to send to front end.");
+        }
         this.terminal = new TerminalSession();
         this.terminal.on("data", this.onTerminalData);
         this.terminal.on("exit", this.onTerminalExit);

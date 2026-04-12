@@ -8,6 +8,7 @@ import useWebSocket, {ReadyState} from "react-use-websocket";
 import {incrementCounter, setActiveTab, setLastSaved} from "../Store/appSlice";
 import {setStatusMsg} from "../Store/appSlice";
 import {setDesignLoaded} from "../Store/appSlice";
+import {addTraceThunk} from "../Store/appThunk";
 import engine from "./DalEngine";
 import DalEngineContext from "./DalEngineContext";
 import ServerContext from "./ServerContext";
@@ -80,9 +81,11 @@ function GlobalProviders ({children}) {
                 dispatch(setStatusMsg("Failed to save design."));
                 break;
             case "entry_point_finished":
-                sendMessage({
-                    type: "entry_point_finished",
-                });
+                sendMessage({type: "entry_point_finished"});
+                break;
+            case "add_trace":
+                dispatch(addTraceThunk(msg.data));
+                dispatch(setStatusMsg("Received trace from server."));
                 break;
             case "error":
                 console.error("Error message from server:", msg.data);
@@ -134,7 +137,7 @@ function GlobalProviders ({children}) {
                 data: engineRef.current.serialize(),
             },
         });
-    }, [sendMessage, sendMessage, design]);
+    }, [sendMessage, design]);
 
     // When the workspace is first loaded, find the engine and deserialize it.
     useEffect(() => {
