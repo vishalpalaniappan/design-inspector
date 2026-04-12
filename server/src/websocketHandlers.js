@@ -170,7 +170,12 @@ export class  WSMessageHandler {
         } else {
             console.warn("No trace entry to send to front end.");
         }
-        this.startTerminalAndAddListeners();
+        this.terminal = new TerminalSession();
+        this.terminal.on("data", this.onTerminalData);
+        this.terminal.on("exit", this.onTerminalExit);
+        this.terminal.on("start", this.onTerminalStart);
+        this.terminal.on("stop", this.onTerminalStop);
+        this.terminal.start();
     }   
 
     onTerminalRunEntryPoint = async (msg) => {        
@@ -186,6 +191,11 @@ export class  WSMessageHandler {
 
         await clearTraceFilesInPlayground();
         this.stopTerminalAndRemoveListeners();
-        this.startTerminalAndAddListeners({ command: msg.data });
+        this.terminal = new TerminalSession({ command: msg.data });
+        this.terminal.on("data", this.onTerminalData);
+        this.terminal.on("exit", handleFinished);
+        this.terminal.on("start", this.onTerminalStart);
+        this.terminal.on("stop", handleFinished);
+        this.terminal.start();
     }
 }
