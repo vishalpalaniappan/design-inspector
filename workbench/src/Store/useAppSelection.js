@@ -15,6 +15,7 @@ import {
     selectSelectedInvariantId,
     selectSelectedMappingId,
     selectSelectedParticipantId,
+    selectSelectedTraceId, 
     selectStatusMsg} from "./appSelectors";
 
 /**
@@ -306,4 +307,32 @@ export const useHasEntryPoint = () => {
     return useMemo(() => {
         return hasEntryPoint;
     }, [hasEntryPoint, counter]);
+};
+
+
+/**
+ * Returns the traces from the engine.
+ * @return {Object} The traces from the engine
+ */
+export const useTraces = () => {
+    const {engine} = useDalEngine();
+    const counter = useSelector(selectCounter);
+
+    return useMemo(() => {
+        return {...engine.implementation?._traces};
+    }, [engine, counter]);
+};
+
+
+/**
+ * Returns the selected trace ID.
+ * @return {String} The selected trace ID
+ */
+export const useSelectedTraceId = () => {
+    const selectedTraceId = useSelector(selectSelectedTraceId);
+    const counter = useSelector(selectCounter);
+
+    return useMemo(() => {
+        return selectedTraceId;
+    }, [selectedTraceId, counter]);
 };

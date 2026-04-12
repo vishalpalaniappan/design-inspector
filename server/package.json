@@ -5,12 +5,14 @@
     "dev": "node index.js"
   },
   "dependencies": {
-    "dal-engine-core-js-lib-dev": "0.0.40-dev",
+    "dal-engine-core-js-lib-dev": "0.0.44-dev",
     "express": "^4.18.1",
     "mongo-watch": "^0.2.8",
     "mongodb": "^4.7.0",
+    "msgpackr": "^1.11.9",
     "node-pty": "^1.1.0",
     "require": "^2.4.20",
+    "unzipper": "^0.12.3",
     "websocket": "^1.0.34",
     "ws": "^8.8.0"
   },

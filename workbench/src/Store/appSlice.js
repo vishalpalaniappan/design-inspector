@@ -14,6 +14,7 @@ const appSlice = createSlice({
         selectedGraph: null,
         selectedMapping: null,
         selectedInvariant: null,
+        selectedTraceId: null,
         statusMsg: null,
         tabs: null,
     },
@@ -74,6 +75,9 @@ const appSlice = createSlice({
         setHasEntryPoint (state, action) {
             state.hasEntryPoint = action.payload;
         },
+        setSelectedTraceId (state, action) {
+            state.selectedTraceId = action.payload;
+        },
     },
 });
 
@@ -91,6 +95,7 @@ export const {
     setSelectedMapping,
     setDesignLoaded,
     setHasEntryPoint,
+    setSelectedTraceId,
 } = appSlice.actions;
 
 export default appSlice.reducer;

@@ -1,32 +1,36 @@
 import path from 'path';
-import fs from 'fs/promises';
 import { clearPlaygroundFolder } from "./initFolders.js";
+import instrumentationRunner from '../runners/instrumentationRunner.js';
+import unzipper from "unzipper";
+import fs from 'fs/promises';
 
-async function loadDesignInPlayground(files) {
+async function loadDesignInPlayground(engine) {
+    // Get files from engine.
+    const files = engine.getFiles();
+
     // Clear playground folder
     await clearPlaygroundFolder();
 
     // Write engine files to playground folder
     const playgroundPath = path.join(process.cwd(), "playground");
 
+    const instrumentationPkg = engine.implementation.exportForInstrumentation();
 
-    // TODO: 
-    // Instrument program by calling the relevant runner before writing the 
-    // files to the playground. This way, the instrumented code can be executed
-    // in the playground and the generated traces can be stored in the engine.
+    // Temporarily write to temp folder for accesing instrumentation package
+    const filePath = path.join("temp", engine._name + ".json");
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+    await fs.writeFile(filePath, instrumentationPkg);
 
+    const meta = {designName: engine._name};
+    await fs.writeFile(path.join(playgroundPath, "meta.json"), JSON.stringify(meta));
 
-    await Promise.all(files.map(async (file) => {
-        // TODO: Replace file name with key to create subfolders For now all files
-        // exist on the same level with unique names. This requires changes to
-        // the create file functions so it can create directories and not just files.
-        const filePath = path.resolve(playgroundPath, file.getName());
-        if (!filePath.startsWith(playgroundPath + path.sep)) {
-            throw new Error(`Invalid file path: ${file.getName()}`);
-        }
-        await fs.mkdir(path.dirname(filePath), { recursive: true });
-        await fs.writeFile(filePath, file.getContent(), { flag: "w" });
-    }));
+    try {
+        const zip = await instrumentationRunner(instrumentationPkg);
+        const directory = await unzipper.Open.buffer(zip);
+        await directory.extract({ path: playgroundPath });
+    } catch (error) {
+        throw error;
+    }
 }
 
 

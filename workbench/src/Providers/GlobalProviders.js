@@ -1,5 +1,6 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 
+import {pack, unpack} from "msgpackr";
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 import useWebSocket, {ReadyState} from "react-use-websocket";
@@ -7,6 +8,7 @@ import useWebSocket, {ReadyState} from "react-use-websocket";
 import {incrementCounter, setActiveTab, setLastSaved} from "../Store/appSlice";
 import {setStatusMsg} from "../Store/appSlice";
 import {setDesignLoaded} from "../Store/appSlice";
+import {addTraceThunk} from "../Store/appThunk";
 import engine from "./DalEngine";
 import DalEngineContext from "./DalEngineContext";
 import ServerContext from "./ServerContext";
@@ -33,23 +35,33 @@ function GlobalProviders ({children}) {
 
     // Connect to websocket and setup auto reconnect
     const socketUrl = "ws://localhost:3002";
-    const {sendJsonMessage, lastMessage, lastJsonMessage, readyState} = useWebSocket(socketUrl, {
-        onOpen: () => sendJsonMessage({"type": "workspaces"}),
+    const {sendMessage: rawSendMessage, lastMessage, readyState} = useWebSocket(socketUrl, {
+        onOpen: () => rawSendMessage(pack({"type": "workspaces"})),
         shouldReconnect: (closeEvent) => true,
         onClose: (e) => console.log("Websocket closed, attempting to reconnect...", e),
     });
 
-    // Sets the message history and processes received message.
-    const [messageHistory, setMessageHistory] = useState([]);
     useEffect(() => {
-        if (lastJsonMessage !== null) {
-            setMessageHistory((prev) => prev.concat(lastMessage));
-            processMessage(lastJsonMessage);
+        if (lastMessage !== null) {
+            processMessage(lastMessage);
         }
-    }, [lastJsonMessage]);
+    }, [lastMessage, processMessage]);
+
+
+    const sendMessage = useCallback((message) => {
+        if (readyState === ReadyState.OPEN) {
+            const packedMessage = pack(message);
+            rawSendMessage(packedMessage);
+        } else {
+            console.error("WebSocket is not open. Ready state:", readyState);
+        }
+    }, [readyState, rawSendMessage]);
 
     // Process the received message
-    const processMessage = (msg) => {
+    const processMessage = async (lastMessage) => {
+        const arrayBuffer = await lastMessage.data.arrayBuffer();
+        const bytes = new Uint8Array(arrayBuffer);
+        const msg = unpack(bytes);
         switch (msg.type) {
             case "workspaces":
                 setWorkspace(msg.data);
@@ -67,6 +79,13 @@ function GlobalProviders ({children}) {
                 break;
             case "design_save_failed":
                 dispatch(setStatusMsg("Failed to save design."));
+                break;
+            case "entry_point_finished":
+                sendMessage({type: "entry_point_finished"});
+                break;
+            case "add_trace":
+                dispatch(addTraceThunk(msg.data));
+                dispatch(setStatusMsg("Received trace from server."));
                 break;
             case "error":
                 console.error("Error message from server:", msg.data);
@@ -110,20 +129,23 @@ function GlobalProviders ({children}) {
 
     // Called to save the engine to the server.
     const saveEngine = useCallback(() => {
-        if (!engineRef.current) return;
-        sendJsonMessage({
+        if (!engineRef.current || !design) return;
+        // TODO: I think the file name should be stored in the
+        // engine to avoid having to pass it around separately like this.
+        // It is available in the name of engineRef.current.
+        sendMessage({
             type: "save_engine",
             payload: {
-                "data": engineRef.current.serialize(),
-                "fileName": design.fileName,
+                fileName: design.fileName,
+                data: engineRef.current.serialize(),
             },
         });
-    }, [sendJsonMessage, design]);
+    }, [sendMessage, design]);
 
     // When the workspace is first loaded, find the engine and deserialize it.
     useEffect(() => {
         if (!design) return;
-        engine.deserialize(design.data);
+        engine.deserialize(new Uint8Array(design.data));
         const files = engine.getFiles();
         if (files.length > 0) {
             dispatch(setActiveTab(files[0].uid));
@@ -145,7 +167,7 @@ function GlobalProviders ({children}) {
 
     return (
         // eslint-disable-next-line max-len
-        <ServerContext.Provider value={{sendJsonMessage, messageHistory, connectionStatus}}>
+        <ServerContext.Provider value={{sendMessage, connectionStatus}}>
             <DalEngineContext.Provider value={{engine}}>
                 <WorkspaceContext.Provider value={{workspace}}>
                     <TerminalContext.Provider value={{setTermWriter}}>

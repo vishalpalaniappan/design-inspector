@@ -11,7 +11,7 @@ import loadDesignInPlayground from './loadDesignInPlayground.js';
 async function loadDesign(designName) {
     try {
         const filePath = resolveDesignPath(designName);
-        const data = await fs.readFile(filePath, "utf-8");
+        const data = await fs.readFile(filePath);
 
         // Create engine and deserialize data from file
         const engine = new DALEngine({
@@ -21,7 +21,7 @@ async function loadDesign(designName) {
         engine.deserialize(data);
 
         // Write engine files to playground folder
-        await loadDesignInPlayground(engine.getFiles());
+        await loadDesignInPlayground(engine);
 
         return {
             fileName: designName,

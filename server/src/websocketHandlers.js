@@ -4,29 +4,19 @@ import deleteDesign from "./design-file-utils/deleteDesign.js";
 import loadDesigns from "./design-file-utils/loadDesigns.js"
 import loadDesign from "./design-file-utils/loadDesign.js";
 import saveDesign from "./design-file-utils/saveDesign.js";
+import {saveTraceInEngine} from "./design-file-utils/saveTraceInEngine.js";
+import {clearTraceFilesInPlayground} from "./design-file-utils/saveTraceInEngine.js";
+import { unpack, pack } from 'msgpackr';
 
 export class  WSMessageHandler {
     constructor(ws) {
         this.ws = ws;
 
-        // TODO: Eventually there will be support for multiple terminals,
-        // so I will have to set a UID to each terminal instance and use
-        // that mapping to connect to the correct session. It will also be
-        // necessary to recall sessions when switching tabs. For now, only
-        // one terminal is supported.
-        this.terminal = new TerminalSession();
-        this.terminal.on("data", this.onTerminalData);
-        this.terminal.on("exit", this.onTerminalExit);
-        this.terminal.on("start", this.onTerminalStart);
-        this.terminal.on("stop", this.onTerminalStop);
-        this.terminal.start();
+        // TODO: Add support for multiple terminals (identified using UID)
+        this.startTerminalAndAddListeners();
 
         this.ws.on("close", () => {
-            this.terminal.stop();
-            this.terminal.off("data", this.onTerminalData);
-            this.terminal.off("exit", this.onTerminalExit);
-            this.terminal.off("start", this.onTerminalStart);
-            this.terminal.off("stop", this.onTerminalStop);
+            this.stopTerminalAndRemoveListeners();
         });
 
         this.handlers = {
@@ -38,11 +28,20 @@ export class  WSMessageHandler {
             delete_design: this.deleteDesign.bind(this),
             load_design: this.loadDesign.bind(this),
             terminal_run_entry_point: this.onTerminalRunEntryPoint.bind(this),
+            entry_point_finished: this.onEntryPointFinished.bind(this),
         };
+    }
+
+    sendMessage(msg) {
+        if (this.ws.readyState === this.ws.OPEN) {
+            this.ws.send(Buffer.from(pack(msg)));
+        }
     }
 
     handleMessage(message) {
         try {
+            message = unpack(message.binaryData);
+
             const handler = this.handlers[message.type];
 
             if (!handler) {
@@ -56,12 +55,29 @@ export class  WSMessageHandler {
         }
     }
 
+    stopTerminalAndRemoveListeners() {
+        this.terminal.stop();
+        this.terminal.off("data", this.onTerminalData);
+        this.terminal.off("exit", this.onTerminalExit);
+        this.terminal.off("start", this.onTerminalStart);
+        this.terminal.off("stop", this.onTerminalStop);
+    }
+
+    startTerminalAndAddListeners(args) {
+        this.terminal = new TerminalSession(args);
+        this.terminal.on("data", this.onTerminalData);
+        this.terminal.on("exit", this.onTerminalExit);
+        this.terminal.on("start", this.onTerminalStart);
+        this.terminal.on("stop", this.onTerminalStop);
+        this.terminal.start();
+    }
+
     createDesign = async (msg) => {
         try {
             await createDesign(msg.payload.fileName)
         } catch (err) {
             console.error("Failed to create design:", err.message);
-            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+            this.sendMessage({ type: "error", data: err.message });
             return;
         }
 
@@ -69,9 +85,9 @@ export class  WSMessageHandler {
             const folders = await loadDesigns();
             msg.type = "workspaces";
             msg.data = folders;
-            this.ws.send(JSON.stringify(msg));
+            this.sendMessage(msg);
         } catch (err) {
-            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+            this.sendMessage({ type: "error", data: err.message });
         }
     }
 
@@ -81,9 +97,9 @@ export class  WSMessageHandler {
             const folders = await loadDesigns();
             msg.type = "workspaces";
             msg.data = folders;
-            this.ws.send(JSON.stringify(msg));
+            this.sendMessage(msg);
         } catch (err) {
-            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+            this.sendMessage({ type: "error", data: err.message });
         }
     }
 
@@ -92,9 +108,9 @@ export class  WSMessageHandler {
             const file = await loadDesign(msg.payload.fileName)
             msg.type = "load_design";
             msg.data = file;
-            this.ws.send(JSON.stringify(msg));
+            this.sendMessage(msg);
         } catch (err) {
-            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+            this.sendMessage({ type: "error", data: err.message });
         }
     }
 
@@ -103,40 +119,40 @@ export class  WSMessageHandler {
             const folders = await loadDesigns();
             msg.type = "workspaces";
             msg.data = folders;
-            this.ws.send(JSON.stringify(msg));
+            this.sendMessage(msg);
         } catch (err) {
-            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+            this.sendMessage({ type: "error", data: err.message });
         }
     }
 
     saveEngine = async (msg) => {
         try {
             const serializedEngine = await saveDesign(msg.payload.fileName, msg.payload.data);
-            this.ws.send(JSON.stringify({ type: "design_save_successful", data: serializedEngine }));
+            this.sendMessage({ type: "design_save_successful", data: serializedEngine });
         } catch (err) {
-            this.ws.send(JSON.stringify({ type: "design_save_failed" }));
-            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+            this.sendMessage({ type: "design_save_failed" });
+            this.sendMessage({ type: "error", data: err.message });
         }
     }
 
     onTerminalData = (data) => {
         if (this.ws.readyState === this.ws.OPEN) {
-            this.ws.send(JSON.stringify({ type: "terminal_output", data }));
+            this.sendMessage({ type: "terminal_output", data });
         }
     }
 
     onTerminalExit = (exit) => {
         if (this.ws.readyState === this.ws.OPEN) {
-            this.ws.send(JSON.stringify({ type: "terminal_exit", data: exit }));
+            this.sendMessage({ type: "terminal_exit", data: exit });
         }
     }
 
     onTerminalStart = () => {
-        this.ws.send(JSON.stringify({ type: "terminal_started" }));
+        this.sendMessage({ type: "terminal_started" });
     }
 
     onTerminalStop = () => {
-        this.ws.send(JSON.stringify({ type: "terminal_stopped" }));
+        this.sendMessage({ type: "terminal_stopped" });
     }
 
     onTerminalResize = (msg) => {
@@ -147,10 +163,29 @@ export class  WSMessageHandler {
         this.terminal.write(msg.data);
     }
 
-    onTerminalRunEntryPoint = (msg) => {
-        this.terminal.write("\x03");
-        setTimeout(() => {
-            this.terminal.write(`${msg.data}\r`);
-        }, 50);
+    onEntryPointFinished = async (msg) => { 
+        const traceEntry = await saveTraceInEngine();
+        if (traceEntry) {
+            this.sendMessage({ type: "add_trace", data: traceEntry });
+        } else {
+            console.warn("No trace entry to send to front end.");
+        }
+        this.startTerminalAndAddListeners();
+    }   
+
+    onTerminalRunEntryPoint = async (msg) => {        
+        // Since both stop and exit run, we use a flag ensure only
+        // one entry_point_finished message is sent.
+        let entryPointFinishedSent = false;
+        const handleFinished = () => {
+            if (!entryPointFinishedSent) {
+                entryPointFinishedSent = true;
+                this.sendMessage({ type: "entry_point_finished" });
+            }
+        }
+
+        await clearTraceFilesInPlayground();
+        this.stopTerminalAndRemoveListeners();
+        this.startTerminalAndAddListeners({ command: msg.data });
     }
 }

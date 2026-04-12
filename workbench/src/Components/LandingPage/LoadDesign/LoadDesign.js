@@ -18,18 +18,10 @@ export function LoadDesign () {
     const {workspace} = useWorkspace();
     const [designs, setDesigns] = useState([]);
     const [selectedDesign, setSelectedDesign] = useState(null);
-    const {sendJsonMessage, connectionStatus} = useContext(ServerContext);
+    const {sendMessage, connectionStatus} = useContext(ServerContext);
     const [fileName, setFileName] = useState("");
     const [error, setErrror] = useState(null);
     const [lastUpdated, setLastUpdated] = useState("");
-
-    // Helper function to send messages to server
-    const sendMessage = useCallback((type, payload) => {
-        sendJsonMessage({
-            type: type,
-            payload: payload,
-        });
-    }, [sendJsonMessage]);
 
     // Update designs when workspace changes and check design to load from URL
     useEffect(() => {
@@ -45,7 +37,7 @@ export function LoadDesign () {
                 // Load test.dal if it exists in the workspace
                 const design = workspace.find((item) => item.name === designName);
                 if (design) {
-                    sendMessage("load_design", {"fileName": design.name});
+                    sendMessage({"type": "load_design", "payload": {"fileName": design.name}});
                 }
             }
             // Set last updated and unselect design if it was deleted.
@@ -87,7 +79,7 @@ export function LoadDesign () {
         }
 
         // If all checks pass, create design.
-        sendMessage("create_design", {"fileName": fName});
+        sendMessage({"type": "create_design", "payload": {"fileName": fName}});
         setSelectedDesign(null);
     }, [fileName, sendMessage, connectionStatus]);
 
@@ -97,7 +89,7 @@ export function LoadDesign () {
         e.preventDefault();
         if (connectionStatus !== "Connected") return;
         if (!selectedDesign) return;
-        sendMessage("delete_design", {"fileName": selectedDesign.name});
+        sendMessage({"type": "delete_design", "payload": {"fileName": selectedDesign.name}});
     }, [selectedDesign, sendMessage, connectionStatus]);
 
     // Select file and load if flag is set (ex. double click)
@@ -113,7 +105,7 @@ export function LoadDesign () {
     // Load selected design from server
     const loadDesign = useCallback(() => {
         if (!selectedDesign) return;
-        sendMessage("load_design", {"fileName": selectedDesign.name});
+        sendMessage({"type": "load_design", "payload": {"fileName": selectedDesign.name}});
     }, [selectedDesign, sendMessage]);
 
     const getDesignList = useCallback(() => {

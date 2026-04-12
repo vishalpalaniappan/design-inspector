@@ -44,7 +44,7 @@ async function saveDesign(designName,  data) {
         });
 
         // Write engine files to playground folder
-        await loadDesignInPlayground(engine.getFiles());
+        await loadDesignInPlayground(engine);
 
         const serializedEngine = engine.serialize();
         await fs.writeFile(filePath, serializedEngine);
@@ -53,17 +53,6 @@ async function saveDesign(designName,  data) {
             files: engine.getFiles()
         };
     } catch (writeErr) {
-        throw writeErr; 
-        // File write failed; Restore playground from disk so they stay in sync.
-        // this is the same effect as reloading the application
-        try {
-            const diskData = await fs.readFile(filePath, 'utf-8');
-            const diskEngine = new DALEngine({ name: designName, description: "Default engine" });
-            diskEngine.deserialize(diskData);
-            await loadDesignInPlayground(diskEngine.getFiles());
-        } catch (recoveryErr) {
-            console.error("Playground recovery failed:", recoveryErr);
-        }
         throw writeErr; 
     }
 }

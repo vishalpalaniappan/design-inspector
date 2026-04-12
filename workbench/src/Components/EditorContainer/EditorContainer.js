@@ -41,7 +41,6 @@ export function EditorContainer () {
 
     useEffect(() => {
         if (files) {
-            console.log(files);
             // Close tabs of files that were deleted
             const _tabs = editorRef.current.getTabs();
             for (let i = 0; i < _tabs.length; i++) {

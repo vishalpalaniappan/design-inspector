@@ -6,6 +6,7 @@ import {setSelectedParticipant} from "./appSlice";
 import {setSelectedBehavior} from "./appSlice";
 import {setSelectedInvariant} from "./appSlice";
 import {setHasEntryPoint} from "./appSlice";
+import {setSelectedTraceId} from "./appSlice";
 
 /**
  * Called to delete a file given a file ID.
@@ -337,4 +338,36 @@ export const setUpdatedContentThunk = (fileId, content) => (dispatch, getState, 
     }
     file.setUpdatedContent(content);
 };
+
+
+/**
+ * Sets the selected trace ID. Trace ID will be null if no trace is selected.
+ * @param {String} traceId Trace ID to set as selected.
+ * @return {Function} Thunk function.
+ */
+export const setSelectedTraceIdThunk = (traceId) => (dispatch, getState, {engine}) => {
+    dispatch(setSelectedTraceId(traceId));
+};
+
+/**
+ * Adds a trace to the engine.
+ * @param {Object} trace Trace object to add.
+ * @return {Function} Thunk function.
+ */
+export const addTraceThunk = (trace) => (dispatch, getState, {engine}) => {
+    engine.implementation.addTrace(trace);
+    dispatch(incrementCounter());
+};
+
+/**
+ * Removes a trace from the engine given the trace ID.
+ * @param {String} traceId Trace ID to remove from the engine.
+ * @return {Function} Thunk function.
+ */
+export const deleteTraceThunk = (traceId) => (dispatch, getState, {engine}) => {
+    engine.implementation.deleteTrace(traceId);
+    dispatch(incrementCounter());
+    engine.save();
+};
+
 
