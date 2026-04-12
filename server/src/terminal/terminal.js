@@ -36,7 +36,7 @@ export class TerminalSession extends EventEmitter {
         if (this.ptyProcess) return; 
 
         if (this.args?.command) {
-            this.ptyProcess = pty.spawn("/bin/bash", ["--rcfile", bashRcFile, "-c", this.args.command], {
+            this.ptyProcess = pty.spawn("/bin/bash", ["-c", this.args.command], {
                 name: this.name,
                 cwd: this.cwd,
                 env: this.env,
