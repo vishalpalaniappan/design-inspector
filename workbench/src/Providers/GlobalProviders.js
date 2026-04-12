@@ -169,7 +169,7 @@ function GlobalProviders ({children}) {
         // eslint-disable-next-line max-len
         <ServerContext.Provider value={{sendMessage, connectionStatus}}>
             <DalEngineContext.Provider value={{engine}}>
-                <WorkspaceContext.Provider value={{workspace}}>
+                <WorkspaceContext.Provider value={{workspace, design}}>
                     <TerminalContext.Provider value={{setTermWriter}}>
                         {children}
                     </TerminalContext.Provider>

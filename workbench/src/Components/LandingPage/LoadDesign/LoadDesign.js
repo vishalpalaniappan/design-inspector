@@ -1,6 +1,7 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
 
 import {ArrowRightSquare, Trash} from "react-bootstrap-icons";
+import {useDispatch} from "react-redux";
 
 import splashScreen from "../../../Assets/splash_screen.png";
 import {useWorkspace} from "../../../Providers/GlobalProviders";
@@ -15,13 +16,14 @@ import "./LoadDesign.scss";
  * @return {JSX.Element}
  */
 export function LoadDesign () {
-    const {workspace} = useWorkspace();
+    const {workspace, design} = useWorkspace();
     const [designs, setDesigns] = useState([]);
     const [selectedDesign, setSelectedDesign] = useState(null);
     const {sendMessage, connectionStatus} = useContext(ServerContext);
     const [fileName, setFileName] = useState("");
     const [error, setErrror] = useState(null);
     const [lastUpdated, setLastUpdated] = useState("");
+    const dispatch = useDispatch();
 
     // Update designs when workspace changes and check design to load from URL
     useEffect(() => {
@@ -32,12 +34,12 @@ export function LoadDesign () {
 
             const params = new URLSearchParams(window.location.search);
             const designName = params.get("design");
-            if (designName) {
+            if (designName && design && design?.fileName && designName !== design.fileName) {
                 // Given http://localhost:3011/?design=test.dal
                 // Load test.dal if it exists in the workspace
-                const design = workspace.find((item) => item.name === designName);
-                if (design) {
-                    sendMessage({"type": "load_design", "payload": {"fileName": design.name}});
+                const _design = workspace.find((item) => item.name === designName);
+                if (_design) {
+                    sendMessage({"type": "load_design", "payload": {"fileName": _design.name}});
                 }
             }
             // Set last updated and unselect design if it was deleted.
@@ -45,10 +47,22 @@ export function LoadDesign () {
 
             // If the selected design is not in workspace, unselect it.
             if (!workspace.some((item) => item.name === selectedDesign?.name)) {
-                setDesignLoaded(null);
+                dispatch(setDesignLoaded(false));
             }
         }
-    }, [workspace, setSelectedDesign, sendMessage]);
+    }, [workspace, setSelectedDesign, design, sendMessage]);
+
+    useEffect(() => {
+        if (design) {
+            const params = new URLSearchParams(window.location.search);
+            const designName = params.get("design");
+            if (designName && designName === design.fileName) {
+                setTimeout(() => {
+                    dispatch(setDesignLoaded(true));
+                }, 4);
+            }
+        }
+    }, [design, dispatch]);
 
     // Create design (workspace is updated after creation by server)
     const newDesign = useCallback((e) => {
