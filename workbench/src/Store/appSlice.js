@@ -25,10 +25,8 @@ const appSlice = createSlice({
             state.selectedInvariant = null;
             if (action.payload) {
                 state.selectedBehavior = action.payload;
-                state.appMode = 2;
             } else {
                 state.selectedBehavior = null;
-                state.appMode = 1;
             }
         },
         setSelectedParticipant(state, action) {

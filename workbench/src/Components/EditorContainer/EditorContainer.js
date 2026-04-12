@@ -13,7 +13,6 @@ import {useEngineFiles} from "../../Store/useAppSelection";
 import {useActiveTab, useLastSaved, useSelectedBehavior} from "../../Store/useAppSelection";
 import {useSelectedParticipant} from "../../Store/useAppSelection";
 import {useSelectedMapping} from "../../Store/useAppSelection";
-import {useAppMode} from "../../Store/useAppSelection";
 import {MapParticipant} from "../Modals/MapParticipant";
 
 import "./EditorContainer.scss";
@@ -37,7 +36,6 @@ export function EditorContainer () {
 
     const activeTab = useActiveTab();
     const dispatch = useDispatch();
-    const appMode = useAppMode();
 
     useEffect(() => {
         if (files) {
@@ -58,9 +56,13 @@ export function EditorContainer () {
 
     useEffect(() => {
         if (editorRef.current && editorLoaded) {
-            editorRef.current.setMode(appMode);
+            if (selectedBehavior) {
+                editorRef.current.setMode(1);
+            } else {
+                editorRef.current.setMode(2);
+            }
         }
-    }, [appMode, editorLoaded]);
+    }, [selectedBehavior, editorLoaded]);
 
     useEffect(() => {
         if (selectedMapping) {
