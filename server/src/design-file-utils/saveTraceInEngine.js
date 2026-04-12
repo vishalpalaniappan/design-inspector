@@ -79,6 +79,7 @@ async function saveTraceInEngine() {
         console.log("Trace saved successfully in engine.");
     } catch (err) {
         console.error("Error saving trace in engine:", err);
+        return;
     }
 
     return traceEntry;
