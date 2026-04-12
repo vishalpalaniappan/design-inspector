@@ -53,7 +53,8 @@ export function TraceSelectRow ({trace}) {
         }
     };
 
-    const deleteTrace = () => {
+    const deleteTrace = (e) => {
+        e.stopPropagation();
         if (trace?.uid) {
             dispatch(deleteTraceThunk(trace.uid));
         } else {

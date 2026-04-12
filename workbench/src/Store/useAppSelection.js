@@ -311,8 +311,8 @@ export const useHasEntryPoint = () => {
 
 
 /**
- * Returns whether the design has an entry point.
- * @return {Boolean}
+ * Returns the traces from the engine.
+ * @return {Object} The traces from the engine
  */
 export const useTraces = () => {
     const {engine} = useDalEngine();
@@ -326,7 +326,7 @@ export const useTraces = () => {
 
 /**
  * Returns the selected trace ID.
- * @return {Boolean}
+ * @return {String} The selected trace ID
  */
 export const useSelectedTraceId = () => {
     const selectedTraceId = useSelector(selectSelectedTraceId);

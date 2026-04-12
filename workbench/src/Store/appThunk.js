@@ -341,7 +341,7 @@ export const setUpdatedContentThunk = (fileId, content) => (dispatch, getState, 
 
 
 /**
- * Sets updated content for a file given the file ID and the updated content.
+ * Sets the selected trace ID. Trace ID will be null if no trace is selected.
  * @param {String} traceId Trace ID to set as selected.
  * @return {Function} Thunk function.
  */

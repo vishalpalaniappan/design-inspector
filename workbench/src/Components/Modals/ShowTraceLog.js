@@ -33,12 +33,12 @@ export function ShowTraceLog ({close, args}) {
                 defaultValue=""
                 value={content}
                 theme="vs-dark"
-                readOnly={true}
                 onMount={handleEditorMount}
                 options={{
                     minimap: {enabled: false},
                     lineNumbers: "off",
                     wordWrap: "on",
+                    readOnly: true,
                     scrollBeyondLastLine: false,
                 }}
             />

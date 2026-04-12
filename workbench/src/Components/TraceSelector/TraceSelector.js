@@ -28,7 +28,7 @@ export function TraceSelector () {
     return (
         <div className="trace-selector-container">
             {loadedTraces && loadedTraces.map((trace, index) => (
-                <TraceSelectRow key={index} trace={trace} />
+                <TraceSelectRow key={trace.uid} trace={trace} />
             ))}
         </div>
     );

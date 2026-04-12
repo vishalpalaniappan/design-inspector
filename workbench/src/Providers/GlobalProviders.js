@@ -45,7 +45,7 @@ function GlobalProviders ({children}) {
         if (lastMessage !== null) {
             processMessage(lastMessage);
         }
-    }, [lastMessage]);
+    }, [lastMessage, processMessage]);
 
 
     const sendMessage = useCallback((message) => {
