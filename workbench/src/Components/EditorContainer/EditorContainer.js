@@ -57,9 +57,9 @@ export function EditorContainer () {
     useEffect(() => {
         if (editorRef.current && editorLoaded) {
             if (selectedBehavior) {
-                editorRef.current.setMode(1);
-            } else {
                 editorRef.current.setMode(2);
+            } else {
+                editorRef.current.setMode(1);
             }
         }
     }, [selectedBehavior, editorLoaded]);
