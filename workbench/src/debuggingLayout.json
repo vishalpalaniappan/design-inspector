@@ -306,7 +306,7 @@
         },
         "toolbarContainer": {
             "id": "toolbarContainer",
-            "component": "ToolBar",
+            "component": "ToolBarDebugger",
             "background": "#1e1e1e"
         },
         "graphMenuContainer": {

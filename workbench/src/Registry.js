@@ -1,3 +1,5 @@
+import { ToolBarDebugger } from "./Components/ToolBarDebugger/ToolBarDebugger";
+
 export const registry = {
     BehavioralControlGraph: () =>
         import("./Components/BehavioralControlGraph/BehavioralControlGraph").then((m) => ({
@@ -18,6 +20,10 @@ export const registry = {
     ToolBar: () =>
         import("./Components/ToolBar/ToolBar").then((m) => ({
             default: m.default || m.ToolBar,
+        })),
+    ToolBarDebugger: () =>
+        import("./Components/ToolBarDebugger/ToolBarDebugger").then((m) => ({
+            default: m.default || m.ToolBarDebugger,
         })),
     StatusBar: () =>
         import("./Components/StatusBar/StatusBar").then((m) => ({
