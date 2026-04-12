@@ -63,7 +63,12 @@ export function StatusBar () {
     return (
         <div className="status-bar">
             <div className="status-left">
-                {message}
+                <div className="status-conntected">
+                    <CircleFill
+                        className="connectionColor"
+                        style={connectionColor} />{connectionStatus}
+                </div>
+                <div className="status-message">{message}</div>
             </div>
             <div className="status-right">
                 <div className="status-bar-select">
@@ -72,9 +77,6 @@ export function StatusBar () {
                         <option value={2}>Debugging</option>
                     </select>
                 </div>
-                <CircleFill
-                    className="connectionColor"
-                    style={connectionColor} />{connectionStatus}
             </div>
         </div>
     );
