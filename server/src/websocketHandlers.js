@@ -12,24 +12,11 @@ export class  WSMessageHandler {
     constructor(ws) {
         this.ws = ws;
 
-        // TODO: Eventually there will be support for multiple terminals,
-        // so I will have to set a UID to each terminal instance and use
-        // that mapping to connect to the correct session. It will also be
-        // necessary to recall sessions when switching tabs. For now, only
-        // one terminal is supported.
-        this.terminal = new TerminalSession();
-        this.terminal.on("data", this.onTerminalData);
-        this.terminal.on("exit", this.onTerminalExit);
-        this.terminal.on("start", this.onTerminalStart);
-        this.terminal.on("stop", this.onTerminalStop);
-        this.terminal.start();
+        // TODO: Add support for multiple terminals (identified using UID)
+        this.startTerminalAndAddListeners();
 
         this.ws.on("close", () => {
-            this.terminal.stop();
-            this.terminal.off("data", this.onTerminalData);
-            this.terminal.off("exit", this.onTerminalExit);
-            this.terminal.off("start", this.onTerminalStart);
-            this.terminal.off("stop", this.onTerminalStop);
+            this.stopTerminalAndRemoveListeners();
         });
 
         this.handlers = {
@@ -66,6 +53,23 @@ export class  WSMessageHandler {
         } catch (err) {
             console.error('Failed to process message:', err);
         }
+    }
+
+    stopTerminalAndRemoveListeners() {
+        this.terminal.stop();
+        this.terminal.off("data", this.onTerminalData);
+        this.terminal.off("exit", this.onTerminalExit);
+        this.terminal.off("start", this.onTerminalStart);
+        this.terminal.off("stop", this.onTerminalStop);
+    }
+
+    startTerminalAndAddListeners(args) {
+        this.terminal = new TerminalSession(args);
+        this.terminal.on("data", this.onTerminalData);
+        this.terminal.on("exit", this.onTerminalExit);
+        this.terminal.on("start", this.onTerminalStart);
+        this.terminal.on("stop", this.onTerminalStop);
+        this.terminal.start();
     }
 
     createDesign = async (msg) => {
@@ -166,21 +170,10 @@ export class  WSMessageHandler {
         } else {
             console.warn("No trace entry to send to front end.");
         }
-        this.terminal = new TerminalSession();
-        this.terminal.on("data", this.onTerminalData);
-        this.terminal.on("exit", this.onTerminalExit);
-        this.terminal.on("start", this.onTerminalStart);
-        this.terminal.on("stop", this.onTerminalStop);
-        this.terminal.start();
+        this.startTerminalAndAddListeners();
     }   
 
-    onTerminalRunEntryPoint = async (msg) => {
-        await clearTraceFilesInPlayground();
-        this.terminal.stop();
-
-        const args = { command: msg.data };
-        this.terminal = new TerminalSession(args);
-        
+    onTerminalRunEntryPoint = async (msg) => {        
         // Since both stop and exit run, we use a flag ensure only
         // one entry_point_finished message is sent.
         let entryPointFinishedSent = false;
@@ -191,10 +184,8 @@ export class  WSMessageHandler {
             }
         }
 
-        this.terminal.on("data", this.onTerminalData);
-        this.terminal.on("exit", handleFinished);
-        this.terminal.on("start", this.onTerminalStart);
-        this.terminal.on("stop", handleFinished);
-        this.terminal.start();
+        await clearTraceFilesInPlayground();
+        this.stopTerminalAndRemoveListeners();
+        this.startTerminalAndAddListeners({ command: msg.data });
     }
 }
