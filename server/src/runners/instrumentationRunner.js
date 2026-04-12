@@ -13,12 +13,16 @@ const INSTRUMENTER_PATH = path.resolve(__dirname, "../../tools/instrumenter/inst
  */
 function instrumentationRunner(source, args = []) {
     return new Promise((resolve, reject) => {
+        if (typeof source !== "string") {
+            reject(new Error("Instrumentation source must be a string."));
+            return;
+        }
+
         const process = spawn("python3", [INSTRUMENTER_PATH, "instrumenter_stream", ...args]);
                 let settled = false;
 
         const stdoutChunks = [];
         let stderr = "";
-
 
         process.stdout.on("data", (data) => {
             stdoutChunks.push(data);
@@ -43,11 +47,6 @@ function instrumentationRunner(source, args = []) {
                 resolve(Buffer.concat(stdoutChunks));
             }
         });
-
-        if (typeof source !== "string") {
-            reject(new Error("source must be a string"));
-            return;
-        }
 
         process.stdin.write(source);
         process.stdin.end();
