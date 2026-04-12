@@ -307,3 +307,16 @@ export const useHasEntryPoint = () => {
         return hasEntryPoint;
     }, [hasEntryPoint, counter]);
 };
+
+
+/**
+ * Returns whether the design has an entry point.
+ * @return {Boolean}
+ */
+export const useTraces = () => {
+    const {engine} = useDalEngine();
+
+    return useMemo(() => {
+        return engine.implementation?._traces;
+    }, [engine]);
+};

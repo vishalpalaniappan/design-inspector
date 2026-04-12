@@ -110,6 +110,7 @@
                 "closeContainerId": "traceViewer",
                 "title": "Trace Selector"
             },
+            "component":"TraceSelector",
             "background": "#252526"
         },
         "terminal": {
