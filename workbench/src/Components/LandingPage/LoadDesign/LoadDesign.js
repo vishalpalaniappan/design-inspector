@@ -52,6 +52,11 @@ export function LoadDesign () {
         }
     }, [workspace, setSelectedDesign, design, sendMessage]);
 
+    // TODO:
+    // If we are simply changing layouts and the design is already loaded,
+    // set design loaded to true. This is a temporary solutiuon to quickly
+    // change layouts and I will refactor this after I add the necessary
+    // features to the layout manager.
     useEffect(() => {
         if (design) {
             const params = new URLSearchParams(window.location.search);
