@@ -33,7 +33,7 @@ function GlobalProviders ({children}) {
 
     // Connect to websocket and setup auto reconnect
     const socketUrl = "ws://localhost:3002";
-    const {sendJsonMessage, lastMessage, lastJsonMessage, readyState} = useWebSocket(socketUrl, {
+    const {sendJsonMessage, sendMessage, lastMessage, lastJsonMessage, readyState} = useWebSocket(socketUrl, {
         onOpen: () => sendJsonMessage({"type": "workspaces"}),
         shouldReconnect: (closeEvent) => true,
         onClose: (e) => console.log("Websocket closed, attempting to reconnect...", e),
@@ -114,13 +114,13 @@ function GlobalProviders ({children}) {
     const saveEngine = useCallback(() => {
         if (!engineRef.current) return;
         sendJsonMessage({
-            type: "save_engine",
+            type: "save_engine_prefix",
             payload: {
-                "data": engineRef.current.serialize(),
-                "fileName": design.fileName,
+                fileName: design.fileName,
             },
         });
-    }, [sendJsonMessage, design]);
+        sendMessage(engineRef.current.serialize());
+    }, [sendMessage, sendJsonMessage, design]);
 
     // When the workspace is first loaded, find the engine and deserialize it.
     useEffect(() => {

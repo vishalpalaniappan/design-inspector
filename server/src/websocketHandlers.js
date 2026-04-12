@@ -8,6 +8,7 @@ import saveDesign from "./design-file-utils/saveDesign.js";
 export class  WSMessageHandler {
     constructor(ws) {
         this.ws = ws;
+        this.saveEngineMeta = null;
 
         // TODO: Eventually there will be support for multiple terminals,
         // so I will have to set a UID to each terminal instance and use
@@ -32,6 +33,7 @@ export class  WSMessageHandler {
         this.handlers = {
             workspaces: this.workspaces.bind(this),
             save_engine: this.saveEngine.bind(this),
+            save_engine_prefix: this.saveEnginePrefix.bind(this),
             terminal_input: this.onTerminalInput.bind(this),
             terminal_resize: this.onTerminalResize.bind(this),
             create_design: this.createDesign.bind(this),
@@ -43,6 +45,13 @@ export class  WSMessageHandler {
 
     handleMessage(message) {
         try {
+            if (message.type === "binary") {
+                console.log("received save message");
+                this.saveEngine(message);
+                return;
+            }
+            console.log(message);
+            message = JSON.parse(message.utf8Data);
             const handler = this.handlers[message.type];
 
             if (!handler) {
@@ -109,9 +118,15 @@ export class  WSMessageHandler {
         }
     }
 
-    saveEngine = async (msg) => {
+    saveEnginePrefix = async (msg) => {
+        this.saveEngineMeta = msg.payload;
+    }
+
+    saveEngine = async (data) => {
         try {
-            const serializedEngine = await saveDesign(msg.payload.fileName, msg.payload.data);
+            const serializedEngine = await saveDesign(
+                this.saveEngineMeta.fileName, data.binaryData
+            );
             this.ws.send(JSON.stringify({ type: "design_save_successful", data: serializedEngine }));
         } catch (err) {
             this.ws.send(JSON.stringify({ type: "design_save_failed" }));

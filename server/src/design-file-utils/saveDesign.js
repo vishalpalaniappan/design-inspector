@@ -23,8 +23,7 @@ async function saveDesign(designName,  data) {
             description: "Default engine",
         });
 
-        const bytes = Uint8Array.from(Object.values(data));
-        engine.deserialize(bytes);
+        engine.deserialize(data);
 
         const pythonFiles = engine.getFiles().filter((file) => {
             return (file._name.endsWith(".py") && file.getUpdatedContent() !== file.getContent());

@@ -7,7 +7,7 @@ const handleWSConnection = async function (request) {
     const handler = new WSMessageHandler(ws);
 
     ws.on('message', (data) => {
-        handler.handleMessage(JSON.parse(data["utf8Data"]));
+        handler.handleMessage(data);
     });
 };
 
