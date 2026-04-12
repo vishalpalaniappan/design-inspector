@@ -21,6 +21,9 @@ async function loadDesignInPlayground(engine) {
     await fs.mkdir(path.dirname(filePath), { recursive: true });
     await fs.writeFile(filePath, instrumentationPkg);
 
+    const meta = {designName: engine._name};
+    await fs.writeFile(path.join(playgroundPath, "meta.json"), JSON.stringify(meta));
+
     try {
         const zip = await instrumentationRunner(instrumentationPkg);
         const directory = await unzipper.Open.buffer(zip);

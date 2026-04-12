@@ -4,6 +4,8 @@ import deleteDesign from "./design-file-utils/deleteDesign.js";
 import loadDesigns from "./design-file-utils/loadDesigns.js"
 import loadDesign from "./design-file-utils/loadDesign.js";
 import saveDesign from "./design-file-utils/saveDesign.js";
+import {saveTraceInEngine} from "./design-file-utils/saveTraceInEngine.js";
+import {clearTraceFilesInPlayground} from "./design-file-utils/saveTraceInEngine.js";
 import { unpack, pack } from 'msgpackr';
 
 export class  WSMessageHandler {
@@ -159,6 +161,7 @@ export class  WSMessageHandler {
 
     onEntryPointFinished = (msg) => { 
         console.log("Entry point execution finished.");
+        saveTraceInEngine();
         this.terminal = new TerminalSession();
         this.terminal.on("data", this.onTerminalData);
         this.terminal.on("exit", this.onTerminalExit);
@@ -167,7 +170,8 @@ export class  WSMessageHandler {
         this.terminal.start();
     }   
 
-    onTerminalRunEntryPoint = (msg) => {
+    onTerminalRunEntryPoint = async (msg) => {
+        await clearTraceFilesInPlayground();
         this.terminal.stop();
         const args = { command: msg.data };
         this.terminal = new TerminalSession(args);
