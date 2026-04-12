@@ -129,7 +129,10 @@ function GlobalProviders ({children}) {
 
     // Called to save the engine to the server.
     const saveEngine = useCallback(() => {
-        if (!engineRef.current) return;
+        if (!engineRef.current || !design) return;
+        // TODO: I think the file name should be stored in the
+        // engine to avoid having to pass it around separately like this.
+        // It is available in the name of engineRef.current.
         sendMessage({
             type: "save_engine",
             payload: {
