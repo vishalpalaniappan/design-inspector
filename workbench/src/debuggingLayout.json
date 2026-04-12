@@ -146,16 +146,6 @@
                 {
                     "type": "handleBar",
                     "sibling1": "menuContainer",
-                    "sibling2": "editorContainer"
-                },
-                {
-                    "containerId": "editorContainer",
-                    "type": "container",
-                    "size": { "initial": { "type": "fill" }}
-                },
-                {
-                    "type": "handleBar",
-                    "sibling1": "editorContainer",
                     "sibling2": "designLayoutContainer"
                 },
                 {
