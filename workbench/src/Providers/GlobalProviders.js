@@ -1,5 +1,6 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 
+import {pack, unpack} from "msgpackr";
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 import useWebSocket, {ReadyState} from "react-use-websocket";
@@ -33,23 +34,33 @@ function GlobalProviders ({children}) {
 
     // Connect to websocket and setup auto reconnect
     const socketUrl = "ws://localhost:3002";
-    const {sendJsonMessage, sendMessage, lastMessage, lastJsonMessage, readyState} = useWebSocket(socketUrl, {
-        onOpen: () => sendJsonMessage({"type": "workspaces"}),
+    const {sendMessage: rawSendMessage, lastMessage, readyState} = useWebSocket(socketUrl, {
+        onOpen: () => rawSendMessage(pack({"type": "workspaces"})),
         shouldReconnect: (closeEvent) => true,
         onClose: (e) => console.log("Websocket closed, attempting to reconnect...", e),
     });
 
-    // Sets the message history and processes received message.
-    const [messageHistory, setMessageHistory] = useState([]);
     useEffect(() => {
-        if (lastJsonMessage !== null) {
-            setMessageHistory((prev) => prev.concat(lastMessage));
-            processMessage(lastJsonMessage);
+        if (lastMessage !== null) {
+            processMessage(lastMessage);
         }
-    }, [lastJsonMessage]);
+    }, [lastMessage]);
+
+
+    const sendMessage = useCallback((message) => {
+        if (readyState === ReadyState.OPEN) {
+            const packedMessage = pack(message);
+            rawSendMessage(packedMessage);
+        } else {
+            console.error("WebSocket is not open. Ready state:", readyState);
+        }
+    }, [readyState, rawSendMessage]);
 
     // Process the received message
-    const processMessage = (msg) => {
+    const processMessage = async (lastMessage) => {
+        const arrayBuffer = await lastMessage.data.arrayBuffer();
+        const bytes = new Uint8Array(arrayBuffer);
+        const msg = unpack(bytes);
         switch (msg.type) {
             case "workspaces":
                 setWorkspace(msg.data);
@@ -69,7 +80,7 @@ function GlobalProviders ({children}) {
                 dispatch(setStatusMsg("Failed to save design."));
                 break;
             case "entry_point_finished":
-                sendJsonMessage({
+                sendMessage({
                     type: "entry_point_finished",
                 });
                 break;
@@ -114,23 +125,21 @@ function GlobalProviders ({children}) {
     }, [dispatch]);
 
     // Called to save the engine to the server.
-    // TODO: File size getting too big for one message,
-    // need some compression or send in chunks!!!
     const saveEngine = useCallback(() => {
         if (!engineRef.current) return;
-        sendJsonMessage({
-            type: "save_engine_prefix",
+        sendMessage({
+            type: "save_engine",
             payload: {
                 fileName: design.fileName,
+                data: engineRef.current.serialize(),
             },
         });
-        sendMessage(engineRef.current.serialize());
-    }, [sendMessage, sendJsonMessage, design]);
+    }, [sendMessage, sendMessage, design]);
 
     // When the workspace is first loaded, find the engine and deserialize it.
     useEffect(() => {
         if (!design) return;
-        engine.deserialize(new Uint8Array(design.data.data));
+        engine.deserialize(new Uint8Array(design.data));
         const files = engine.getFiles();
         if (files.length > 0) {
             dispatch(setActiveTab(files[0].uid));
@@ -152,7 +161,7 @@ function GlobalProviders ({children}) {
 
     return (
         // eslint-disable-next-line max-len
-        <ServerContext.Provider value={{sendJsonMessage, messageHistory, connectionStatus}}>
+        <ServerContext.Provider value={{sendMessage, connectionStatus}}>
             <DalEngineContext.Provider value={{engine}}>
                 <WorkspaceContext.Provider value={{workspace}}>
                     <TerminalContext.Provider value={{setTermWriter}}>

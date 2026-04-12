@@ -21,7 +21,7 @@ export function ToolBar () {
     const {openModal} = useModalManager();
     const {engine} = useDalEngine();
     const dispatch = useDispatch();
-    const {sendJsonMessage} = useServer();
+    const {sendMessage} = useServer();
     const hasEntryPoint = useHasEntryPoint();
 
     useEffect(() => {
@@ -48,21 +48,21 @@ export function ToolBar () {
     };
 
     const runDesign = useCallback(() => {
-        if (sendJsonMessage && engine) {
+        if (sendMessage && engine) {
             if (hasEntryPoint) {
-                sendJsonMessage({
+                sendMessage({
                     type: "terminal_run_entry_point",
                     data: engine.implementation.getEntryPoint(),
                 });
             } else {
                 const failureMsg = "Failed to run design. Please ensure an entry point is set.";
-                sendJsonMessage({
+                sendMessage({
                     type: "terminal_run_entry_point",
                     data: `echo "${failureMsg}"`,
                 });
             }
         }
-    }, [sendJsonMessage, hasEntryPoint, engine]);
+    }, [sendMessage, hasEntryPoint, engine]);
 
     return (
         <div className="toolbarWrapper">

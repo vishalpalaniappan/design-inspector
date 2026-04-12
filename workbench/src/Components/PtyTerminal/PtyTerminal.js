@@ -14,7 +14,7 @@ import "./PtyTerminal.scss";
  * @return {JSX.Element}
  */
 export function PtyTerminal () {
-    const {sendJsonMessage, connectionStatus} = useContext(ServerContext);
+    const {sendMessage, connectionStatus} = useContext(ServerContext);
     const {setTermWriter} = useContext(TerminalContext);
     const [showTerminal, setShowTerminal] = useState(false);
 
@@ -70,7 +70,7 @@ export function PtyTerminal () {
         term.loadAddon(fitAddon);
         term.open(containerRef.current);
 
-        sendJsonMessage({
+        sendMessage({
             type: "terminal_input",
             data: "clear\n",
         });
@@ -85,7 +85,7 @@ export function PtyTerminal () {
         });
 
         const disposable = term.onData((data) => {
-            sendJsonMessage({
+            sendMessage({
                 type: "terminal_input",
                 data: data,
             });
@@ -96,7 +96,7 @@ export function PtyTerminal () {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {
                 fitAddon.fit();
-                sendJsonMessage({
+                sendMessage({
                     type: "terminal_resize",
                     cols: term.cols,
                     rows: term.rows,

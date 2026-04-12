@@ -4,11 +4,11 @@ import deleteDesign from "./design-file-utils/deleteDesign.js";
 import loadDesigns from "./design-file-utils/loadDesigns.js"
 import loadDesign from "./design-file-utils/loadDesign.js";
 import saveDesign from "./design-file-utils/saveDesign.js";
+import { unpack, pack } from 'msgpackr';
 
 export class  WSMessageHandler {
     constructor(ws) {
         this.ws = ws;
-        this.saveEngineMeta = null;
 
         // TODO: Eventually there will be support for multiple terminals,
         // so I will have to set a UID to each terminal instance and use
@@ -33,7 +33,6 @@ export class  WSMessageHandler {
         this.handlers = {
             workspaces: this.workspaces.bind(this),
             save_engine: this.saveEngine.bind(this),
-            save_engine_prefix: this.saveEnginePrefix.bind(this),
             terminal_input: this.onTerminalInput.bind(this),
             terminal_resize: this.onTerminalResize.bind(this),
             create_design: this.createDesign.bind(this),
@@ -44,13 +43,16 @@ export class  WSMessageHandler {
         };
     }
 
+    sendMessage(msg) {
+        if (this.ws.readyState === this.ws.OPEN) {
+            this.ws.send(Buffer.from(pack(msg)));
+        }
+    }
+
     handleMessage(message) {
         try {
-            if (message.type === "binary") {
-                this.saveEngine(message);
-                return;
-            }
-            message = JSON.parse(message.utf8Data);
+            message = unpack(message.binaryData);
+
             const handler = this.handlers[message.type];
 
             if (!handler) {
@@ -69,7 +71,7 @@ export class  WSMessageHandler {
             await createDesign(msg.payload.fileName)
         } catch (err) {
             console.error("Failed to create design:", err.message);
-            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+            this.sendMessage({ type: "error", data: err.message });
             return;
         }
 
@@ -77,9 +79,9 @@ export class  WSMessageHandler {
             const folders = await loadDesigns();
             msg.type = "workspaces";
             msg.data = folders;
-            this.ws.send(JSON.stringify(msg));
+            this.sendMessage(msg);
         } catch (err) {
-            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+            this.sendMessage({ type: "error", data: err.message });
         }
     }
 
@@ -89,9 +91,9 @@ export class  WSMessageHandler {
             const folders = await loadDesigns();
             msg.type = "workspaces";
             msg.data = folders;
-            this.ws.send(JSON.stringify(msg));
+            this.sendMessage(msg);
         } catch (err) {
-            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+            this.sendMessage({ type: "error", data: err.message });
         }
     }
 
@@ -100,9 +102,9 @@ export class  WSMessageHandler {
             const file = await loadDesign(msg.payload.fileName)
             msg.type = "load_design";
             msg.data = file;
-            this.ws.send(JSON.stringify(msg));
+            this.sendMessage(msg);
         } catch (err) {
-            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+            this.sendMessage({ type: "error", data: err.message });
         }
     }
 
@@ -111,46 +113,40 @@ export class  WSMessageHandler {
             const folders = await loadDesigns();
             msg.type = "workspaces";
             msg.data = folders;
-            this.ws.send(JSON.stringify(msg));
+            this.sendMessage(msg);
         } catch (err) {
-            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+            this.sendMessage({ type: "error", data: err.message });
         }
     }
 
-    saveEnginePrefix = async (msg) => {
-        this.saveEngineMeta = msg.payload;
-    }
-
-    saveEngine = async (data) => {
+    saveEngine = async (msg) => {
         try {
-            const serializedEngine = await saveDesign(
-                this.saveEngineMeta.fileName, data.binaryData
-            );
-            this.ws.send(JSON.stringify({ type: "design_save_successful", data: serializedEngine }));
+            const serializedEngine = await saveDesign(msg.payload.fileName, msg.payload.data);
+            this.sendMessage({ type: "design_save_successful", data: serializedEngine });
         } catch (err) {
-            this.ws.send(JSON.stringify({ type: "design_save_failed" }));
-            this.ws.send(JSON.stringify({ type: "error", data: err.message }));
+            this.sendMessage({ type: "design_save_failed" });
+            this.sendMessage({ type: "error", data: err.message });
         }
     }
 
     onTerminalData = (data) => {
         if (this.ws.readyState === this.ws.OPEN) {
-            this.ws.send(JSON.stringify({ type: "terminal_output", data }));
+            this.sendMessage({ type: "terminal_output", data });
         }
     }
 
     onTerminalExit = (exit) => {
         if (this.ws.readyState === this.ws.OPEN) {
-            this.ws.send(JSON.stringify({ type: "terminal_exit", data: exit }));
+            this.sendMessage({ type: "terminal_exit", data: exit });
         }
     }
 
     onTerminalStart = () => {
-        this.ws.send(JSON.stringify({ type: "terminal_started" }));
+        this.sendMessage({ type: "terminal_started" });
     }
 
     onTerminalStop = () => {
-        this.ws.send(JSON.stringify({ type: "terminal_stopped" }));
+        this.sendMessage({ type: "terminal_stopped" });
     }
 
     onTerminalResize = (msg) => {
@@ -177,11 +173,11 @@ export class  WSMessageHandler {
         this.terminal = new TerminalSession(args);
         this.terminal.on("data", this.onTerminalData);
         this.terminal.on("exit", () => {
-            this.ws.send(JSON.stringify({ type: "entry_point_finished" }));
+            this.sendMessage({ type: "entry_point_finished" });
         });
         this.terminal.on("start", this.onTerminalStart);
         this.terminal.on("stop", () => {
-            this.ws.send(JSON.stringify({ type: "entry_point_finished" }));
+            this.sendMessage({ type: "entry_point_finished" });
         });
         this.terminal.start();
     }
