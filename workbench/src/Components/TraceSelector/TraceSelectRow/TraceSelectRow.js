@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 
 import clpFfiJsModuleInit from "clp-ffi-js";
 import PropTypes from "prop-types";
-import {CircleFill, Trash} from "react-bootstrap-icons";
+import {CircleFill, Trash, BoxArrowInUpRight} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 import {useModalManager} from "ui-layout-manager-dev";
 
@@ -42,7 +42,8 @@ export function TraceSelectRow ({trace}) {
         }
     }, [trace]);
 
-    const selectTrace = () => {
+    const selectTrace = (e) => {
+        e.stopPropagation();
         if (trace?.uid !== selectedTraceId) {
             dispatch(setSelectedTraceIdThunk(trace.uid));
         } else if (trace?.uid === selectedTraceId) {
@@ -60,7 +61,9 @@ export function TraceSelectRow ({trace}) {
         }
     };
 
-    const openTraceInEditor = useCallback(async () => {
+    const openTraceInEditor = useCallback(async (e) => {
+        e.stopPropagation();
+        e.preventDefault();
         if (!trace || !trace.trace) {
             console.warn("Trace does not have valid data:", trace);
             return;
@@ -91,8 +94,7 @@ export function TraceSelectRow ({trace}) {
 
     return (
         <div className="trace-select-row-container"
-            onClick={selectTrace}
-            onDoubleClick={openTraceInEditor}>
+            onClick={selectTrace}>
             <div className="selected-icon-container">
                 {selectedTraceId === trace.uid && <CircleFill size={10} color="#007acc" />}
             </div>
@@ -100,7 +102,13 @@ export function TraceSelectRow ({trace}) {
                 {dateRenered}
             </div>
             <div className="trash-icon-container">
-                <Trash title="Delete Trace" size={25} color="grey" onClick={deleteTrace} />
+                <Trash title="Delete Trace" size={14} color="grey" onClick={deleteTrace} />
+            </div>
+            <div className="trash-icon-container">
+                <BoxArrowInUpRight
+                    title="Open Trace in Editor"
+                    size={14} color="grey"
+                    onClick={openTraceInEditor} />
             </div>
         </div>
     );
