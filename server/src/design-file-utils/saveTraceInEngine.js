@@ -41,8 +41,15 @@ async function saveTraceInEngine() {
     const workspacePath = path.join(process.cwd(), "workspace");
 
     const metaPath = path.join(playgroundPath, "meta.json");
-    const metaData = await fs.readFile(metaPath);
-    const { designName } = JSON.parse(metaData);
+    
+    let designName;
+    try {
+        const metaData = await fs.readFile(metaPath);
+        ({ designName } = JSON.parse(metaData));
+    } catch (err) {
+        console.error("Failed to read or parse meta.json:", err);
+        return;
+    }
 
     const designPath = path.join(workspacePath, designName);
 
