@@ -177,16 +177,24 @@ export class  WSMessageHandler {
     onTerminalRunEntryPoint = async (msg) => {
         await clearTraceFilesInPlayground();
         this.terminal.stop();
+
         const args = { command: msg.data };
         this.terminal = new TerminalSession(args);
+        
+        // Since both stop and exit run, we use a flag ensure only
+        // one entry_point_finished message is sent.
+        let entryPointFinishedSent = false;
+        const handleFinished = () => {
+            if (!entryPointFinishedSent) {
+                entryPointFinishedSent = true;
+                this.sendMessage({ type: "entry_point_finished" });
+            }
+        }
+
         this.terminal.on("data", this.onTerminalData);
-        this.terminal.on("exit", () => {
-            this.sendMessage({ type: "entry_point_finished" });
-        });
+        this.terminal.on("exit", handleFinished);
         this.terminal.on("start", this.onTerminalStart);
-        this.terminal.on("stop", () => {
-            this.sendMessage({ type: "entry_point_finished" });
-        });
+        this.terminal.on("stop", handleFinished);
         this.terminal.start();
     }
 }
