@@ -3,8 +3,8 @@ import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {LayoutManager} from "ui-layout-manager-dev";
 
-import layout from "../../layout.json";
-import layout2 from "../../layout2.json";
+import debuggingLayout from "../../debuggingLayout.json";
+import designLayout from "../../designLayout.json";
 import {registry} from "../../Registry";
 import {setDesignLoaded} from "../../Store/appSlice";
 import {useDesignLoaded} from "../../Store/useAppSelection";
@@ -25,17 +25,17 @@ export function LandingPage () {
     const appMode = useAppMode();
     const dispatch = useDispatch();
 
-    const [chosenLayout, setChosenLayout] = useState(layout);
+    const [chosenLayout, setChosenLayout] = useState(designLayout);
 
     const registryList = useCallback(() => registry, []);
 
     useEffect(() => {
         if (appMode === 1) {
             dispatch(setDesignLoaded(false));
-            setChosenLayout(layout);
+            setChosenLayout(designLayout);
         } else if (appMode === 2) {
             dispatch(setDesignLoaded(false));
-            setChosenLayout(layout2);
+            setChosenLayout(debuggingLayout);
         }
     }, [appMode]);
 
