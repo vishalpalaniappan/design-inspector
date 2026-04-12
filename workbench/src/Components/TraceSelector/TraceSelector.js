@@ -15,10 +15,13 @@ export function TraceSelector () {
 
     useEffect(() => {
         if (traces) {
-            console.log("Traces updated:", traces);
+            const toMillis = (value) => {
+                const ms = Date.parse(value ?? "");
+                return Number.isFinite(ms) ? ms : 0;
+            };
 
             const sortedTraces = Object.values(traces).sort((a, b) => {
-                return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+                return toMillis(b.timestamp) - toMillis(a.timestamp);
             });
 
             setLoadedTraces(sortedTraces);
