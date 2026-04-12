@@ -15,6 +15,7 @@ import {
     selectSelectedInvariantId,
     selectSelectedMappingId,
     selectSelectedParticipantId,
+    selectSelectedTraceId, 
     selectStatusMsg} from "./appSelectors";
 
 /**
@@ -319,4 +320,17 @@ export const useTraces = () => {
     return useMemo(() => {
         return engine.implementation?._traces;
     }, [engine]);
+};
+
+
+/**
+ * Returns the selected trace ID.
+ * @return {Boolean}
+ */
+export const useSelectedTraceId = () => {
+    const selectedTraceId = useSelector(selectSelectedTraceId);
+
+    return useMemo(() => {
+        return selectedTraceId;
+    }, [selectedTraceId]);
 };

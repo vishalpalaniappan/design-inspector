@@ -6,6 +6,7 @@ import {setSelectedParticipant} from "./appSlice";
 import {setSelectedBehavior} from "./appSlice";
 import {setSelectedInvariant} from "./appSlice";
 import {setHasEntryPoint} from "./appSlice";
+import {setSelectedTraceId} from "./appSlice";
 
 /**
  * Called to delete a file given a file ID.
@@ -337,4 +338,15 @@ export const setUpdatedContentThunk = (fileId, content) => (dispatch, getState, 
     }
     file.setUpdatedContent(content);
 };
+
+
+/**
+ * Sets updated content for a file given the file ID and the updated content.
+ * @param {String} traceId Trace ID to set as selected.
+ * @return {Function} Thunk function.
+ */
+export const setSelectedTraceIdThunk = (traceId) => (dispatch, getState, {engine}) => {
+    dispatch(setSelectedTraceId(traceId));
+};
+
 

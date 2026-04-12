@@ -5,6 +5,10 @@ import PropTypes from "prop-types";
 import { CircleFill } from "react-bootstrap-icons";
 import "./TraceSelectRow.scss";
 
+import {useDispatch} from "react-redux";
+import {setSelectedTraceIdThunk} from "../../../Store/appThunk";
+import { useSelectedTraceId } from "../../../Store/useAppSelection";
+
 TraceSelectRow.propTypes = {
     trace: PropTypes.object.isRequired,
 };
@@ -16,7 +20,9 @@ TraceSelectRow.propTypes = {
  * @return {JSX.Element}
  */
 export function TraceSelectRow ({trace}) {
+    const dispatch = useDispatch();
     const [dateRenered, setDateRendered] = useState("");
+    const selectedTraceId = useSelectedTraceId();
 
     useEffect(() => {
         if (trace?.timestamp) {
@@ -31,12 +37,21 @@ export function TraceSelectRow ({trace}) {
         }
     }, [trace]);
 
+    const selectTrace = () => {
+        if (trace?.uid !== selectedTraceId) {
+            dispatch(setSelectedTraceIdThunk(trace.uid));
+        } else if (trace?.uid === selectedTraceId) {
+            dispatch(setSelectedTraceIdThunk(null));
+        } else {
+            console.warn("Trace does not have a valid UID:", trace);
+        }
+    };
 
     return (
-        <div className="trace-select-row-container">
-
+        <div className="trace-select-row-container"
+            onClick={selectTrace}>
             <div className="selected-icon-container">
-                {!trace.selected && <CircleFill size={10} color="#007acc" />}
+                {selectedTraceId === trace.uid && <CircleFill size={10} color="#007acc" />}
             </div>
             <div className="date-container">
                 {dateRenered}

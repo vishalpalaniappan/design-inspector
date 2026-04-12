@@ -10,3 +10,4 @@ export const selectAppMode = (state) => state.app.appMode;
 export const selectSelectedMappingId = (state) => state.app.selectedMapping;
 export const selectDesignLoaded = (state) => state.app.designLoaded;
 export const selectHasEntryPoint = (state) => state.app.hasEntryPoint;
+export const selectSelectedTraceId = (state) => state.app.selectedTraceId;
