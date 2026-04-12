@@ -1,0 +1,304 @@
+{
+    "title": "Workbench Layout Configuration A",
+    "layoutRoot": "root",
+    "containers": {
+        "root": {
+            "id": "root",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "header",
+                    "type": "container",
+                    "size": { "initial": { "value": 0, "unit": "px", "type": "fixed" }}
+                },
+                {
+                    "containerId": "mainBody",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "containerId": "footer",
+                    "type": "container",
+                    "size": { "initial": { "value": 25, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }
+                }
+            ]
+        },
+        "header": {
+            "id": "header",
+            "background": "#3c3c3c"
+        },
+        "mainBody": {
+            "id": "mainBody",
+            "background": "#3c3c3c",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                {
+                    "containerId": "sidebar",
+                    "type": "container",
+                    "size": { "initial": { "value": 40, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" },
+                    "showHandlebar": true
+                },
+                {
+                    "containerId": "contentContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "contentContainer": {
+            "id": "contentContainer",
+            "background": "#3c3c3c",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "content",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "content",
+                    "sibling2": "terminalContainer"
+                },
+                {
+                    "containerId": "terminalContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 200, "unit": "px", "type": "fixed" },
+                        "min": { "value": 100, "unit": "px"}
+                    },
+                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
+                }
+            ]
+        },
+        "terminalContainer": {
+            "id": "terminalContainer",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                {
+                    "containerId": "terminal",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ],
+            "background": "#252526"
+        },
+        "terminal": {
+            "id": "terminal",
+            "tabsBar": {
+                "tabs": [
+                    {
+                        "name": "Terminal",
+                        "component": "PtyTerminal"
+                    }
+                ],
+                "showClose": true,
+                "closeContainerId": "terminalContainer"
+            },
+            "background": "#252526"
+        },
+        "content": {
+            "id": "content",
+            "background": "#007acc",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                {
+                    "containerId": "menuContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 270, "unit": "px", "type": "fixed" },
+                        "min": { "value": 170, "unit": "px"},
+                        "max": { "value": 320, "unit": "px"}
+                    },
+                    "collapse": { "value": 900, "condition": "lessThan", "relative": "parent" }
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "menuContainer",
+                    "sibling2": "editorContainer"
+                },
+                {
+                    "containerId": "editorContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "editorContainer",
+                    "sibling2": "designLayoutContainer"
+                },
+                {
+                    "containerId": "designLayoutContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "designLayoutContainer",
+                    "sibling2": "rightMenuContainer"
+                },
+                {
+                    "containerId": "rightMenuContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 270, "unit": "px", "type": "fixed" },
+                        "min": { "value": 170, "unit": "px"},
+                        "max": { "value": 320, "unit": "px"}
+                    },
+                    "collapse": { "value": 900, "condition": "lessThan", "relative": "parent" }
+                }
+            ]
+        },
+        "footer": {
+            "id": "footer",
+            "component": "StatusBar",
+            "background": "#007acc"
+        },
+        "sidebar": {
+            "id": "sidebar",
+            "component": "SideBarMenu",
+            "background": "#333"
+        },
+        "menuContainer": {
+            "id": "menuContainer",
+            "background": "#252526",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "fileTabsContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 200, "unit": "px", "type": "fixed" },
+                        "min": { "value": 51, "unit": "px"}
+                    },
+                    "collapse": { "value": 150, "condition": "lessThan", "relative": "parent" }
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "fileTabsContainer",
+                    "sibling2": "leftMenuContainer2"
+                },
+                {
+                    "containerId": "leftMenuContainer2",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "rightMenuContainer": {
+            "id": "rightMenuContainer",
+            "background": "#252526",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "selectedInfoContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 190, "unit": "px", "type": "fixed" }
+                    }
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "selectedInfoContainer",
+                    "sibling2": "participantInfoContainer"
+                },
+                {
+                    "containerId": "participantInfoContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "fileTabsContainer": {
+            "id": "fileTabsContainer",
+            "component": "FileSelector",
+            "menuBar": {
+                "showClose": true,
+                "closeContainerId": "menuContainer",
+                "title": "File Browser"
+            },
+            "background": "#1e1e1e"
+        },
+        "editorContainer": {
+            "id": "editorContainer",
+            "component": "EditorContainer",
+            "background": "#1e1e1e"
+        },
+        "designLayoutContainer": {
+            "id": "designLayoutContainer",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                {
+                    "containerId": "toolbarContainer",
+                    "type": "container",
+                    "size": { "initial": { "value": 40, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 100, "condition": "lessThan", "relative": "parent" }
+                },
+                {
+                    "containerId": "FlowVerticalContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ],
+            "background": "#1e1e1e"
+        },
+        "FlowVerticalContainer": {
+            "id": "FlowVerticalContainer",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "FlowContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+
+                },
+                {
+                    "containerId": "graphMenuContainer",
+                    "type": "container",
+                    "size": { "initial": { "value": 30, "unit": "px", "type": "fixed" }}
+                }
+            ]
+        },
+        "FlowContainer": {
+            "id": "FlowContainer",
+            "component": "BehavioralControlGraph",
+            "background": "#1e1e1e"
+        },
+        "leftMenuContainer2": {
+            "id": "leftMenuContainer2",
+            "component": "MappingInfo",
+            "background": "#1e1e1e"
+        },
+        "selectedInfoContainer": {
+            "id": "selectedInfoContainer",
+            "component": "SelectedInfo",
+            "background": "#1e1e1e"
+        },
+        "participantInfoContainer": {
+            "id": "participantInfoContainer",
+            "component": "NodeInfo",
+            "background": "#1e1e1e"
+        },
+        "toolbarContainer": {
+            "id": "toolbarContainer",
+            "component": "ToolBar",
+            "background": "#1e1e1e"
+        },
+        "graphMenuContainer": {
+            "id": "graphMenuContainer",
+            "component": "GraphMenuBar",
+            "background": "#222222"
+        }
+    }
+}
