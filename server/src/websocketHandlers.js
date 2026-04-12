@@ -28,7 +28,6 @@ export class  WSMessageHandler {
             delete_design: this.deleteDesign.bind(this),
             load_design: this.loadDesign.bind(this),
             terminal_run_entry_point: this.onTerminalRunEntryPoint.bind(this),
-            entry_point_finished: this.onEntryPointFinished.bind(this),
         };
     }
 
@@ -163,39 +162,33 @@ export class  WSMessageHandler {
         this.terminal.write(msg.data);
     }
 
-    onEntryPointFinished = async (msg) => { 
-        const traceEntry = await saveTraceInEngine();
-        if (traceEntry) {
-            this.sendMessage({ type: "add_trace", data: traceEntry });
-        } else {
-            console.warn("No trace entry to send to front end.");
+    handleEntryPointFinished = async () => {
+        if (this.entryPointFinishedSent) return;
+
+        this.entryPointFinishedSent = true;
+        try {
+            const traceEntry = await saveTraceInEngine();
+            if (traceEntry) {
+                this.sendMessage({ type: "add_trace", data: traceEntry });
+            } else {
+                console.warn("No trace entry to send to front end.");
+            }
+        } catch (err) {
+            console.error("Failed to save trace:", err);
         }
-        this.terminal = new TerminalSession();
-        this.terminal.on("data", this.onTerminalData);
-        this.terminal.on("exit", this.onTerminalExit);
-        this.terminal.on("start", this.onTerminalStart);
-        this.terminal.on("stop", this.onTerminalStop);
-        this.terminal.start();
-    }   
+        this.startTerminalAndAddListeners();
+    }
 
     onTerminalRunEntryPoint = async (msg) => {        
-        // Since both stop and exit run, we use a flag ensure only
-        // one entry_point_finished message is sent.
-        let entryPointFinishedSent = false;
-        const handleFinished = () => {
-            if (!entryPointFinishedSent) {
-                entryPointFinishedSent = true;
-                this.sendMessage({ type: "entry_point_finished" });
-            }
-        }
+        this.entryPointFinishedSent = false;
 
         await clearTraceFilesInPlayground();
         this.stopTerminalAndRemoveListeners();
         this.terminal = new TerminalSession({ command: msg.data });
         this.terminal.on("data", this.onTerminalData);
-        this.terminal.on("exit", handleFinished);
+        this.terminal.on("exit", this.handleEntryPointFinished);
         this.terminal.on("start", this.onTerminalStart);
-        this.terminal.on("stop", handleFinished);
+        this.terminal.on("stop", this.handleEntryPointFinished);
         this.terminal.start();
     }
 }

@@ -80,9 +80,6 @@ function GlobalProviders ({children}) {
             case "design_save_failed":
                 dispatch(setStatusMsg("Failed to save design."));
                 break;
-            case "entry_point_finished":
-                sendMessage({type: "entry_point_finished"});
-                break;
             case "add_trace":
                 dispatch(addTraceThunk(msg.data));
                 dispatch(setStatusMsg("Received trace from server."));
