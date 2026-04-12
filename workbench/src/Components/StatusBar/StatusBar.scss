@@ -63,22 +63,28 @@ $darkened-status-bar-color: #481655;
   padding: 0 10px;
 }
 
-
 .status-left > .status-message {
   margin-left:10px
 }
 
+.status-bar-select {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
 .status-bar-select > select {
-  background-color: $status-bar-background-color;
+  background-color: $darkened-status-bar-color;
   color: white;
   border: none;
-  padding: 2px;
   font-size: 14px;
   border:none;
+  height:100%;
+  padding:0 10px
 }
 
 .status-bar-select > select:active,
-.status-bar-select > select:focus 
+.status-bar-select > select:focus,
 .status-bar-select > select:focus-visible {
   outline: none !important;
 }
