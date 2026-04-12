@@ -7,6 +7,10 @@ const handleWSConnection = async function (request) {
     const handler = new WSMessageHandler(ws);
 
     ws.on('message', (data) => {
+        if (data.type !== 'binary' || !data.binaryData) {
+            console.warn('Ignoring non-binary message. Received type:', data.type);
+            return;
+        }
         handler.handleMessage(data);
     });
 };
