@@ -1,7 +1,27 @@
 .trace-select-row-container {
     display:flex;
     width: 100%;
-    background-color: #1e1e1e;
-    padding:10px;
-    color:grey;
+    padding:7px;
+    color:rgb(180, 180, 180);
+    border-bottom: solid 0.5px rgb(41, 41, 41);
+    font-size:12px;
+    padding-left:10px;
+    flex-direction: row;
+    align-items: center;
 }
+
+.trace-select-row-container:hover {
+    background-color: rgb(41, 41, 41);
+    cursor: pointer;
+}
+
+.trace-select-row-container > .selected-icon-container {
+    margin-right: 10px;
+}
+
+.trace-select-row-container > .date-container {
+    display:flex;
+    flex-direction: column;
+}
+
+

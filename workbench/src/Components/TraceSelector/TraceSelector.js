@@ -16,11 +16,12 @@ export function TraceSelector () {
     useEffect(() => {
         if (traces) {
             console.log("Traces updated:", traces);
-            setLoadedTraces(Object.values(traces));
 
-            // Object.values(traces).forEach((trace) => {
-            //     console.log(new Date(trace.timestamp).getTime());
-            // });
+            const sortedTraces = Object.values(traces).sort((a, b) => {
+                return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+            });
+
+            setLoadedTraces(sortedTraces);
         }
     }, [traces]);
 
