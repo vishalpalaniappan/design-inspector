@@ -15,7 +15,7 @@ const bashRcFile = path.join(process.cwd(), "terminal.bashrc");
  * terminal UI in the front end and the backend server.
  */
 export class TerminalSession extends EventEmitter {
-    constructor(options = {}) {
+    constructor(args = {}, options = {}) {
         super();
 
         this.shell = options.shell || (os.platform() === "win32"
@@ -29,18 +29,29 @@ export class TerminalSession extends EventEmitter {
         this.name = options.name || "xterm-color";
 
         this.ptyProcess = null;
+        this.args = args;
     }
 
     start() {
         if (this.ptyProcess) return; 
 
-        this.ptyProcess = pty.spawn("/bin/bash", ["--rcfile", bashRcFile, "-i"], {
-            name: this.name,
-            cwd: this.cwd,
-            env: this.env,
-            cols: this.cols,
-            rows: this.rows,
-        });
+        if (this.args?.command) {
+            this.ptyProcess = pty.spawn("/bin/bash", ["--rcfile", bashRcFile, "-c", this.args.command], {
+                name: this.name,
+                cwd: this.cwd,
+                env: this.env,
+                cols: this.cols,
+                rows: this.rows,
+            });
+        } else {
+            this.ptyProcess = pty.spawn("/bin/bash", ["--rcfile", bashRcFile, "-i"], {
+                name: this.name,
+                cwd: this.cwd,
+                env: this.env,
+                cols: this.cols,
+                rows: this.rows,
+            });
+        }
 
         this.ptyProcess.onData(
             (data) => {

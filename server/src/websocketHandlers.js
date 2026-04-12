@@ -40,6 +40,7 @@ export class  WSMessageHandler {
             delete_design: this.deleteDesign.bind(this),
             load_design: this.loadDesign.bind(this),
             terminal_run_entry_point: this.onTerminalRunEntryPoint.bind(this),
+            entry_point_finished: this.onEntryPointFinished.bind(this),
         };
     }
 
@@ -160,10 +161,28 @@ export class  WSMessageHandler {
         this.terminal.write(msg.data);
     }
 
+    onEntryPointFinished = (msg) => { 
+        console.log("Entry point execution finished.");
+        this.terminal = new TerminalSession();
+        this.terminal.on("data", this.onTerminalData);
+        this.terminal.on("exit", this.onTerminalExit);
+        this.terminal.on("start", this.onTerminalStart);
+        this.terminal.on("stop", this.onTerminalStop);
+        this.terminal.start();
+    }   
+
     onTerminalRunEntryPoint = (msg) => {
-        this.terminal.write("\x03");
-        setTimeout(() => {
-            this.terminal.write(`${msg.data}\r`);
-        }, 50);
+        this.terminal.stop();
+        const args = { command: msg.data };
+        this.terminal = new TerminalSession(args);
+        this.terminal.on("data", this.onTerminalData);
+        this.terminal.on("exit", () => {
+            this.ws.send(JSON.stringify({ type: "entry_point_finished" }));
+        });
+        this.terminal.on("start", this.onTerminalStart);
+        this.terminal.on("stop", () => {
+            this.ws.send(JSON.stringify({ type: "entry_point_finished" }));
+        });
+        this.terminal.start();
     }
 }
