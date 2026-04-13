@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from "react";
 
 import PropTypes from "prop-types";
-import {Trash} from "react-bootstrap-icons";
+import {PlusSquare, Trash} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 
 import {setSelectedInvariant} from "../../../Store/appSlice";
@@ -49,7 +49,10 @@ export function Invariant ({invariant}) {
     return (
         <div className={`participantCard ${selected ? "selected" : ""}`}
             onClick={selectInvariant}>
-            <span>{invariant.getName()}</span>
+            <div className="label">
+                <PlusSquare size={13} title={"Add Prediction"} className="icon"/>
+                {invariant.getName()}
+            </div>
             <div className="icons">
                 <Trash title={"Delete Invariant"} onClick={deleteInvariant} className="icon"/>
             </div>
