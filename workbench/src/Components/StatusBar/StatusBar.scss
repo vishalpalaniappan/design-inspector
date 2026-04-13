@@ -52,15 +52,21 @@ $darkened-status-bar-color: #481655;
 }
 
 .connectionColor {
-  margin-right: 4px;
+  margin-right: 6px;
 }
 
 .status-left > .status-conntected {
-  background-color: $darkened-status-bar-color;
+  // background-color: $darkened-status-bar-color;
   height:100%;
   display:flex;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 8px;
+  font-size:14px;
+  cursor:default;
+}
+
+.status-left > .status-conntected:hover {
+  background-color: $darkened-status-bar-color;
 }
 
 .status-left > .status-message {
@@ -74,13 +80,17 @@ $darkened-status-bar-color: #481655;
 }
 
 .status-bar-select > select {
-  background-color: $darkened-status-bar-color;
+  background-color: $status-bar-background-color;
   color: white;
   border: none;
   font-size: 14px;
   border:none;
   height:100%;
   padding:0 10px
+}
+
+.status-bar-select > select:hover {
+  background-color: $darkened-status-bar-color;
 }
 
 .status-bar-select > select:active,
