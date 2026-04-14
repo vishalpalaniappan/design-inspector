@@ -7,8 +7,8 @@ import {useModalManager} from "ui-layout-manager-dev";
 
 import {setSelectedInvariant} from "../../../Store/appSlice";
 import {deleteInvariantThunk} from "../../../Store/appThunk";
-import {useSelectedInvariant} from "../../../Store/useAppSelection";
 import {removePredictionThunk} from "../../../Store/appThunk";
+import {useSelectedInvariant} from "../../../Store/useAppSelection";
 import {AddPrediction} from "../../Modals/AddPrediction";
 
 import "./Invariant.scss";
@@ -59,7 +59,7 @@ export function Invariant ({invariant}) {
                 return <AddPrediction close={close} />;
             },
         });
-    }, [openModal]);
+    }, [openModal, invariant, dispatch]);
 
     const removePrediction = useCallback((e, behavior) => {
         e.stopPropagation();
