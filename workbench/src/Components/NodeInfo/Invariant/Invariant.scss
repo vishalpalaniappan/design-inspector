@@ -17,6 +17,24 @@
     border: dashed 1px rgb(255, 208, 121);
 }
 
+.participantCard > .label {
+    display:flex;
+    flex-direction: row;    
+    justify-content: space-between;
+    align-items: center;
+    font-size:13px;
+
+    .icon {
+        color:rgb(161, 161, 161);
+        cursor: pointer;
+        margin-right:5px;
+    }
+
+    .icon:hover {
+        color:rgb(255, 255, 255);
+    }
+}
+
 .participantsContent  > .participantCard > .icons{
     display:flex;
     flex-direction: row;    
