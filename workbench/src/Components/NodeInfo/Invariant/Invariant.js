@@ -8,6 +8,7 @@ import {useModalManager} from "ui-layout-manager-dev";
 import {setSelectedInvariant} from "../../../Store/appSlice";
 import {deleteInvariantThunk} from "../../../Store/appThunk";
 import {useSelectedInvariant} from "../../../Store/useAppSelection";
+import {removePredictionThunk} from "../../../Store/appThunk";
 import {AddPrediction} from "../../Modals/AddPrediction";
 
 import "./Invariant.scss";
@@ -49,7 +50,9 @@ export function Invariant ({invariant}) {
         setSelected(selectedInvariant.getName() === invariant.getName());
     }, [selectedInvariant, invariant]);
 
-    const addPrediction = useCallback(() => {
+    const addPrediction = useCallback((e) => {
+        e.stopPropagation();
+        dispatch(setSelectedInvariant(invariant.getName()));
         openModal({
             title: "Add Prediction",
             render: ({close}) => {
@@ -57,6 +60,14 @@ export function Invariant ({invariant}) {
             },
         });
     }, [openModal]);
+
+    const removePrediction = useCallback((e, behavior) => {
+        e.stopPropagation();
+        dispatch(setSelectedInvariant(invariant.getName()));
+        if (invariant) {
+            dispatch(removePredictionThunk(behavior));
+        }
+    }, [invariant]);
 
     return (
         <div className={`participantCard ${selected ? "selected" : ""}`}
@@ -73,20 +84,28 @@ export function Invariant ({invariant}) {
                     {invariant.getName()}
                 </div>
                 <div className="icons">
-                    <Trash title={"Delete Invariant"} onClick={deleteInvariant} className="icon"/>
+                    <Trash
+                        title={"Delete Invariant"}
+                        onClick={deleteInvariant}
+                        className="icon"/>
                 </div>
             </div>
 
+            {invariant.predictedFailures.length > 0 && (
+                <div className="divider"></div>
+            )}
 
             {invariant.predictedFailures.map((prediction, index) => (
                 <div key={index} className="prediction">
                     <div className="prediction-name">{prediction.behavior}</div>
                     <div className="prediction-trash">
-                        <Trash title={"Delete Invariant"} className="icon"/>
+                        <Trash
+                            onClick={(e) => removePrediction(e, prediction.behavior)}
+                            title={"Delete Prediction"}
+                            className="icon"/>
                     </div>
                 </div>
             ))}
-
         </div>
     );
 }

@@ -55,8 +55,7 @@
     width:100%;
     display:flex;
     flex-direction: row;
-    padding-top: 10px;
-    min-height:20px;
+    min-height:30px;
     align-items: center;
 }
 
@@ -73,6 +72,22 @@
     width: 10px;
     padding-left:10px;
     padding-right:3px;
+
+    .icon {
+        color:rgb(187, 187, 187);
+        cursor: pointer;
+    }
+
+    .icon:hover {
+        color:rgb(255, 255, 255);
+    }
+}
+
+.participantsContent > .participantCard > .divider {
+    width:100%;
+    height:1px;
+    background-color: grey;
+    margin: 10px 0;
 }
 
 
