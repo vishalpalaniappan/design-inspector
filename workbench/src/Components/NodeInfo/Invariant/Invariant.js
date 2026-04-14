@@ -100,7 +100,7 @@ export function Invariant ({invariant}) {
                     <div className="prediction-name">{prediction.behavior}</div>
                     <div className="prediction-trash">
                         <Trash
-                            onClick={(e) => removePrediction(e, prediction.behavior)}
+                            onClick={(e) => removePrediction(e, prediction.uid)}
                             title={"Delete Prediction"}
                             className="icon"/>
                     </div>

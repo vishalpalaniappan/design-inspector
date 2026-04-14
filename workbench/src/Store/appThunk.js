@@ -372,13 +372,13 @@ export const deleteTraceThunk = (traceId) => (dispatch, getState, {engine}) => {
 
 /**
  * Adds a failure prediction to the selected invariant.
- * @param {Object} behavior Behavior object that will fail.
+ * @param {Object} predcitedBehavior Behavior object that will fail.
  * @param {String} description Description of the prediction.
  * @return {Function} Thunk function.
  */
-export const addPredictionThunk = (behavior, description) =>
+export const addPredictionThunk = (predcitedBehavior, description) =>
     (dispatch, getState, {engine}) => {
-        console.log(behavior);
+        console.log(predcitedBehavior);
         const selectedBehaviorId = getState().app.selectedBehavior;
         if (!selectedBehaviorId) throw new Error("No behavior selected");
 
@@ -393,8 +393,8 @@ export const addPredictionThunk = (behavior, description) =>
         const invariant = participant.getInvariant(selectedInvariant);
 
         invariant.addFailedBehaviorPrediction(
-            behavior.dal_engine_uid,
-            behavior.getName(),
+            predcitedBehavior.dal_engine_uid,
+            predcitedBehavior.getName(),
             description
         );
         dispatch(incrementCounter());
@@ -402,23 +402,10 @@ export const addPredictionThunk = (behavior, description) =>
 
 /**
  * Removes a failure prediction from the selected invariant.
- * @param {Object} behavior Behavior object that will fail.
+ * @param {String} uid UID of the behavior that will fail.
  * @return {Function} Thunk function.
  */
-export const removePredictionThunk = (behavior) => (dispatch, getState, {engine}) => {
-    const selectedBehaviorId = getState().app.selectedBehavior;
-    if (!selectedBehaviorId) throw new Error("No behavior selected");
-
-    const selectedParticipantId = getState().app.selectedParticipant;
-    if (!selectedParticipantId) throw new Error("No participant selected");
-
-    const selectedInvariant = getState().app.selectedInvariant;
-    if (!selectedInvariant) throw new Error("No invariant selected");
-
-    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
-    const participant = behavior.getParticipant(selectedParticipantId);
-    const invariant = participant.getInvariant(selectedInvariant);
-
-    invariant.removeFailedBehaviorPrediction(behavior.dal_engine_uid);
+export const removePredictionThunk = (uid) => (dispatch, getState, {engine}) => {
+    invariant.removeFailedBehaviorPrediction(uid);
     dispatch(incrementCounter());
 };

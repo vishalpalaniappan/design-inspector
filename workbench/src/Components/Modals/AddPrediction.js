@@ -36,7 +36,8 @@ export function AddPrediction ({close}) {
             return;
         }
         try {
-            dispatch(addPredictionThunk(prediction, description));
+            const behavior = behaviors.find((b) => b.dal_engine_uid === prediction);
+            dispatch(addPredictionThunk(behavior, description));
             close();
         } catch (err) {
             setError(err.toString());
@@ -61,7 +62,7 @@ export function AddPrediction ({close}) {
             </div>
             <div className="value-name-input">
                 <select
-                    value={prediction}
+                    value={prediction.dal_engine_uid}
                     onMouseDown={(e) => e.stopPropagation()}
                     onClick={(e) => e.stopPropagation()}
                     onChange={(e) => {
@@ -70,7 +71,7 @@ export function AddPrediction ({close}) {
                     }}
                 >
                     {Object.values(behaviors).map((behavior) => (
-                        <option key={behavior.dal_engine_uid} value={behavior}>
+                        <option key={behavior.dal_engine_uid} value={behavior.dal_engine_uid}>
                             {behavior._name}
                         </option>
                     ))}
