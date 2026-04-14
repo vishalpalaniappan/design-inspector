@@ -378,7 +378,6 @@ export const deleteTraceThunk = (traceId) => (dispatch, getState, {engine}) => {
  */
 export const addPredictionThunk = (predcitedBehavior, description) =>
     (dispatch, getState, {engine}) => {
-        console.log(predcitedBehavior);
         const selectedBehaviorId = getState().app.selectedBehavior;
         if (!selectedBehaviorId) throw new Error("No behavior selected");
 
