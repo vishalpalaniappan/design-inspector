@@ -31,7 +31,7 @@ export function AddPrediction ({close}) {
     }, []);
 
     const handleSubmit = useCallback(() => {
-        if (prediction.trim() === "") {
+        if (!prediction) {
             setError("Prediction must not be empty.");
             return;
         }
@@ -70,7 +70,7 @@ export function AddPrediction ({close}) {
                     }}
                 >
                     {Object.values(behaviors).map((behavior) => (
-                        <option key={behavior._name} value={behavior._name}>
+                        <option key={behavior.dal_engine_uid} value={behavior}>
                             {behavior._name}
                         </option>
                     ))}
