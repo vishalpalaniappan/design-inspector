@@ -377,11 +377,20 @@ export const deleteTraceThunk = (traceId) => (dispatch, getState, {engine}) => {
  * @return {Function} Thunk function.
  */
 export const addPredictionThunk = (prediction, description) => (dispatch, getState, {engine}) => {
+    const selectedBehaviorId = getState().app.selectedBehavior;
+    if (!selectedBehaviorId) throw new Error("No behavior selected");
+
+    const selectedParticipantId = getState().app.selectedParticipant;
+    if (!selectedParticipantId) throw new Error("No participant selected");
+
     const selectedInvariant = getState().app.selectedInvariant;
-    if (!selectedInvariant) {
-        throw new Error("No invariant selected");
-    }
-    selectedInvariant.addFailedBehaviorPrediction(prediction, description);
+    if (!selectedInvariant) throw new Error("No invariant selected");
+
+    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+    const participant = behavior.getParticipant(selectedParticipantId);
+    const invariant = participant.getInvariant(selectedInvariant);
+
+    invariant.addFailedBehaviorPrediction(prediction, description);
     dispatch(incrementCounter());
 };
 
@@ -392,10 +401,19 @@ export const addPredictionThunk = (prediction, description) => (dispatch, getSta
  * @return {Function} Thunk function.
  */
 export const removePredictionThunk = (prediction, description) => (dispatch, getState) => {
+    const selectedBehaviorId = getState().app.selectedBehavior;
+    if (!selectedBehaviorId) throw new Error("No behavior selected");
+
+    const selectedParticipantId = getState().app.selectedParticipant;
+    if (!selectedParticipantId) throw new Error("No participant selected");
+
     const selectedInvariant = getState().app.selectedInvariant;
-    if (!selectedInvariant) {
-        throw new Error("No invariant selected");
-    }
-    selectedInvariant.removeFailedBehaviorPrediction(prediction, description);
+    if (!selectedInvariant) throw new Error("No invariant selected");
+
+    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+    const participant = behavior.getParticipant(selectedParticipantId);
+    const invariant = participant.getInvariant(selectedInvariant);
+
+    invariant.removeFailedBehaviorPrediction(prediction, description);
     dispatch(incrementCounter());
 };

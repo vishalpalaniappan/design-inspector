@@ -3,8 +3,7 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
-import {addParticipantThunk} from "../../Store/appThunk";
-import {useSelectedBehavior} from "../../Store/useAppSelection";
+import {addPredictionThunk} from "../../Store/appThunk";
 import {useBehaviors} from "../../Store/useAppSelection";
 
 import "./AddValue.scss";
@@ -18,22 +17,18 @@ AddPrediction.propTypes = {
  * @return {JSX.Element}
  */
 export function AddPrediction ({close}) {
-    const selectedBehavior= useSelectedBehavior();
     const dispatch = useDispatch();
     const behaviors = useBehaviors();
 
     const [prediction, setPrediction] = useState("");
     const [description, setDescription] = useState("");
     const [error, setError] = useState(null);
-    const [chosenBehavior, setChosenBehavior] = useState("");
-
-    const inputRef = useRef(null);
 
     useEffect(() => {
-        if (behaviors) {
-            console.log("behaviors:", behaviors);
+        if (behaviors && Object.values(behaviors).length > 0) {
+            setPrediction(Object.values(behaviors)[0]._name|| "");
         }
-    }, [behaviors]);
+    });
 
     const handleSubmit = useCallback(() => {
         if (prediction.trim() === "") {
@@ -41,12 +36,12 @@ export function AddPrediction ({close}) {
             return;
         }
         try {
-            dispatch(addParticipantThunk(prediction, description));
+            dispatch(addPredictionThunk(prediction, description));
             close();
         } catch (err) {
             setError(err.toString());
         }
-    }, [description, prediction, close, selectedBehavior, dispatch]);
+    }, [description, prediction, close, dispatch]);
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -69,16 +64,16 @@ export function AddPrediction ({close}) {
             </div>
             <div className="value-name-input">
                 <select
-                    value={chosenBehavior}
+                    value={prediction}
                     onMouseDown={(e) => e.stopPropagation()}
                     onClick={(e) => e.stopPropagation()}
                     onChange={(e) => {
                         e.stopPropagation();
-                        setChosenBehavior(e.target.value);
+                        setPrediction(e.target.value);
                     }}
                 >
-                    {Object.entries(behaviors).map(([key, behavior]) => (
-                        <option key={behavior._name} value={key}>
+                    {Object.values(behaviors).map((behavior) => (
+                        <option key={behavior._name} value={behavior._name}>
                             {behavior._name}
                         </option>
                     ))}
