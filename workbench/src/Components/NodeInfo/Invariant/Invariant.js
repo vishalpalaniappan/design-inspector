@@ -63,11 +63,13 @@ export function Invariant ({invariant}) {
             onClick={selectInvariant}>
 
             <div className="label-row">
-                <div className="label">
+                <div className="icons">
                     <PlusSquare size={13}
                         title={"Add Prediction"}
                         className="icon"
                         onClick={addPrediction}/>
+                </div>
+                <div className="label">
                     {invariant.getName()}
                 </div>
                 <div className="icons">
@@ -76,8 +78,15 @@ export function Invariant ({invariant}) {
             </div>
 
 
+            {invariant.predictedFailures.map((prediction, index) => (
+                <div key={index} className="prediction">
+                    <div className="prediction-name">{prediction.behavior}</div>
+                    <div className="prediction-trash">
+                        <Trash title={"Delete Invariant"} className="icon"/>
+                    </div>
+                </div>
+            ))}
 
-            
         </div>
     );
 }

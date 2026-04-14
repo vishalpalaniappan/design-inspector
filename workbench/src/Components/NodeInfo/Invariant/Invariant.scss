@@ -1,11 +1,9 @@
 
 .participantsContent  > .participantCard {
-    height: 30px;
-    min-height: 30px;
     color:rgb(161, 161, 161);
     border: dashed 1px grey;
     display:flex;
-    flex-direction: row;    
+    flex-direction: column;    
     justify-content: space-between;
     align-items: center;
     font-size:13px;
@@ -30,16 +28,10 @@
     justify-content: space-between;
     align-items: center;
     font-size:13px;
-
-    .icon {
-        color:rgb(161, 161, 161);
-        cursor: pointer;
-        margin-right:5px;
-    }
-
-    .icon:hover {
-        color:rgb(255, 255, 255);
-    }
+    white-space: nowrap;
+    overflow-x: hidden;
+    margin: 0 10px;
+    flex: 1;
 }
 
 .participantsContent  > .participantCard > .label-row > .icons{
@@ -58,6 +50,32 @@
         color:rgb(255, 255, 255);
     }
 }
+
+.participantsContent  > .participantCard > .prediction {
+    width:100%;
+    display:flex;
+    flex-direction: row;
+    padding-top: 10px;
+    min-height:20px;
+    align-items: center;
+}
+
+.participantsContent > .participantCard > .prediction > .prediction-name {
+    font-size: 13px;
+    color:rgb(187, 187, 187);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-x: hidden;
+    flex: 1;
+}
+
+.participantsContent > .participantCard > .prediction > .prediction-trash {
+    width: 10px;
+    padding-left:10px;
+    padding-right:3px;
+}
+
+
 
 
 
