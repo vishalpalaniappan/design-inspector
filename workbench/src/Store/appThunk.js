@@ -386,3 +386,18 @@ export const addPredictionThunk = (prediction, description) => (dispatch, getSta
 };
 
 
+
+/**
+ * Removes a failure prediction from the selected invariant.
+ * @param {String} prediction Prediction to remove.
+ * @param {String} description Description of the prediction.
+ * @return {Function} Thunk function.
+ */
+export const removePredictionThunk = (prediction, description) => (dispatch, getState) => {
+    const selectedInvariant = getState().app.selectedInvariant;
+    if (!selectedInvariant) {
+        throw new Error("No invariant selected");
+    }
+    selectedInvariant.removeFailedBehaviorPrediction(prediction, description);
+    dispatch(incrementCounter());
+};
