@@ -48,9 +48,6 @@ export function AddPrediction ({close}) {
             if (event.key === "Escape") {
                 event.preventDefault();
                 close();
-            } else if (event.key === "Enter") {
-                event.preventDefault();
-                handleSubmit();
             }
         };
         document.addEventListener("keydown", handleKeyDown);
