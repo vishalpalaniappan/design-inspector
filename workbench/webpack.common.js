@@ -20,6 +20,11 @@ module.exports = {
         clean: true,
         publicPath: "auto",
     },
+    devServer: {
+        client: {
+            overlay: false,
+        },
+    },
     module: {
         rules: [
             {
