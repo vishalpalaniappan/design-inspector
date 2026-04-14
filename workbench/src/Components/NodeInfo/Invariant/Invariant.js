@@ -61,16 +61,23 @@ export function Invariant ({invariant}) {
     return (
         <div className={`participantCard ${selected ? "selected" : ""}`}
             onClick={selectInvariant}>
-            <div className="label">
-                <PlusSquare size={13}
-                    title={"Add Prediction"}
-                    className="icon"
-                    onClick={addPrediction}/>
-                {invariant.getName()}
+
+            <div className="label-row">
+                <div className="label">
+                    <PlusSquare size={13}
+                        title={"Add Prediction"}
+                        className="icon"
+                        onClick={addPrediction}/>
+                    {invariant.getName()}
+                </div>
+                <div className="icons">
+                    <Trash title={"Delete Invariant"} onClick={deleteInvariant} className="icon"/>
+                </div>
             </div>
-            <div className="icons">
-                <Trash title={"Delete Invariant"} onClick={deleteInvariant} className="icon"/>
-            </div>
+
+
+
+            
         </div>
     );
 }
