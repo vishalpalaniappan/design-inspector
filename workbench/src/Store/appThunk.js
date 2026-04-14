@@ -370,4 +370,19 @@ export const deleteTraceThunk = (traceId) => (dispatch, getState, {engine}) => {
     engine.save();
 };
 
+/**
+ * Adds a failure prediction to the selected invariant.
+ * @param {String} prediction Prediction to add.
+ * @param {String} description Description of the prediction.
+ * @return {Function} Thunk function.
+ */
+export const addPredictionThunk = (prediction, description) => (dispatch, getState, {engine}) => {
+    const selectedInvariant = getState().app.selectedInvariant;
+    if (!selectedInvariant) {
+        throw new Error("No invariant selected");
+    }
+    selectedInvariant.addFailedBehaviorPrediction(prediction, description);
+    dispatch(incrementCounter());
+};
+
 
