@@ -376,7 +376,7 @@ export const deleteTraceThunk = (traceId) => (dispatch, getState, {engine}) => {
  * @param {String} description Description of the prediction.
  * @return {Function} Thunk function.
  */
-export const addPredictionThunk = (predcitedBehavior, description) =>
+export const addPredictionThunk = (predictedBehavior, description) =>
     (dispatch, getState, {engine}) => {
         const selectedBehaviorId = getState().app.selectedBehavior;
         if (!selectedBehaviorId) throw new Error("No behavior selected");
@@ -392,8 +392,8 @@ export const addPredictionThunk = (predcitedBehavior, description) =>
         const invariant = participant.getInvariant(selectedInvariant);
 
         invariant.addFailedBehaviorPrediction(
-            predcitedBehavior.dal_engine_uid,
-            predcitedBehavior.getName(),
+            predictedBehavior.dal_engine_uid,
+            predictedBehavior.getName(),
             description
         );
         dispatch(incrementCounter());
