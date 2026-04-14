@@ -80,7 +80,7 @@ export function AddPrediction ({close}) {
                 </select>
             </div>
             <div className="value-name-label">
-                <span>Description:</span>
+                <span>Reason:</span>
             </div>
             <div className="value-name-input">
                 <textarea
