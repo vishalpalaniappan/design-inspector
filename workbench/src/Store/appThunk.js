@@ -406,6 +406,19 @@ export const addPredictionThunk = (predcitedBehavior, description) =>
  * @return {Function} Thunk function.
  */
 export const removePredictionThunk = (uid) => (dispatch, getState, {engine}) => {
+    const selectedBehaviorId = getState().app.selectedBehavior;
+    if (!selectedBehaviorId) throw new Error("No behavior selected");
+
+    const selectedParticipantId = getState().app.selectedParticipant;
+    if (!selectedParticipantId) throw new Error("No participant selected");
+
+    const selectedInvariant = getState().app.selectedInvariant;
+    if (!selectedInvariant) throw new Error("No invariant selected");
+
+    const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+    const participant = behavior.getParticipant(selectedParticipantId);
+    const invariant = participant.getInvariant(selectedInvariant);
+
     invariant.removeFailedBehaviorPrediction(uid);
     dispatch(incrementCounter());
 };
