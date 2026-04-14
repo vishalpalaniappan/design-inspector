@@ -385,8 +385,6 @@ export const addPredictionThunk = (prediction, description) => (dispatch, getSta
     dispatch(incrementCounter());
 };
 
-
-
 /**
  * Removes a failure prediction from the selected invariant.
  * @param {String} prediction Prediction to remove.
