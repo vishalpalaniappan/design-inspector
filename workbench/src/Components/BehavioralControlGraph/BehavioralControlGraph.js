@@ -59,11 +59,6 @@ export function BehavioralControlGraph () {
         } catch (err) {
             console.error(err);
         }
-
-        /**
-         * TODO: Check if invariant is selected to assign behavior
-         * as predicted failure if invariant is violated.
-         */
     }, [dispatch]);
 
     return (
