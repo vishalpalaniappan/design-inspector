@@ -23,16 +23,14 @@
 }
 
 .participantCard > .label-row > .label {
-    display:flex;
-    flex-direction: row;    
-    justify-content: space-between;
-    align-items: center;
-    font-size:13px;
+    font-size: 13px;
+    color:rgb(187, 187, 187);
+    text-overflow: ellipsis;
     white-space: nowrap;
     overflow-x: hidden;
     min-width: 0;
-    margin: 0 10px;
     flex: 1;
+    margin: 0 10px;
 }
 
 .participantsContent  > .participantCard > .label-row > .icons{
