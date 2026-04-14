@@ -28,7 +28,7 @@ export function AddPrediction ({close}) {
         if (behaviors && Object.values(behaviors).length > 0) {
             setPrediction(Object.values(behaviors)[0]._name|| "");
         }
-    }, []);
+    }, [behaviors]);
 
     const handleSubmit = useCallback(() => {
         if (!prediction) {
