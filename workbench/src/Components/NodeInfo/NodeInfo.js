@@ -4,6 +4,7 @@ import {PlusSquare, Trash} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 import {useModalManager} from "ui-layout-manager-dev";
 
+import {setSelectedInvariant} from "../../Store/appSlice";
 import {deleteParticipantThunk, selectParticipantThunk} from "../../Store/appThunk";
 import {useSelectedBehavior, useSelectedParticipant} from "../../Store/useAppSelection";
 import {useInvariants, useParticipants} from "../../Store/useAppSelection";
@@ -49,6 +50,11 @@ export function NodeInfo ({}) {
         dispatch(selectParticipantThunk(participantName));
     }, [dispatch]);
 
+
+    const clearSelectedInvariant = useCallback(() => {
+        dispatch(setSelectedInvariant(null));
+    }, [dispatch]);
+
     return (
         <>
             {
@@ -83,7 +89,7 @@ export function NodeInfo ({}) {
 
                             </div>
 
-                            <div className="participantsContent">
+                            <div className="participantsContent" onClick={clearSelectedInvariant}>
                                 {
                                     invariants &&
                                     invariants.map((invariant, index) => (
