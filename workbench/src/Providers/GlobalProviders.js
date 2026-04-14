@@ -58,7 +58,7 @@ function GlobalProviders ({children}) {
     }, [readyState, rawSendMessage]);
 
     // Process the received message
-    const processMessage = async (lastMessage) => {
+    const processMessage = useCallback(async (lastMessage) => {
         const arrayBuffer = await lastMessage.data.arrayBuffer();
         const bytes = new Uint8Array(arrayBuffer);
         const msg = unpack(bytes);
@@ -83,6 +83,7 @@ function GlobalProviders ({children}) {
             case "add_trace":
                 dispatch(addTraceThunk(msg.data));
                 dispatch(setStatusMsg("Received trace from server."));
+                engine.save();
                 break;
             case "error":
                 console.error("Error message from server:", msg.data);
@@ -90,7 +91,7 @@ function GlobalProviders ({children}) {
             default:
                 break;
         }
-    };
+    }, [dispatch, engine]);
 
     // Set the connection state
     const connectionStatus = {

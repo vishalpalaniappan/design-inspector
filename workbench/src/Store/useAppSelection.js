@@ -336,3 +336,14 @@ export const useSelectedTraceId = () => {
         return selectedTraceId;
     }, [selectedTraceId, counter]);
 };
+
+
+export const useBehaviors = () => {
+    const {engine} = useDalEngine();
+    const counter = useSelector(selectCounter);
+
+    return useMemo(() => {
+        if (!engine) return [];
+        return engine.graphs.getAllBehaviors();
+    }, [engine, counter]);
+};
