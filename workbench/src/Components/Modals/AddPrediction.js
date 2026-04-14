@@ -26,7 +26,7 @@ export function AddPrediction ({close}) {
 
     useEffect(() => {
         if (behaviors && Object.values(behaviors).length > 0) {
-            setPrediction(Object.values(behaviors)[0]._name|| "");
+            setPrediction(Object.values(behaviors)[0].dal_engine_uid);
         }
     }, [behaviors]);
 
