@@ -5,13 +5,16 @@ const saveInvariantPropValues = (invariant, propertyInputs) => {
     for (const key of keys) {
         const value = propertyInputs[key];
         if (value === undefined || value.trim() === "") {
+            if (!props[key].required) continue;
             throw new Error(`Property "${props[key].label}" must not be empty.`);
         }
         if (props[key].type === "number" && isNaN(value)) {
+            if (!props[key].required) continue;
             throw new Error(`Property "${props[key].label}" must be a valid number.`);
         }
         if (props[key].type === "boolean" &&
             value.toLowerCase() !== "true" && value.toLowerCase() !== "false") {
+            if (!props[key].required) continue;
             throw new Error(`Property "${props[key].label}" must be true or false.`);
         }
         if (props[key].type.toLowerCase() === "number") {
