@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const INSTRUMENTER_PATH = path.resolve(__dirname, "../../tools/instrumenter/instrumenter.py");
+const INSTRUMENTER_PATH = path.resolve(__dirname, "../../tools/instrumenter/design_instrumenter.py");
 
 /**
  * Passes the instrumentation package to the runner and receives a zip file with the instrumented source.
