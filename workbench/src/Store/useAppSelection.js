@@ -319,7 +319,7 @@ export const useTraces = () => {
     const counter = useSelector(selectCounter);
 
     return useMemo(() => {
-        return {...engine.implementation?._traces};
+        return {...engine.traces?.getTraces()};
     }, [engine, counter]);
 };
 

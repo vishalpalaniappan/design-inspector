@@ -80,7 +80,7 @@ async function saveTraceInEngine() {
 
         const engineData = await fs.readFile(designPath);
         engine.deserialize(engineData);
-        engine.implementation.addTrace(traceEntry);
+        engine.traces.addTrace(traceEntry, null);
         await fs.writeFile(designPath, engine.serialize());
         
         console.log("Trace saved successfully in engine.");
