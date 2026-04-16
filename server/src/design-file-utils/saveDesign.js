@@ -1,6 +1,5 @@
 import fs from 'fs/promises';
 import {DALEngine} from "dal-engine-core-js-lib-dev";
-import statementMappingRunner from '../runners/statementMappingRunner.js';
 import { resolveDesignPath } from "./validateDesignName.js";
 import loadDesignInPlayground from './loadDesignInPlayground.js';
 
@@ -24,17 +23,6 @@ async function saveDesign(designName,  data) {
         });
 
         engine.deserialize(data);
-
-        const pythonFiles = engine.getFiles().filter((file) => {
-            return (file._name.endsWith(".py") && file.getUpdatedContent() !== file.getContent());
-        });
-
-        await Promise.all(
-            pythonFiles.map(async (file) => {
-                const mapping = await statementMappingRunner(file.getUpdatedContent());
-                file.setStatementIndex(mapping);
-            })
-        );
 
         // This marks the file as not dirty. If the content does not match
         // the update content, then the file is considered dirty and the UI
