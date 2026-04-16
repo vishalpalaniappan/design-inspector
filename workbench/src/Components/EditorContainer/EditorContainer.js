@@ -55,16 +55,6 @@ export function EditorContainer () {
     }, [files, editorLoaded]);
 
     useEffect(() => {
-        if (editorRef.current && editorLoaded) {
-            if (selectedBehavior) {
-                editorRef.current.setMode(2);
-            } else {
-                editorRef.current.setMode(1);
-            }
-        }
-    }, [selectedBehavior, editorLoaded]);
-
-    useEffect(() => {
         if (selectedMapping) {
             // Mapping selected in the mapping container.
             const file = files.find((file) => file.uid === selectedMapping.fileUid);
