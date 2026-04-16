@@ -148,6 +148,7 @@ function GlobalProviders ({children}) {
         if (files.length > 0) {
             dispatch(setActiveTab(files[0].uid));
         }
+        console.log(engine);
 
         const params = new URLSearchParams(window.location.search);
         params.set("design", design.fileName);
