@@ -36,7 +36,7 @@ export function ShowTraceLog ({close, args}) {
                 options={{
                     minimap: {enabled: false},
                     lineNumbers: "off",
-                    wordWrap: "on",
+                    wordWrap: "off",
                     readOnly: true,
                     scrollBeyondLastLine: false,
                 }}

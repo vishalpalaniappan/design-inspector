@@ -355,7 +355,7 @@ export const setSelectedTraceIdThunk = (traceId) => (dispatch, getState, {engine
  * @return {Function} Thunk function.
  */
 export const addTraceThunk = (trace) => (dispatch, getState, {engine}) => {
-    engine.traces.addTrace(trace);
+    engine.traces.addTrace(trace, false, []);
     dispatch(incrementCounter());
 };
 

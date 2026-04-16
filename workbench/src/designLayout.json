@@ -82,11 +82,35 @@
             "orientation": "horizontal",
             "children": [
                 {
+                    "containerId": "traceViewer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 270, "unit": "px", "type": "fixed" },
+                        "min": { "value": 150, "unit": "px"},
+                        "max": { "value": 400, "unit": "px"}
+                    }
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "traceViewer",
+                    "sibling2": "terminal"
+                },
+                {
                     "containerId": "terminal",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 }
             ],
+            "background": "#252526"
+        },
+        "traceViewer": {
+            "id": "traceViewer",
+            "menuBar": {
+                "showClose": true,
+                "closeContainerId": "traceViewer",
+                "title": "Trace Selector"
+            },
+            "component":"TraceSelector",
             "background": "#252526"
         },
         "terminal": {

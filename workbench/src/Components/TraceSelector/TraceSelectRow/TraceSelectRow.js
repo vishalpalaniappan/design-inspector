@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 
 import clpFfiJsModuleInit from "clp-ffi-js";
 import PropTypes from "prop-types";
-import {CircleFill, Trash, BoxArrowInUpRight} from "react-bootstrap-icons";
+import {BoxArrowInUpRight, Bug, CircleFill, Trash} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 import {useModalManager} from "ui-layout-manager-dev";
 
@@ -93,6 +93,25 @@ export function TraceSelectRow ({trace}) {
         });
     }, [trace]);
 
+    const openDebugResult = useCallback(() => {
+        console.log(trace);
+
+        let str = "";
+        for (const n of trace.debugResults[0]) {
+            console.log(n);
+            str = str + n + "\n";
+        }
+        openModal({
+            title: "Automated Debug Results",
+            args: {
+                "trace": str,
+            },
+            render: ({close, args}) => {
+                return <ShowTraceLog close={close} args={args} />;
+            },
+        });
+    }, [trace]);
+
     return (
         <div className="trace-select-row-container"
             onClick={selectTrace}>
@@ -104,6 +123,12 @@ export function TraceSelectRow ({trace}) {
             </div>
             <div className="trash-icon-container">
                 <Trash title="Delete Trace" size={14} color="grey" onClick={deleteTrace} />
+            </div>
+            <div className="trash-icon-container">
+                <Bug
+                    title="Open Debug Results in Editor"
+                    size={14} color="grey"
+                    onClick={openDebugResult} />
             </div>
             <div className="trash-icon-container">
                 <BoxArrowInUpRight
