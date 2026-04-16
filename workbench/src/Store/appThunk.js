@@ -365,7 +365,7 @@ export const addTraceThunk = (trace) => (dispatch, getState, {engine}) => {
  * @return {Function} Thunk function.
  */
 export const deleteTraceThunk = (traceId) => (dispatch, getState, {engine}) => {
-    engine.implementation.deleteTrace(traceId);
+    engine.traces.deleteTrace(traceId);
     dispatch(incrementCounter());
     engine.save();
 };
