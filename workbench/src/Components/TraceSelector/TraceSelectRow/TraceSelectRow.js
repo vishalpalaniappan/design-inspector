@@ -96,8 +96,8 @@ export function TraceSelectRow ({trace}) {
     const openDebugResult = useCallback(() => {
         let str = "";
         for (const atomic of trace.debugResults) {
+            str = str + "\n\n";
             for (const n of atomic) {
-                console.log(n);
                 str = str + n + "\n";
             }
         }
