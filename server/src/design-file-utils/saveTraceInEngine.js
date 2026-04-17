@@ -4,10 +4,9 @@ import {DALEngine} from "dal-engine-core-js-lib-dev";
 import clpFfiJsModuleInit from "clp-ffi-js/node";
 
 /**
- * Loads the trace logs from the given trace raw data.
- * @param {Object} trace The raw trace data to load the logs from.
- * @returns {Promise<Array>} Promise that resolves to an array of LogEntry
- * @param traceRaw
+ * Decompresses the trace file and returns the logs as an array of LogEntry objects.
+ * @param {Object} trace The CLP compressed trace to load the logs from.
+ * @returns {Promise<Array>} Promise that resolves to an array of LogEntry objects.
  */
 async function loadTrace (trace) {
     const Module = await clpFfiJsModuleInit();
