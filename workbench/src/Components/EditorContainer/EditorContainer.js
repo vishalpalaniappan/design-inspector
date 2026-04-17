@@ -83,7 +83,6 @@ export function EditorContainer () {
             const tabs = editorRef.current.getTabs();
             files.forEach((file) => {
                 if (tabs.some((tab) => tab.uid === file.uid)) {
-                    console.log(file);
                     editorRef.current.updateTab(file);
                 }
             });
