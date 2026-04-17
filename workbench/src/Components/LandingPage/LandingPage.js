@@ -37,7 +37,7 @@ export function LandingPage () {
             dispatch(setDesignLoaded(false));
             setChosenLayout(debuggingLayout);
         }
-    }, [appMode]);
+    }, [appMode, dispatch]);
 
     return (
         <>
