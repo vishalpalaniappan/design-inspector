@@ -69,15 +69,17 @@ export function StatusBar () {
                         className="connectionColor"
                         style={connectionColor} />{connectionStatus}
                 </div>
-                <div className="status-message">{message}</div>
             </div>
             <div className="status-right">
-                <div className="status-bar-select">
-                    <select value={appMode} onChange={(event) => selectMode(event)}>
+                <div className="status-message">{message}</div>
+                {/* <div className="status-bar-select">
+                    <select value={appMode} onChange={
+                        (event) => selectMode(event)
+                        }>
                         <option value={1}>Design</option>
                         <option value={2}>Debugging</option>
                     </select>
-                </div>
+                </div> */}
             </div>
         </div>
     );
