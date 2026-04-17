@@ -91,10 +91,6 @@
         },
         "traceViewer": {
             "id": "traceViewer",
-            "menuBar": {
-                "showClose": false,
-                "title": "Trace Selector"
-            },
             "component":"TraceSelector",
             "background": "#252526"
         },

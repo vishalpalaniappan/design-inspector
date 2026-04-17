@@ -30,9 +30,17 @@ export function TraceSelector () {
 
     return (
         <div className="trace-selector-container">
-            {loadedTraces && loadedTraces.map((trace, index) => (
-                <TraceSelectRow key={trace.uid} trace={trace} />
-            ))}
+            {(loadedTraces && loadedTraces.length > 0) ?
+                <>
+                    <div className="tracesTitle">Traces</div>
+                    <div className="tracesBody">
+                        {loadedTraces.map((trace, index) => (
+                            <TraceSelectRow key={trace.uid} trace={trace} />
+                        ))}
+                    </div>
+                </>:
+                <div className="no-traces">No Available Traces</div>
+            }
         </div>
     );
 }
