@@ -46,7 +46,7 @@ export function LoadDesign () {
             setLastUpdated(new Date().toLocaleString());
 
             // If the selected design is not in workspace, unselect it.
-            if (!workspace.some((item) => item.name === selectedDesign?.name)) {
+            if (selectedDesign && !workspace.some((item) => item.name === selectedDesign?.name)) {
                 dispatch(setDesignLoaded(false));
             }
         }
