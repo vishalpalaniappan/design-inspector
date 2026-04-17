@@ -38,7 +38,7 @@ export function TraceSelectRow ({trace}) {
                 String(date.getHours()).padStart(2, "0") + ":" +
                 String(date.getMinutes()).padStart(2, "0") + ":" +
                 String(date.getSeconds()).padStart(2, "0");
-            setDateRendered("Run at: " + formatted);
+            setDateRendered(formatted);
         }
     }, [trace]);
 

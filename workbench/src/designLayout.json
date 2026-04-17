@@ -82,20 +82,6 @@
             "orientation": "horizontal",
             "children": [
                 {
-                    "containerId": "traceViewer",
-                    "type": "container",
-                    "size": { 
-                        "initial": { "value": 270, "unit": "px", "type": "fixed" },
-                        "min": { "value": 150, "unit": "px"},
-                        "max": { "value": 400, "unit": "px"}
-                    }
-                },
-                {
-                    "type": "handleBar",
-                    "sibling1": "traceViewer",
-                    "sibling2": "terminal"
-                },
-                {
                     "containerId": "terminal",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
@@ -106,8 +92,7 @@
         "traceViewer": {
             "id": "traceViewer",
             "menuBar": {
-                "showClose": true,
-                "closeContainerId": "traceViewer",
+                "showClose": false,
                 "title": "Trace Selector"
             },
             "component":"TraceSelector",
@@ -208,10 +193,10 @@
                 {
                     "type": "handleBar",
                     "sibling1": "fileTabsContainer",
-                    "sibling2": "leftMenuContainer2"
+                    "sibling2": "traceViewer"
                 },
                 {
-                    "containerId": "leftMenuContainer2",
+                    "containerId": "traceViewer",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 }
@@ -297,11 +282,6 @@
         "FlowContainer": {
             "id": "FlowContainer",
             "component": "BehavioralControlGraph",
-            "background": "#1e1e1e"
-        },
-        "leftMenuContainer2": {
-            "id": "leftMenuContainer2",
-            "component": "MappingInfo",
             "background": "#1e1e1e"
         },
         "selectedInfoContainer": {
