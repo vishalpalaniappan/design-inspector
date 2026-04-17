@@ -55,7 +55,7 @@ $darkened-status-bar-color: #481655;
   margin-right: 6px;
 }
 
-.status-left > .status-conntected {
+.status-left > .status-connected {
   // background-color: $darkened-status-bar-color;
   height:100%;
   display:flex;
@@ -65,7 +65,7 @@ $darkened-status-bar-color: #481655;
   cursor:default;
 }
 
-.status-left > .status-conntected:hover {
+.status-left > .status-connected:hover {
   background-color: $darkened-status-bar-color;
 }
 

@@ -63,7 +63,7 @@ export function StatusBar () {
     return (
         <div className="status-bar">
             <div className="status-left">
-                <div className="status-conntected">
+                <div className="status-connected">
                     <CircleFill
                         size={12}
                         className="connectionColor"
