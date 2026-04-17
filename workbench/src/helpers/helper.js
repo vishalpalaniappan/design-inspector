@@ -4,6 +4,9 @@ const saveInvariantPropValues = (invariant, propertyInputs) => {
 
     for (const key of keys) {
         const value = propertyInputs[key];
+        if (!props[key].required && value === undefined) {
+            continue;
+        }
         if (value === undefined || value.trim() === "") {
             throw new Error(`Property "${props[key].label}" must not be empty.`);
         }
