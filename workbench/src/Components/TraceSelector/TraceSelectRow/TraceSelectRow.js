@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 
 import clpFfiJsModuleInit from "clp-ffi-js";
 import PropTypes from "prop-types";
-import {CircleFill, Trash, BoxArrowInUpRight} from "react-bootstrap-icons";
+import {BoxArrowInUpRight, Bug, CircleFill, Trash} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 import {useModalManager} from "ui-layout-manager-dev";
 
@@ -38,7 +38,7 @@ export function TraceSelectRow ({trace}) {
                 String(date.getHours()).padStart(2, "0") + ":" +
                 String(date.getMinutes()).padStart(2, "0") + ":" +
                 String(date.getSeconds()).padStart(2, "0");
-            setDateRendered("Run at: " + formatted);
+            setDateRendered(formatted);
         }
     }, [trace]);
 
@@ -93,6 +93,25 @@ export function TraceSelectRow ({trace}) {
         });
     }, [trace]);
 
+    const openDebugResult = useCallback(() => {
+        let str = "";
+        for (const atomic of trace.debugResults) {
+            str = str + "\n\n";
+            for (const n of atomic) {
+                str = str + n + "\n";
+            }
+        }
+        openModal({
+            title: "Automated Debug Results",
+            args: {
+                "trace": str,
+            },
+            render: ({close, args}) => {
+                return <ShowTraceLog close={close} args={args} />;
+            },
+        });
+    }, [trace]);
+
     return (
         <div className="trace-select-row-container"
             onClick={selectTrace}>
@@ -104,6 +123,12 @@ export function TraceSelectRow ({trace}) {
             </div>
             <div className="trash-icon-container">
                 <Trash title="Delete Trace" size={14} color="grey" onClick={deleteTrace} />
+            </div>
+            <div className="trash-icon-container">
+                <Bug
+                    title="Open Debug Results in Editor"
+                    size={14} color="grey"
+                    onClick={openDebugResult} />
             </div>
             <div className="trash-icon-container">
                 <BoxArrowInUpRight

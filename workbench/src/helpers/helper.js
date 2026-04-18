@@ -4,7 +4,11 @@ const saveInvariantPropValues = (invariant, propertyInputs) => {
 
     for (const key of keys) {
         const value = propertyInputs[key];
-        if (value === undefined || value.trim() === "") {
+        const isBlank = value === undefined || (typeof value === "string" && value.trim() === "");
+        if (!props[key].required && isBlank) {
+            continue;
+        }
+        if (isBlank) {
             throw new Error(`Property "${props[key].label}" must not be empty.`);
         }
         if (props[key].type === "number" && isNaN(value)) {

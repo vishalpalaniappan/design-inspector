@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
 
 import Editor from "@monaco-editor/react";
-import clpFfiJsModuleInit from "clp-ffi-js";
 import PropTypes from "prop-types";
 
 ShowTraceLog.propTypes = {
@@ -27,7 +26,7 @@ export function ShowTraceLog ({close, args}) {
     }, [close]);
 
     return (
-        <div style={{width: "800px", height: "600px"}}>
+        <div style={{width: "1000px", height: "600px"}}>
             <Editor
                 defaultLanguage="json"
                 defaultValue=""
@@ -37,7 +36,7 @@ export function ShowTraceLog ({close, args}) {
                 options={{
                     minimap: {enabled: false},
                     lineNumbers: "off",
-                    wordWrap: "on",
+                    wordWrap: "off",
                     readOnly: true,
                     scrollBeyondLastLine: false,
                 }}

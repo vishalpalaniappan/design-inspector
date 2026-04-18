@@ -148,6 +148,9 @@ function GlobalProviders ({children}) {
         if (files.length > 0) {
             dispatch(setActiveTab(files[0].uid));
         }
+        console.log(engine);
+
+        document.title = design.fileName.split(".")[0] + " - Design Workbench";
 
         const params = new URLSearchParams(window.location.search);
         params.set("design", design.fileName);
@@ -167,7 +170,7 @@ function GlobalProviders ({children}) {
         // eslint-disable-next-line max-len
         <ServerContext.Provider value={{sendMessage, connectionStatus}}>
             <DalEngineContext.Provider value={{engine}}>
-                <WorkspaceContext.Provider value={{workspace}}>
+                <WorkspaceContext.Provider value={{workspace, design}}>
                     <TerminalContext.Provider value={{setTermWriter}}>
                         {children}
                     </TerminalContext.Provider>

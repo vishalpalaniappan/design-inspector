@@ -6,7 +6,7 @@ const appSlice = createSlice({
         activeTab: null,
         counter: 0,
         lastSaved: null,
-        appMode: 1,
+        appMode: 1, // 1 = design,  2 = debugging
         designLoaded: false,
         hasEntryPoint: false,
         selectedBehavior: null,
@@ -15,6 +15,7 @@ const appSlice = createSlice({
         selectedMapping: null,
         selectedInvariant: null,
         selectedTraceId: null,
+        selectedTraceStmtId: null,
         statusMsg: null,
         tabs: null,
     },
@@ -25,10 +26,8 @@ const appSlice = createSlice({
             state.selectedInvariant = null;
             if (action.payload) {
                 state.selectedBehavior = action.payload;
-                state.appMode = 2;
             } else {
                 state.selectedBehavior = null;
-                state.appMode = 1;
             }
         },
         setSelectedParticipant(state, action) {
@@ -63,7 +62,7 @@ const appSlice = createSlice({
         setDesignMode (state) {
             state.appMode = 1;
         },
-        setMappingMode (state) {
+        setDebuggingMode (state) {
             state.appMode = 2;
         },
         setSelectedMapping (state, action) {
@@ -78,6 +77,9 @@ const appSlice = createSlice({
         setSelectedTraceId (state, action) {
             state.selectedTraceId = action.payload;
         },
+        setSelectedTraceStmtId (state, action) {
+            state.selectedTraceStmtId = action.payload;
+        }
     },
 });
 
@@ -87,7 +89,7 @@ export const {
     setActiveTab,
     setStatusMsg,
     setLastSaved,
-    setMappingMode,
+    setDebuggingMode,
     setSelectedGraph,
     setSelectedInvariant,
     incrementCounter,
@@ -96,6 +98,7 @@ export const {
     setDesignLoaded,
     setHasEntryPoint,
     setSelectedTraceId,
+    setSelectedTraceStmtId,
 } = appSlice.actions;
 
 export default appSlice.reducer;
