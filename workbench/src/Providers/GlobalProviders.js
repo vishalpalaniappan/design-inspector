@@ -150,6 +150,8 @@ function GlobalProviders ({children}) {
         }
         console.log(engine);
 
+        document.title = design.fileName.split(".")[0] + " - Design Workbench";
+
         const params = new URLSearchParams(window.location.search);
         params.set("design", design.fileName);
         const newUrl = `${window.location.pathname}?${params.toString()}`;
