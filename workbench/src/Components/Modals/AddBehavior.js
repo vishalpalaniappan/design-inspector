@@ -26,6 +26,7 @@ export function AddBehavior ({close}) {
     const [error, setError] = useState(null);
     const [isAtomic, setIsAtomic] = useState(false);
     const [isDesignFork, setIsDesignFork] = useState(false);
+    const [transformations, setTransformations] = useState("");
 
     const inputRef = useRef(null);
 
@@ -41,6 +42,7 @@ export function AddBehavior ({close}) {
             return;
         }
         try {
+            // TODO: Add transformations once engine API is updated
             engine.addNode(behavior, description, [], isAtomic, isDesignFork);
             dispatch(setSelectedBehavior(behavior));
             close();
@@ -80,6 +82,14 @@ export function AddBehavior ({close}) {
                 <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}></textarea>
+            </div>
+            <div className="value-name-label">
+                <span>Transformations:</span>
+            </div>
+            <div className="value-name-input">
+                <textarea
+                    value={transformations}
+                    onChange={(e) => setTransformations(e.target.value)}></textarea>
             </div>
             <div className="value-name-input">
                 <div className="check-box">
