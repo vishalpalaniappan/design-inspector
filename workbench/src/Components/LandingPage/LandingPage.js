@@ -6,6 +6,7 @@ import {LayoutManager} from "ui-layout-manager-dev";
 import debuggingLayout from "../../debuggingLayout.json";
 import designLayout from "../../designLayout.json";
 import {registry} from "../../Registry";
+import scriptingLayout from "../../scriptingLayout.json";
 import {setDesignLoaded} from "../../Store/appSlice";
 import {useDesignLoaded} from "../../Store/useAppSelection";
 import {useAppMode} from "../../Store/useAppSelection";
@@ -35,7 +36,7 @@ export function LandingPage () {
             setChosenLayout(designLayout);
         } else if (appMode === 2) {
             dispatch(setDesignLoaded(false));
-            setChosenLayout(debuggingLayout);
+            setChosenLayout(scriptingLayout);
         }
     }, [appMode, dispatch]);
 

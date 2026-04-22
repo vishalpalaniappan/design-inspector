@@ -49,16 +49,14 @@ export function StatusBar () {
         setConnectionColor({color: connectionColorMap[connectionStatus] || "red"});
     }, [connectionStatus]);
 
-    // TODO: Temporarily disabled mode switch functionality
-    // will reintroduce in future when debugging UI is developed.
-    // const selectMode = (event) => {
-    //     const value = parseInt(event.target.value);
-    //     if (value === 1 && appMode !== 1) {
-    //         dispatch(setDesignMode());
-    //     } else if (value === 2) {
-    //         dispatch(setDebuggingMode());
-    //     }
-    // };
+    const selectMode = (event) => {
+        const value = parseInt(event.target.value);
+        if (value === 1 && appMode !== 1) {
+            dispatch(setDesignMode());
+        } else if (value === 2) {
+            dispatch(setDebuggingMode());
+        }
+    };
 
     return (
         <div className="status-bar">
@@ -72,14 +70,14 @@ export function StatusBar () {
             </div>
             <div className="status-right">
                 <div className="status-message">{message}</div>
-                {/* <div className="status-bar-select">
+                <div className="status-bar-select">
                     <select value={appMode} onChange={
                         (event) => selectMode(event)
-                        }>
+                    }>
                         <option value={1}>Design</option>
                         <option value={2}>Debugging</option>
                     </select>
-                </div> */}
+                </div>
             </div>
         </div>
     );
