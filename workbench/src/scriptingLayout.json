@@ -1,0 +1,182 @@
+{
+    "title": "Scripting Layout",
+    "layoutRoot": "root",
+    "containers": {
+        "root": {
+            "id": "root",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "header",
+                    "type": "container",
+                    "size": { "initial": { "value": 0, "unit": "px", "type": "fixed" }}
+                },
+                {
+                    "containerId": "mainBody",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "containerId": "footer",
+                    "type": "container",
+                    "size": { "initial": { "value": 25, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }
+                }
+            ]
+        },
+        "header": {
+            "id": "header",
+            "background": "#3c3c3c"
+        },
+        "mainBody": {
+            "id": "mainBody",
+            "background": "#3c3c3c",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                {
+                    "containerId": "sidebar",
+                    "type": "container",
+                    "size": { "initial": { "value": 40, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" },
+                    "showHandlebar": true
+                },
+                {
+                    "containerId": "contentContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "contentContainer": {
+            "id": "contentContainer",
+            "background": "#3c3c3c",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "content",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "content",
+                    "sibling2": "terminalContainer"
+                },
+                {
+                    "containerId": "terminalContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 200, "unit": "px", "type": "fixed" },
+                        "min": { "value": 100, "unit": "px"}
+                    },
+                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
+                }
+            ]
+        },
+        "terminalContainer": {
+            "id": "terminalContainer",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                {
+                    "containerId": "terminal",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ],
+            "background": "#252526"
+        },
+        "traceViewer": {
+            "id": "traceViewer",
+            "component":"TraceSelector",
+            "background": "#252526"
+        },
+        "terminal": {
+            "id": "terminal",
+            "tabsBar": {
+                "tabs": [
+                    {
+                        "name": "Terminal",
+                        "component": "PtyTerminal"
+                    }
+                ],
+                "showClose": true,
+                "closeContainerId": "terminalContainer"
+            },
+            "background": "#252526"
+        },
+        "content": {
+            "id": "content",
+            "background": "#007acc",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                
+                {
+                    "containerId": "preWorldStateContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "preWorldStateContainer",
+                    "sibling2": "postWorldStateContainer"
+                },
+                {
+                    "containerId": "postWorldStateContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "postWorldStateContainer",
+                    "sibling2": "primitivesContainer"
+                },
+                {
+                    "containerId": "primitivesContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "primitivesContainer",
+                    "sibling2": "outputContainer"
+                },
+                {
+                    "containerId": "outputContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "footer": {
+            "id": "footer",
+            "component": "StatusBar",
+            "background": "#007acc"
+        },
+        "sidebar": {
+            "id": "sidebar",
+            "component": "SideBarMenu",
+            "background": "#333"
+        },
+        "preWorldStateContainer": {
+            "id": "preWorldStateContainer",
+            "background": "#222222"
+        },
+        "postWorldStateContainer": {
+            "id": "postWorldStateContainer",
+            "background": "#222222"
+        },
+        "outputContainer": {
+            "id": "outputContainer",
+            "background": "#222222"
+        },
+        "primitivesContainer": {
+            "id": "primitivesContainer",
+            "background": "#222222"
+        }
+    }
+}
