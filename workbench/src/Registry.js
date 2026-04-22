@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 export const registry = {
     BehavioralControlGraph: () =>
         import("./Components/BehavioralControlGraph/BehavioralControlGraph").then((m) => ({
@@ -46,5 +47,21 @@ export const registry = {
     TraceSelector: () =>
         import("./Components/TraceSelector/TraceSelector").then((m) => ({
             default: m.default || m.TraceSelector,
+        })),
+    InitialWorldStateEditor: () =>
+        import("./Components/Scripting/editors/initialWorldStateEditor").then((m) => ({
+            default: m.default || m.InitialWorldStateEditor,
+        })),
+    PrimitivesEditor: () =>
+        import("./Components/Scripting/editors/primitivesEditor").then((m) => ({
+            default: m.default || m.PrimitivesEditor,
+        })),
+    PostWorldStateEditor: () =>
+        import("./Components/Scripting/editors/postWorldStateEditor").then((m) => ({
+            default: m.default || m.PostWorldStateEditor,
+        })),
+    TransformOutputEditor: () =>
+        import("./Components/Scripting/editors/transformOutputEditor").then((m) => ({
+            default: m.default || m.TransformOutputEditor,
         })),
 };

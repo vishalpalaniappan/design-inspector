@@ -164,18 +164,38 @@
         },
         "preWorldStateContainer": {
             "id": "preWorldStateContainer",
+            "component": "InitialWorldStateEditor",
+            "menuBar": {
+                "showClose": false,
+                "title": "Initial World State Editor"
+            },
             "background": "#222222"
         },
         "postWorldStateContainer": {
             "id": "postWorldStateContainer",
+            "component": "PostWorldStateEditor",
+            "menuBar": {
+                "showClose": false,
+                "title": "Post World State Editor"
+            },
             "background": "#222222"
         },
         "outputContainer": {
             "id": "outputContainer",
+            "component": "TransformOutputEditor",
+            "menuBar": {
+                "showClose": false,
+                "title": "Transformations Output"
+            },
             "background": "#222222"
         },
         "primitivesContainer": {
             "id": "primitivesContainer",
+            "component": "PrimitivesEditor",
+            "menuBar": {
+                "showClose": false,
+                "title": "Primitives Editor"
+            },
             "background": "#222222"
         }
     }
