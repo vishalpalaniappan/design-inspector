@@ -118,7 +118,11 @@
                 {
                     "containerId": "preWorldStateContainer",
                     "type": "container",
-                    "size": { "initial": { "type": "fill" }}
+                    "size": { 
+                        "initial": { "value": 400, "unit": "px", "type": "fixed" },
+                        "min": { "value": 100, "unit": "px"}
+                    },
+                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
                 },
                 {
                     "type": "handleBar",
@@ -148,7 +152,11 @@
                 {
                     "containerId": "outputContainer",
                     "type": "container",
-                    "size": { "initial": { "type": "fill" }}
+                    "size": { 
+                        "initial": { "value": 400, "unit": "px", "type": "fixed" },
+                        "min": { "value": 100, "unit": "px"}
+                    },
+                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
                 }
             ]
         },
