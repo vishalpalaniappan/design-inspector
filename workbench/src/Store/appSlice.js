@@ -62,7 +62,7 @@ const appSlice = createSlice({
         setDesignMode (state) {
             state.appMode = 1;
         },
-        setDebuggingMode (state) {
+        setScriptingMode (state) {
             state.appMode = 2;
         },
         setSelectedMapping (state, action) {
@@ -89,7 +89,7 @@ export const {
     setActiveTab,
     setStatusMsg,
     setLastSaved,
-    setDebuggingMode,
+    setScriptingMode,
     setSelectedGraph,
     setSelectedInvariant,
     incrementCounter,
