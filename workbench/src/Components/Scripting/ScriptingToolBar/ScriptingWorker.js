@@ -34,6 +34,7 @@ self.onmessage = (event) => {
         // Validate output of computation
 
         console.log(updatedWorldState, isValid);
+        console.log(behavior);
 
         self.postMessage({updatedWorldState, isValid});
     }
