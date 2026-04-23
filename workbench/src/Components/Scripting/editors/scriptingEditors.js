@@ -6,6 +6,8 @@ import {useDispatch} from "react-redux";
 
 import {setScript} from "../../../Store/scriptingSlice/scriptingSlice";
 
+import "./scriptingEditors.scss";
+
 ScriptingEditor.propTypes = {
     type: PropTypes.string.isRequired,
 };
