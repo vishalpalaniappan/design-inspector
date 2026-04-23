@@ -13,6 +13,7 @@ self.onmessage = (event) => {
         console.log(payload);
         console.log(engine);
 
+        // Create behavior
         // Assign initial world state
         // Assign expected world state
         // Assign primitives
