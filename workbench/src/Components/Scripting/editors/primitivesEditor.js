@@ -13,7 +13,8 @@ PrimitivesEditor.propTypes = {
  * @return {JSX.Element}
  */
 export function PrimitivesEditor ({close, args}) {
-    const [content, setContent] = useState("primitives editor");
+    const c = "create book\ngetFromPos basket 0 book\nremoveFromPos basket 0";
+    const [content, setContent] = useState(c);
 
     const handleEditorMount = (editor, monaco) => {
         requestAnimationFrame(() => {

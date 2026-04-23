@@ -13,12 +13,15 @@ InitialWorldStateEditor.propTypes = {
  * @return {JSX.Element}
  */
 export function InitialWorldStateEditor ({close, args}) {
-    const [content, setContent] = useState("asfasdf");
+    const initial = {
+        book_shelf: {},
+        basket: [
+            {name: "The Great Gatsby", genre: "Classic"},
+        ],
+    };
+    const [content, setContent] = useState(JSON.stringify(initial, null, 2));
 
     const handleEditorMount = (editor, monaco) => {
-        requestAnimationFrame(() => {
-            editor.trigger("editor", "editor.foldLevel2");
-        });
     };
 
     useEffect(() => {

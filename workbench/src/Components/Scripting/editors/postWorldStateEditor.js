@@ -13,12 +13,13 @@ PostWorldStateEditor.propTypes = {
  * @return {JSX.Element}
  */
 export function PostWorldStateEditor ({close, args}) {
-    const [content, setContent] = useState("post world state editor");
+    const c = {
+        basket: [],
+        book: {name: "The Great Gatsby", genre: "Classic"},
+    };
+    const [content, setContent] = useState(JSON.stringify(c, null, 2));
 
     const handleEditorMount = (editor, monaco) => {
-        requestAnimationFrame(() => {
-            editor.trigger("editor", "editor.foldLevel2");
-        });
     };
 
     useEffect(() => {

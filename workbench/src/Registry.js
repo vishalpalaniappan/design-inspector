@@ -64,4 +64,8 @@ export const registry = {
         import("./Components/Scripting/editors/transformOutputEditor").then((m) => ({
             default: m.default || m.TransformOutputEditor,
         })),
+    ScriptingToolBar: () =>
+        import("./Components/Scripting/ScriptingToolBar/ScriptingToolBar").then((m) => ({
+            default: m.default || m.ScriptingToolBar,
+        })),
 };

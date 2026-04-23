@@ -56,13 +56,13 @@
             "orientation": "vertical",
             "children": [
                 {
-                    "containerId": "content",
+                    "containerId": "body",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 },
                 {
                     "type": "handleBar",
-                    "sibling1": "content",
+                    "sibling1": "body",
                     "sibling2": "terminalContainer"
                 },
                 {
@@ -107,6 +107,25 @@
                 "closeContainerId": "terminalContainer"
             },
             "background": "#252526"
+        },
+        "body": {
+            "id": "body",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "content",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "containerId": "menuBar",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 30, "unit": "px", "type": "fixed" }
+                    }
+                }
+            ]
         },
         "content": {
             "id": "content",
@@ -160,6 +179,11 @@
                 }
             ]
         },
+        "menuBar": {
+            "id": "menuBar",
+            "component": "ScriptingToolBar",
+            "background": "#252526"
+        },
         "footer": {
             "id": "footer",
             "component": "StatusBar",
@@ -175,7 +199,7 @@
             "component": "InitialWorldStateEditor",
             "menuBar": {
                 "showClose": false,
-                "title": "Initial World State Editor"
+                "title": "Initial World State"
             },
             "background": "#222222"
         },
@@ -184,7 +208,7 @@
             "component": "PostWorldStateEditor",
             "menuBar": {
                 "showClose": false,
-                "title": "Post World State Editor"
+                "title": "Post Transformation World State"
             },
             "background": "#222222"
         },
@@ -202,7 +226,7 @@
             "component": "PrimitivesEditor",
             "menuBar": {
                 "showClose": false,
-                "title": "Primitives Editor"
+                "title": "Primitive Transformations"
             },
             "background": "#222222"
         }

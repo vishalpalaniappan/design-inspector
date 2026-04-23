@@ -13,12 +13,9 @@ TransformOutputEditor.propTypes = {
  * @return {JSX.Element}
  */
 export function TransformOutputEditor ({close, args}) {
-    const [content, setContent] = useState("transform output editor");
+    const [content, setContent] = useState("");
 
     const handleEditorMount = (editor, monaco) => {
-        requestAnimationFrame(() => {
-            editor.trigger("editor", "editor.foldLevel2");
-        });
     };
 
     useEffect(() => {
