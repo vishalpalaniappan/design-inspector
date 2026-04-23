@@ -5,6 +5,7 @@ import {useSelector} from "react-redux";
 import {useDalEngine} from "../../Providers/GlobalProviders";
 import {useSelectedBehavior} from "../useAppSelection";
 import {selectScripts, selectTransformOutput, selectTransformOutputLog} from "./scriptingSelectors";
+import {selectScriptingCounter} from "./scriptingSelectors";
 
 export const useScripts = () => {
     const scripts = useSelector(selectScripts);
@@ -55,18 +56,18 @@ export const useScriptingBehaviors = () => {
 
 export const useSelectedTransformationTest = () => {
     const selectedBehavior = useSelectedBehavior();
- 
+    const counter = useSelector(selectScriptingCounter);
     return useMemo(() => {
-        const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+        if (!selectedBehavior) return null;
         // For now there will only be one test per behavior, so here
         // if there is no test case, I will create an empty one and return it.
-        if (behavior.getTransformationTests().length === 0) {
-            behavior.addTransformationTest({
-                initialArgs: "",
-                initialWorldState: "",
-                expectedPostWorldState: "",
+        if (selectedBehavior.getTransformationTests().length === 0) {
+            selectedBehavior.addTransformationTest({
+                initialArgs: "asdf",
+                initialWorldState: "asdf",
+                expectedPostWorldState: "asdf",
             });
         }
-        return behavior.getTransformationTests()[0];
-    }, [selectedBehavior]);
+        return selectedBehavior.getTransformationTests()[0];
+    }, [selectedBehavior, counter]);
 };

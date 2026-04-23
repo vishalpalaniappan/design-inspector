@@ -12,6 +12,7 @@ const scriptingSlice = createSlice({
         },
         transformOutput: null,
         transformOutputLog: null,
+        counter: 0,
     },
     reducers: {
         setScript(state, action) {
@@ -28,9 +29,17 @@ const scriptingSlice = createSlice({
         setTransformOutputLog(state, action) {
             state.transformOutputLog = action.payload;
         },
+        incrementScriptingCounter(state) {
+            state.counter += 1;
+        },
     },
 });
 
-export const {setScript, setTransformOutput, setTransformOutputLog} = scriptingSlice.actions;
+export const {
+    setScript,
+    setTransformOutput,
+    setTransformOutputLog,
+    incrementScriptingCounter,
+} = scriptingSlice.actions;
 
 export default scriptingSlice.reducer;
