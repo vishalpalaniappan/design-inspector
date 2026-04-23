@@ -3,6 +3,7 @@ import {useMemo} from "react";
 import {useSelector} from "react-redux";
 
 import {useDalEngine} from "../../Providers/GlobalProviders";
+import {useSelectedBehavior} from "../useAppSelection";
 import {selectScripts, selectTransformOutput, selectTransformOutputLog} from "./scriptingSelectors";
 
 export const useScripts = () => {
@@ -50,4 +51,15 @@ export const useScriptingBehaviors = () => {
         const behaviors = engine.graphs.getAllBehaviors();
         return {behaviors};
     }, [engine]);
+};
+
+export const useSelectedTestCase = () => {
+    const selectedBehavior = useSelectedBehavior();
+
+    return useMemo(() => {
+        const behavior = engine.getNode(selectedBehaviorId).getBehavior();
+        // For now there will only be one test per behavior, so here
+        // if there is no test case, I will create an empty one and return it.
+        return null;
+    }, [selectedBehavior]);
 };
