@@ -68,4 +68,8 @@ export const registry = {
         import("./Components/Scripting/ScriptingToolBar/ScriptingToolBar").then((m) => ({
             default: m.default || m.ScriptingToolBar,
         })),
+    InitialArgsEditor: () =>
+        import("./Components/Scripting/editors/initialArgsEditor").then((m) => ({
+            default: m.default || m.InitialArgsEditor,
+        })),
 };

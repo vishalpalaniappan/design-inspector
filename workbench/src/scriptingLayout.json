@@ -152,6 +152,18 @@
             "orientation": "horizontal",
             "children": [
                 {
+                    "containerId": "initialArgs",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 400, "unit": "px", "type": "fixed" }
+                    }
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "initialArgs",
+                    "sibling2": "primitivesContainer"
+                },
+                {
                     "containerId": "primitivesContainer",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
@@ -159,10 +171,10 @@
                 {
                     "type": "handleBar",
                     "sibling1": "primitivesContainer",
-                    "sibling2": "outputContainer"
+                    "sibling2": "preWorldStateContainer"
                 },
                 {
-                    "containerId": "outputContainer",
+                    "containerId": "preWorldStateContainer",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 }
@@ -175,17 +187,17 @@
             "orientation": "horizontal",
             "children": [
                 {
-                    "containerId": "preWorldStateContainer",
+                    "containerId": "postWorldStateContainer",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 },
                 {
                     "type": "handleBar",
-                    "sibling1": "preWorldStateContainer",
-                    "sibling2": "postWorldStateContainer"
+                    "sibling1": "postWorldStateContainer",
+                    "sibling2": "outputContainer"
                 },
                 {
-                    "containerId": "postWorldStateContainer",
+                    "containerId": "outputContainer",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 }
@@ -205,6 +217,15 @@
             "id": "sidebar",
             "component": "SideBarMenu",
             "background": "#333"
+        },
+        "initialArgs": {
+            "id": "initialArgs",
+            "component": "InitialArgsEditor",
+            "menuBar": {
+                "showClose": false,
+                "title": "Arguments"
+            },
+            "background": "#222222"
         },
         "preWorldStateContainer": {
             "id": "preWorldStateContainer",
