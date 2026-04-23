@@ -4,7 +4,9 @@ import PropTypes from "prop-types";
 import {Floppy, Play} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 
+import {selectBehaviorThunk} from "../../../Store/appThunk";
 import {setTransformOutput} from "../../../Store/scriptingSlice/scriptingSlice";
+import {useScriptingBehaviors} from "../../../Store/scriptingSlice/useScriptingSelection";
 import {useScripts} from "../../../Store/scriptingSlice/useScriptingSelection";
 
 InitialWorldStateEditor.propTypes = {
@@ -21,6 +23,28 @@ export function ScriptingToolBar () {
     const {scripts} = useScripts();
     const workerRef = useRef(null);
     const [result, setResult] = useState(null);
+    const {behaviors} = useScriptingBehaviors();
+    const [selectedBehavior, setSelectedBehavior] = useState(null);
+
+    useEffect(() => {
+        if (behaviors.length > 0 && selectedBehavior) {
+            console.log("Selected Behavior:", selectedBehavior);
+            const behavior = behaviors.find((b) => b.dal_engine_uid === selectedBehavior);
+            // TODO: Migrate thunk to use UID instead of behavior name, this
+            // is a bad idea to use name as an identifier.
+            if (behavior) {
+                dispatch(selectBehaviorThunk(behavior.getName()));
+            } else {
+                console.warn(`Behavior with ID ${selectedBehavior} not found.`);
+            }
+        }
+    }, [behaviors, selectedBehavior]);
+
+    useEffect(() => {
+        if (behaviors.length > 0 && !selectedBehavior) {
+            setSelectedBehavior(behaviors[0].dal_engine_uid);
+        }
+    }, [behaviors]);
 
     const runTransformation = useCallback((e) => {
         // I decided to run transformations in worker for the current iteration.
@@ -81,10 +105,14 @@ export function ScriptingToolBar () {
             color: "white",
             alignItems: "center"}}>
             <span>Select Behavior:</span>
-            <select>
-                <option value="behavior1">Behavior 1</option>
-                <option value="behavior2">Behavior 2</option>
-                <option value="behavior3">Behavior 3</option>
+            <select value={selectedBehavior} onChange={(e) => setSelectedBehavior(e.target.value)}>
+                {behaviors.map((behavior) => (
+                    <option
+                        key={behavior.dal_engine_uid}
+                        value={behavior.dal_engine_uid}>
+                        {behavior._name}
+                    </option>
+                ))}
             </select>
             <span>Compute Transformations</span>
             <Play
