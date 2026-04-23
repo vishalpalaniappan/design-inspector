@@ -2,7 +2,7 @@ import {useMemo} from "react";
 
 import {useSelector} from "react-redux";
 
-import {selectScripts} from "./scriptingSelectors";
+import {selectScripts, selectTransformOutput, selectTransformOutputLog} from "./scriptingSelectors";
 
 export const useScripts = () => {
     const scripts = useSelector(selectScripts);
@@ -30,4 +30,14 @@ export const usePrimitives = () => {
 export const useComputedPostWorldState = () => {
     const scripts = useSelector(selectScripts);
     return scripts.computedPostWorldState;
+};
+
+export const useTransformOutput = () => {
+    const transformOutput = useSelector(selectTransformOutput);
+    return transformOutput;
+};
+
+export const useTransformOutputLog = () => {
+    const transformOutputLog = useSelector(selectTransformOutputLog);
+    return transformOutputLog;
 };
