@@ -39,8 +39,18 @@
                     "containerId": "sidebar",
                     "type": "container",
                     "size": { "initial": { "value": 40, "unit": "px", "type": "fixed" }},
-                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" },
-                    "showHandlebar": true
+                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }
+                },
+                {
+                    "containerId": "leftMenuContainer",
+                    "type": "container",
+                    "size": { "initial": { "value": 250, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "leftMenuContainer",
+                    "sibling2": "contentContainer"
                 },
                 {
                     "containerId": "contentContainer",
@@ -207,6 +217,32 @@
                 }
             ]
         },
+        
+        "leftMenuContainer": {
+            "id": "leftMenuContainer",
+            "background": "#252526",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "selectedInfoContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 190, "unit": "px", "type": "fixed" }
+                    }
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "selectedInfoContainer",
+                    "sibling2": "participantInfoContainer"
+                },
+                {
+                    "containerId": "participantInfoContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
         "menuBar": {
             "id": "menuBar",
             "component": "ScriptingToolBar",
@@ -274,6 +310,16 @@
                 "title": "Transformation Log"
             },
             "background": "#222222"
+        },
+        "selectedInfoContainer": {
+            "id": "selectedInfoContainer",
+            "component": "SelectedInfo",
+            "background": "#1e1e1e"
+        },
+        "participantInfoContainer": {
+            "id": "participantInfoContainer",
+            "component": "NodeInfo",
+            "background": "#1e1e1e"
         }
     }
 }
