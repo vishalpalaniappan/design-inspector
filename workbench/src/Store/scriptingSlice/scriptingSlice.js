@@ -10,6 +10,8 @@ const scriptingSlice = createSlice({
             primitives: "",
             computedPostWorldState: "",
         },
+        transformOutput: null,
+        transformOutputLog: null,
     },
     reducers: {
         setScript(state, action) {
@@ -20,9 +22,15 @@ const scriptingSlice = createSlice({
                 console.warn(`Unknown script type: ${scriptType}`);
             }
         },
+        setTransformOutput(state, action) {
+            state.transformOutput = action.payload;
+        },
+        setTransformOutputLog(state, action) {
+            state.transformOutputLog = action.payload;
+        },
     },
 });
 
-export const {setScript} = scriptingSlice.actions;
+export const {setScript, setTransformOutput, setTransformOutputLog} = scriptingSlice.actions;
 
 export default scriptingSlice.reducer;
