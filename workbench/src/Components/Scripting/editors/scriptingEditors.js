@@ -70,6 +70,7 @@ const initialWorldStateValue = {};
 
 const expectedPostWorldStateValue = {
     "book": {"name": "value"},
+    "book_name": "value",
 };
 const primitivesInitial = `create book
 create book_name
