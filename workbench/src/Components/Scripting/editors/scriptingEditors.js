@@ -10,6 +10,7 @@ import "./scriptingEditors.scss";
 
 ScriptingEditor.propTypes = {
     type: PropTypes.string.isRequired,
+    initial: PropTypes.object,
 };
 
 /**
@@ -17,13 +18,19 @@ ScriptingEditor.propTypes = {
  * @param {Object} props
  * @param {string} props.type - The type of script to edit
  * (e.g., "initialArgs", "initialWorldState", etc.).
+ * @param {Object} props.initial - The initial value of the script.
  * @return {JSX.Element}
  */
-function ScriptingEditor ({type}) {
+function ScriptingEditor ({type, initial}) {
     const dispatch = useDispatch();
 
     const handleEditorMount = (editor, monaco) => {
-        editor.setValue("");
+        const val = (type === "primitives") ? initial : JSON.stringify(initial, null, 2);
+        editor.setValue(val || "");
+        dispatch(setScript({
+            content: val,
+            scriptType: type,
+        }));
         editor.onDidChangeModelContent((e) => {
             const value = editor.getValue();
             dispatch(setScript({
@@ -52,18 +59,30 @@ function ScriptingEditor ({type}) {
     );
 }
 
+// These variables are for testing and will be removed soon.
+const initialArgsValue = {
+    "initialValue": {"name": "value"},
+};
+
+const initialWorldStateValue = {};
+
+const expectedPostWorldStateValue = {
+    "book": {"name": "value"},
+};
+const primitivesInitial = "create book";
 
 export const InitialArgsEditor = (props) => (
-    <ScriptingEditor type="initialArgs" {...props} />
+    <ScriptingEditor type="initialArgs" {...props} initial={initialArgsValue} />
 );
 export const InitialWorldStateEditor = (props) => (
-    <ScriptingEditor type="initialWorldState" {...props} />
+    <ScriptingEditor type="initialWorldState" {...props} initial={initialWorldStateValue} />
 );
 export const PrimitivesEditor = (props) => (
-    <ScriptingEditor type="primitives" {...props} />
+    <ScriptingEditor type="primitives" {...props} initial={primitivesInitial} />
 );
 export const ExpectedPostWorldStateEditor = (props) => (
-    <ScriptingEditor type="expectedPostWorldState" {...props} />
+    // eslint-disable-next-line max-len
+    <ScriptingEditor type="expectedPostWorldState" {...props} initial={expectedPostWorldStateValue} />
 );
 export const TransformOutputEditor = (props) => (
     <ScriptingEditor type="transformOutput" {...props} />
