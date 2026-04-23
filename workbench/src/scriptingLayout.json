@@ -251,7 +251,7 @@
         },
         "outputContainer": {
             "id": "outputContainer",
-            "component": "TransformOutputEditor",
+            "component": "TransformationOutputViewer",
             "menuBar": {
                 "showClose": false,
                 "title": "Transformations Output"

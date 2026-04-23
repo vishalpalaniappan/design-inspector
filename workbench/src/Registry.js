@@ -64,12 +64,12 @@ export const registry = {
         import("./Components/Scripting/editors/scriptingEditors").then((m) => ({
             default: m.default || m.ExpectedPostWorldStateEditor,
         })),
-    TransformOutputEditor: () =>
-        import("./Components/Scripting/editors/scriptingEditors").then((m) => ({
-            default: m.default || m.TransformOutputEditor,
-        })),
     ScriptingToolBar: () =>
         import("./Components/Scripting/ScriptingToolBar/ScriptingToolBar").then((m) => ({
             default: m.default || m.ScriptingToolBar,
+        })),
+    TransformationOutputViewer: () =>
+        import("./Components/Scripting/outputViewer/transformationOutputViewer").then((m) => ({
+            default: m.default || m.TransformationOutputViewer,
         })),
 };
