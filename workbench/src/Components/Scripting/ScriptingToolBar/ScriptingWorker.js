@@ -14,14 +14,27 @@ self.onmessage = (event) => {
         console.log(engine);
 
         // Create behavior
+        const behavior = engine.createBehavior({
+            name: "Test Behavior",
+            description: "A behavior for testing transformations"
+        });
+
+        console.log(behavior);
+
         // Assign initial world state
+        behavior.setPreWorldState(payload.initialWorldState);
         // Assign expected world state
+        behavior.setPostWorldState(payload.expectedPostWorldState);
         // Assign primitives
-
+        behavior.addPrimitives(payload.primitives);
+        // Assign initial arguments
+        behavior.setPrimitiveArgs(payload.initialArgs);
         // Compute transformations
-
+        const [updatedWorldState, isValid] =behavior.computeTransformations();
         // Validate output of computation
 
-        // self.postMessage(result);
+        console.log(updatedWorldState, isValid);
+
+        self.postMessage({updatedWorldState, isValid});
     }
 };
