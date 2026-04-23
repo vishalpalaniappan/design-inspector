@@ -3,22 +3,17 @@ import React, {useEffect, useState} from "react";
 import Editor from "@monaco-editor/react";
 import PropTypes from "prop-types";
 
-InitialArgsEditor.propTypes = {
+TransformOutputLog.propTypes = {
     close: PropTypes.func.isRequired,
     args: PropTypes.object.isRequired,
 };
 
 /**
- * Initial Arguments Editor modal body component.
+ * Transform Output Log modal body component.
  * @return {JSX.Element}
  */
-export function InitialArgsEditor () {
-    const initial = {
-        initialValue: [
-            {name: "The Great Gatsby", genre: "Classic"},
-        ],
-    };
-    const [content, setContent] = useState(JSON.stringify(initial, null, 2));
+export function TransformOutputLog () {
+    const [content, setContent] = useState("");
 
     const handleEditorMount = (editor, monaco) => {
     };

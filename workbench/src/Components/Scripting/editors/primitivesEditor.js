@@ -12,7 +12,7 @@ PrimitivesEditor.propTypes = {
  * Primitives Editor modal body component.
  * @return {JSX.Element}
  */
-export function PrimitivesEditor ({close, args}) {
+export function PrimitivesEditor () {
     const c = "create book\ngetFromPos basket 0 book\nremoveFromPos basket 0";
     const [content, setContent] = useState(c);
 
@@ -21,12 +21,6 @@ export function PrimitivesEditor ({close, args}) {
             editor.trigger("editor", "editor.foldLevel2");
         });
     };
-
-    useEffect(() => {
-        const handleKeyDown = (event) => (event.key === "Escape") && close();
-        document.addEventListener("keydown", handleKeyDown);
-        return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [close]);
 
     return (
         <div style={{width: "100%", height: "100%"}}>

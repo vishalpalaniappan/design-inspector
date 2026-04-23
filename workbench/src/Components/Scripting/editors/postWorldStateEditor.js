@@ -12,7 +12,7 @@ PostWorldStateEditor.propTypes = {
  * Post World State Editor modal body component.
  * @return {JSX.Element}
  */
-export function PostWorldStateEditor ({close, args}) {
+export function PostWorldStateEditor () {
     const c = {
         basket: [],
         book: {name: "The Great Gatsby", genre: "Classic"},
@@ -21,12 +21,6 @@ export function PostWorldStateEditor ({close, args}) {
 
     const handleEditorMount = (editor, monaco) => {
     };
-
-    useEffect(() => {
-        const handleKeyDown = (event) => (event.key === "Escape") && close();
-        document.addEventListener("keydown", handleKeyDown);
-        return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [close]);
 
     return (
         <div style={{width: "100%", height: "100%"}}>

@@ -12,7 +12,7 @@ InitialWorldStateEditor.propTypes = {
  * Initial World State Editor modal body component.
  * @return {JSX.Element}
  */
-export function InitialWorldStateEditor ({close, args}) {
+export function InitialWorldStateEditor () {
     const initial = {
         basket: [
             {name: "The Great Gatsby", genre: "Classic"},
@@ -22,12 +22,6 @@ export function InitialWorldStateEditor ({close, args}) {
 
     const handleEditorMount = (editor, monaco) => {
     };
-
-    useEffect(() => {
-        const handleKeyDown = (event) => (event.key === "Escape") && close();
-        document.addEventListener("keydown", handleKeyDown);
-        return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [close]);
 
     return (
         <div style={{width: "100%", height: "100%"}}>

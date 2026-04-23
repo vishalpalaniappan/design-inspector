@@ -61,7 +61,7 @@ export function ScriptingToolBar () {
             paddingLeft: "10px",
             gap: "10px",
             alignItems: "center"}}>
-            <Floppy size={15} style={{"color": "grey"}} />
+            <span>Compute Transformations</span>
             <Play
                 size={20}
                 style={{"color": "green", "cursor": "pointer"}}

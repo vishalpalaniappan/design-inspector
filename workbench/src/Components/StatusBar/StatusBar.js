@@ -75,7 +75,7 @@ export function StatusBar () {
                         (event) => selectMode(event)
                     }>
                         <option value={1}>Design</option>
-                        <option value={2}>Behavioral Scripting</option>
+                        <option value={2}>Behavioral Scripting Playground</option>
                     </select>
                 </div>
             </div>

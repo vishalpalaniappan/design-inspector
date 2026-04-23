@@ -12,17 +12,11 @@ TransformOutputEditor.propTypes = {
  * Transform Output Editor modal body component.
  * @return {JSX.Element}
  */
-export function TransformOutputEditor ({close, args}) {
+export function TransformOutputEditor () {
     const [content, setContent] = useState("");
 
     const handleEditorMount = (editor, monaco) => {
     };
-
-    useEffect(() => {
-        const handleKeyDown = (event) => (event.key === "Escape") && close();
-        document.addEventListener("keydown", handleKeyDown);
-        return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [close]);
 
     return (
         <div style={{width: "100%", height: "100%"}}>
