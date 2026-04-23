@@ -1,11 +1,9 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 
 import PropTypes from "prop-types";
 import {Floppy, Play} from "react-bootstrap-icons";
 
-import {useInitialWorldState} from "../../../Store/scriptingSlice/useScriptingSelection";
-import {usePrimitives} from "../../../Store/scriptingSlice/useScriptingSelection";
-import {useExpectedPostWorldState} from "../../../Store/scriptingSlice/useScriptingSelection";
+import {useScripts} from "../../../Store/scriptingSlice/useScriptingSelection";
 
 InitialWorldStateEditor.propTypes = {
     close: PropTypes.func.isRequired,
@@ -17,24 +15,35 @@ InitialWorldStateEditor.propTypes = {
  * @return {JSX.Element}
  */
 export function ScriptingToolBar () {
-    const initialWorldState = useInitialWorldState();
-    const expectedPostWorldState = useExpectedPostWorldState();
-    const primitives = usePrimitives();
+    const {scripts} = useScripts();
     const workerRef = useRef(null);
     const [result, setResult] = useState(null);
 
-    const runTransformation = (e) => {
-        // I decided that I would run transformations
-        // in a worker for the current iteration.
-        workerRef.current.postMessage({
-            type: "RUN_TRANSFORMATION",
-            payload: {
-                initialWorldState,
-                expectedPostWorldState,
-                primitives,
-            },
-        });
-    };
+    const runTransformation = useCallback((e) => {
+        // I decided to run transformations in worker for the current iteration.
+        console.log(scripts);
+        if (!scripts?.initialArgs) return;
+        if (!scripts?.expectedPostWorldState) return;
+        if (!scripts?.primitives) return;
+        if (!scripts?.initialWorldState) return;
+
+        const _initialWorldState = JSON.parse(scripts.initialWorldState);
+        const _expectedPostWorldState = JSON.parse(scripts.expectedPostWorldState);
+        const _initialArgs = JSON.parse(scripts.initialArgs);
+        try {
+            workerRef.current.postMessage({
+                type: "RUN_TRANSFORMATION",
+                payload: {
+                    initialWorldState: _initialWorldState,
+                    expectedPostWorldState: _expectedPostWorldState,
+                    primitives: scripts.primitives,
+                    initialArgs: _initialArgs,
+                },
+            });
+        } catch (error) {
+            console.error("Error running transformation:", error);
+        }
+    }, [scripts]);
 
 
     useEffect(() => {
