@@ -2,6 +2,7 @@ import {useMemo} from "react";
 
 import {useSelector} from "react-redux";
 
+import {useDalEngine} from "../../Providers/GlobalProviders";
 import {selectScripts, selectTransformOutput, selectTransformOutputLog} from "./scriptingSelectors";
 
 export const useScripts = () => {
@@ -40,4 +41,13 @@ export const useTransformOutput = () => {
 export const useTransformOutputLog = () => {
     const transformOutputLog = useSelector(selectTransformOutputLog);
     return transformOutputLog;
+};
+
+export const useScriptingBehaviors = () => {
+    const {engine} = useDalEngine();
+
+    return useMemo(() => {
+        const behaviors = engine.graphs.getAllBehaviors();
+        return {behaviors};
+    }, [engine]);
 };
