@@ -53,13 +53,20 @@ export const useScriptingBehaviors = () => {
     }, [engine]);
 };
 
-export const useSelectedTestCase = () => {
+export const useSelectedTransformationTest = () => {
     const selectedBehavior = useSelectedBehavior();
-
+ 
     return useMemo(() => {
         const behavior = engine.getNode(selectedBehaviorId).getBehavior();
         // For now there will only be one test per behavior, so here
         // if there is no test case, I will create an empty one and return it.
-        return null;
+        if (behavior.getTransformationTests().length === 0) {
+            behavior.addTransformationTest({
+                initialArgs: "",
+                initialWorldState: "",
+                expectedPostWorldState: "",
+            });
+        }
+        return behavior.getTransformationTests()[0];
     }, [selectedBehavior]);
 };
