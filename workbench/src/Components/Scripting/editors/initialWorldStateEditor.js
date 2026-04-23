@@ -14,7 +14,6 @@ InitialWorldStateEditor.propTypes = {
  */
 export function InitialWorldStateEditor ({close, args}) {
     const initial = {
-        book_shelf: {},
         basket: [
             {name: "The Great Gatsby", genre: "Classic"},
         ],
