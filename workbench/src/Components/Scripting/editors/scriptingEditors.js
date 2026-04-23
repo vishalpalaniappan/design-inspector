@@ -11,6 +11,7 @@ import "./scriptingEditors.scss";
 ScriptingEditor.propTypes = {
     type: PropTypes.string.isRequired,
     initial: PropTypes.object,
+    isJson: PropTypes.bool,
 };
 
 /**
@@ -19,13 +20,14 @@ ScriptingEditor.propTypes = {
  * @param {string} props.type - The type of script to edit
  * (e.g., "initialArgs", "initialWorldState", etc.).
  * @param {Object} props.initial - The initial value of the script.
+ * @param {boolean} props.isJson - Whether the content is JSON (default: true).
  * @return {JSX.Element}
  */
-function ScriptingEditor ({type, initial}) {
+function ScriptingEditor ({type, initial, isJson = true}) {
     const dispatch = useDispatch();
 
     const handleEditorMount = (editor, monaco) => {
-        const val = (type === "primitives") ? initial : JSON.stringify(initial, null, 2);
+        const val = (!isJson) ? initial : JSON.stringify(initial, null, 2);
         editor.setValue(val || "");
         dispatch(setScript({
             content: val,
@@ -69,7 +71,9 @@ const initialWorldStateValue = {};
 const expectedPostWorldStateValue = {
     "book": {"name": "value"},
 };
-const primitivesInitial = "create book";
+const primitivesInitial = `create book
+create book_name
+get book ["name"] book_name `;
 
 export const InitialArgsEditor = (props) => (
     <ScriptingEditor type="initialArgs" {...props} initial={initialArgsValue} />
@@ -78,7 +82,7 @@ export const InitialWorldStateEditor = (props) => (
     <ScriptingEditor type="initialWorldState" {...props} initial={initialWorldStateValue} />
 );
 export const PrimitivesEditor = (props) => (
-    <ScriptingEditor type="primitives" {...props} initial={primitivesInitial} />
+    <ScriptingEditor type="primitives" {...props} initial={primitivesInitial} isJson={false} />
 );
 export const ExpectedPostWorldStateEditor = (props) => (
     // eslint-disable-next-line max-len
