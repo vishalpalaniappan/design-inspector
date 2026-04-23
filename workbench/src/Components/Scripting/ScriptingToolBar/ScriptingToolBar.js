@@ -2,7 +2,9 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 
 import PropTypes from "prop-types";
 import {Floppy, Play} from "react-bootstrap-icons";
+import {useDispatch} from "react-redux";
 
+import {setTransformOutput} from "../../../Store/scriptingSlice/scriptingSlice";
 import {useScripts} from "../../../Store/scriptingSlice/useScriptingSelection";
 
 InitialWorldStateEditor.propTypes = {
@@ -15,6 +17,7 @@ InitialWorldStateEditor.propTypes = {
  * @return {JSX.Element}
  */
 export function ScriptingToolBar () {
+    const dispatch = useDispatch();
     const {scripts} = useScripts();
     const workerRef = useRef(null);
     const [result, setResult] = useState(null);
@@ -54,6 +57,12 @@ export function ScriptingToolBar () {
 
         workerRef.current.onmessage = (event) => {
             setResult(event.data);
+            if (event.data.type === "Success") {
+                console.log("Transformation result:", event.data.payload);
+                dispatch(setTransformOutput(event.data.payload.updatedWorldState));
+            } else if (event.data.type === "Error") {
+                console.error("Transformation error:", event.data.payload.error);
+            }
         };
 
         return () => {
