@@ -27,7 +27,7 @@ export function LandingPage () {
     // Ready is used to prevent useEffect from running on initial
     // render and overwriting the URL params. This allows us to
     // set the initial app mode from the URL params and fallback
-    // to design mode if no params are provided.
+    // to design mode if no mode url param is provided.
     const [ready, setReady] = useState(false);
 
     const appMode = useAppMode();
