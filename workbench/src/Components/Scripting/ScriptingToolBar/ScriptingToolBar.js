@@ -54,7 +54,13 @@ export function ScriptingToolBar () {
 
     return (
         // eslint-disable-next-line max-len
-        <div style={{width: "100%", height: "100%", display: "flex", paddingLeft: "10px", gap: "10px", alignItems: "center"}}>
+        <div style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            paddingLeft: "10px",
+            gap: "10px",
+            alignItems: "center"}}>
             <Floppy size={15} style={{"color": "grey"}} />
             <Play
                 size={20}

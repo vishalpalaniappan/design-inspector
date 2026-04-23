@@ -63,26 +63,25 @@
                 {
                     "type": "handleBar",
                     "sibling1": "body",
-                    "sibling2": "terminalContainer"
+                    "sibling2": "transformationLogContainer"
                 },
                 {
-                    "containerId": "terminalContainer",
+                    "containerId": "transformationLogContainer",
                     "type": "container",
                     "size": { 
-                        "initial": { "value": 200, "unit": "px", "type": "fixed" },
-                        "min": { "value": 100, "unit": "px"}
-                    },
-                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
+                        "initial": { "value": 150, "unit": "px", "type": "fixed" },
+                        "min": { "value": 50, "unit": "px"}
+                    }
                 }
             ]
         },
-        "terminalContainer": {
-            "id": "terminalContainer",
+        "transformationLogContainer": {
+            "id": "transformationLogContainer",
             "type": "split",
             "orientation": "horizontal",
             "children": [
                 {
-                    "containerId": "terminal",
+                    "containerId": "transformationOutput",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 }
@@ -137,6 +136,11 @@
                     "containerId": "topContent",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "topContent",
+                    "sibling2": "bottomContent"
                 },
                 {
                     "containerId": "bottomContent",
@@ -260,6 +264,14 @@
             "menuBar": {
                 "showClose": false,
                 "title": "Primitive Transformations"
+            },
+            "background": "#222222"
+        },
+        "transformationOutput": {
+            "id": "transformationOutput",
+            "menuBar": {
+                "showClose": false,
+                "title": "Transformation Log"
             },
             "background": "#222222"
         }
