@@ -208,7 +208,7 @@
             "component": "PostWorldStateEditor",
             "menuBar": {
                 "showClose": false,
-                "title": "Post Transformation World State"
+                "title": "Expected Post Transformation World State"
             },
             "background": "#222222"
         },
