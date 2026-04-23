@@ -22,9 +22,17 @@ export function ScriptingToolBar () {
     const primitives = usePrimitives();
 
     const runTransformation = (e) => {
-        // I can run the transformation on the server
+        // For now, I can run the transformation on the server
         // or I can create a worker and run it in the browser.
         // I will create a worker and run it in the browser.
+
+        // TODO: How will you execute transformations which 
+        // require inputs? I need to mark this somehow.
+
+        // I am not concerning myself with executing the full
+        // design yet, there are more nuances to doing that, I
+        // will start with executing a single composite behavior
+        // and then I will move onto executing the full design.
     };
 
     return (
