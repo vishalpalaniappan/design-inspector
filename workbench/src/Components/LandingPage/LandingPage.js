@@ -59,6 +59,10 @@ export function LandingPage () {
             dispatch(setDesignLoaded(false));
             setChosenLayout(scriptingLayout);
             params.set("mode", "scripting");
+        } else {
+            console.warn("Unknown app mode:", appMode);
+            dispatch(setDesignLoaded(false));
+            return;
         }
         const newUrl = `${window.location.pathname}?${params.toString()}`;
         window.history.pushState({}, "", newUrl);
