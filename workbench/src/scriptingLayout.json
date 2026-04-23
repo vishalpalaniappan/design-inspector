@@ -66,6 +66,13 @@
             "orientation": "vertical",
             "children": [
                 {
+                    "containerId": "menuBar",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 30, "unit": "px", "type": "fixed" }
+                    }
+                },
+                {
                     "containerId": "body",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
@@ -122,13 +129,6 @@
             "type": "split",
             "orientation": "vertical",
             "children": [
-                {
-                    "containerId": "menuBar",
-                    "type": "container",
-                    "size": { 
-                        "initial": { "value": 30, "unit": "px", "type": "fixed" }
-                    }
-                },
                 {
                     "containerId": "content",
                     "type": "container",
