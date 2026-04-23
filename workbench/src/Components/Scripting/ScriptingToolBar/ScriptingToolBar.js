@@ -9,6 +9,8 @@ import {setTransformOutput} from "../../../Store/scriptingSlice/scriptingSlice";
 import {useScriptingBehaviors} from "../../../Store/scriptingSlice/useScriptingSelection";
 import {useScripts} from "../../../Store/scriptingSlice/useScriptingSelection";
 
+import "./ScriptingToolBar.scss";
+
 InitialWorldStateEditor.propTypes = {
     close: PropTypes.func.isRequired,
     args: PropTypes.object.isRequired,
@@ -96,29 +98,28 @@ export function ScriptingToolBar () {
 
     return (
         // eslint-disable-next-line max-len
-        <div style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            paddingLeft: "10px",
-            gap: "10px",
-            color: "white",
-            alignItems: "center"}}>
-            <span>Select Behavior:</span>
-            <select value={selectedBehavior} onChange={(e) => setSelectedBehavior(e.target.value)}>
-                {behaviors.map((behavior) => (
-                    <option
-                        key={behavior.dal_engine_uid}
-                        value={behavior.dal_engine_uid}>
-                        {behavior._name}
-                    </option>
-                ))}
-            </select>
-            <span>Compute Transformations</span>
-            <Play
-                size={20}
-                style={{"color": "white", "cursor": "pointer"}}
-                onClick={runTransformation} />
+        <div className="scriptingToolBar">
+            <div className="scriptingToolBarLeft">
+                <span>Select Behavior:</span>
+                <select
+                    value={selectedBehavior}
+                    onChange={(e) => setSelectedBehavior(e.target.value)}>
+                    {behaviors.map((behavior) => (
+                        <option
+                            key={behavior.dal_engine_uid}
+                            value={behavior.dal_engine_uid}>
+                            {behavior._name}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className="scriptingToolBarRight">
+                <span>Compute Transformations</span>
+                <Play
+                    size={20}
+                    style={{"color": "white", "cursor": "pointer"}}
+                    onClick={runTransformation} />
+            </div>
         </div>
     );
 }
