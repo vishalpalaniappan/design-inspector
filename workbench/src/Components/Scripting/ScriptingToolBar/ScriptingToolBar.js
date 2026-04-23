@@ -80,10 +80,16 @@ export function ScriptingToolBar () {
             gap: "10px",
             color: "white",
             alignItems: "center"}}>
+            <span>Select Behavior:</span>
+            <select>
+                <option value="behavior1">Behavior 1</option>
+                <option value="behavior2">Behavior 2</option>
+                <option value="behavior3">Behavior 3</option>
+            </select>
             <span>Compute Transformations</span>
             <Play
                 size={20}
-                style={{"color": "green", "cursor": "pointer"}}
+                style={{"color": "white", "cursor": "pointer"}}
                 onClick={runTransformation} />
         </div>
     );

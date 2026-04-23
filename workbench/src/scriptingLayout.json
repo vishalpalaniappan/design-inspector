@@ -123,16 +123,16 @@
             "orientation": "vertical",
             "children": [
                 {
-                    "containerId": "content",
-                    "type": "container",
-                    "size": { "initial": { "type": "fill" }}
-                },
-                {
                     "containerId": "menuBar",
                     "type": "container",
                     "size": { 
                         "initial": { "value": 30, "unit": "px", "type": "fixed" }
                     }
+                },
+                {
+                    "containerId": "content",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
                 }
             ]
         },
@@ -246,7 +246,7 @@
         "menuBar": {
             "id": "menuBar",
             "component": "ScriptingToolBar",
-            "background": "#252526"
+            "background": "#21507a"
         },
         "footer": {
             "id": "footer",
