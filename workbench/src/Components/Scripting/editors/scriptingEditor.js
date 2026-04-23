@@ -1,26 +1,34 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 
 import Editor from "@monaco-editor/react";
 import PropTypes from "prop-types";
+import {useDispatch} from "react-redux";
 
-InitialArgsEditor.propTypes = {
-    close: PropTypes.func.isRequired,
-    args: PropTypes.object.isRequired,
+import {setScript} from "../../../Store/scriptingSlice/scriptingSlice";
+
+ScriptingEditor.propTypes = {
+    type: PropTypes.string.isRequired,
 };
 
 /**
- * Initial Arguments Editor modal body component.
+ * Scripting editor.
+ * @param {Object} props
+ * @param {string} props.type - The type of script to edit
+ * (e.g., "initialArgs", "initialWorldState", etc.).
  * @return {JSX.Element}
  */
-export function InitialArgsEditor () {
-    const initial = {
-        initialValue: [
-            {name: "The Great Gatsby", genre: "Classic"},
-        ],
-    };
-    const [content, setContent] = useState(JSON.stringify(initial, null, 2));
+function ScriptingEditor ({type}) {
+    const dispatch = useDispatch();
 
     const handleEditorMount = (editor, monaco) => {
+        editor.setValue("");
+        editor.onDidChangeModelContent((e) => {
+            const value = editor.getValue();
+            dispatch(setScript({
+                content: value,
+                scriptType: type,
+            }));
+        });
     };
 
     return (
@@ -28,7 +36,6 @@ export function InitialArgsEditor () {
             <Editor
                 defaultLanguage="json"
                 defaultValue=""
-                value={content}
                 theme="vs-dark"
                 readOnly={true}
                 onMount={handleEditorMount}

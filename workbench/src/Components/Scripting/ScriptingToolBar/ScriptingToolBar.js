@@ -60,6 +60,7 @@ export function ScriptingToolBar () {
             display: "flex",
             paddingLeft: "10px",
             gap: "10px",
+            color: "white",
             alignItems: "center"}}>
             <span>Compute Transformations</span>
             <Play

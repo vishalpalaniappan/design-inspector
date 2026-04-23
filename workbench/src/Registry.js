@@ -48,28 +48,28 @@ export const registry = {
         import("./Components/TraceSelector/TraceSelector").then((m) => ({
             default: m.default || m.TraceSelector,
         })),
+    InitialArgsEditor: () =>
+        import("./Components/Scripting/editors/scriptingEditors").then((m) => ({
+            default: m.default || m.InitialArgsEditor,
+        })),
     InitialWorldStateEditor: () =>
-        import("./Components/Scripting/editors/initialWorldStateEditor").then((m) => ({
+        import("./Components/Scripting/editors/scriptingEditors").then((m) => ({
             default: m.default || m.InitialWorldStateEditor,
         })),
     PrimitivesEditor: () =>
-        import("./Components/Scripting/editors/primitivesEditor").then((m) => ({
+        import("./Components/Scripting/editors/scriptingEditors").then((m) => ({
             default: m.default || m.PrimitivesEditor,
         })),
-    PostWorldStateEditor: () =>
-        import("./Components/Scripting/editors/postWorldStateEditor").then((m) => ({
-            default: m.default || m.PostWorldStateEditor,
+    ExpectedPostWorldStateEditor: () =>
+        import("./Components/Scripting/editors/scriptingEditors").then((m) => ({
+            default: m.default || m.ExpectedPostWorldStateEditor,
         })),
     TransformOutputEditor: () =>
-        import("./Components/Scripting/editors/transformOutputEditor").then((m) => ({
+        import("./Components/Scripting/editors/scriptingEditors").then((m) => ({
             default: m.default || m.TransformOutputEditor,
         })),
     ScriptingToolBar: () =>
         import("./Components/Scripting/ScriptingToolBar/ScriptingToolBar").then((m) => ({
             default: m.default || m.ScriptingToolBar,
-        })),
-    InitialArgsEditor: () =>
-        import("./Components/Scripting/editors/initialArgsEditor").then((m) => ({
-            default: m.default || m.InitialArgsEditor,
         })),
 };

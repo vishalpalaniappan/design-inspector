@@ -191,13 +191,13 @@
             "orientation": "horizontal",
             "children": [
                 {
-                    "containerId": "postWorldStateContainer",
+                    "containerId": "expectedPostWorldStateEditor",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 },
                 {
                     "type": "handleBar",
-                    "sibling1": "postWorldStateContainer",
+                    "sibling1": "expectedPostWorldStateEditor",
                     "sibling2": "outputContainer"
                 },
                 {
@@ -240,9 +240,9 @@
             },
             "background": "#222222"
         },
-        "postWorldStateContainer": {
-            "id": "postWorldStateContainer",
-            "component": "PostWorldStateEditor",
+        "expectedPostWorldStateEditor": {
+            "id": "expectedPostWorldStateEditor",
+            "component": "ExpectedPostWorldStateEditor",
             "menuBar": {
                 "showClose": false,
                 "title": "Expected Post Transformation World State"
