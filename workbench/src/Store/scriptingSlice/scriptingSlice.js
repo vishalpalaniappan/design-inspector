@@ -4,6 +4,7 @@ const scriptingSlice = createSlice({
     name: "scripting",
     initialState: {
         scripts: {
+            initialArgs: "",
             initialWorldState: "",
             expectedPostWorldState: "",
             primitives: "",
