@@ -131,33 +131,26 @@
             "id": "content",
             "background": "#007acc",
             "type": "split",
-            "orientation": "horizontal",
+            "orientation": "vertical",
             "children": [
-                
                 {
-                    "containerId": "preWorldStateContainer",
-                    "type": "container",
-                    "size": { 
-                        "initial": { "value": 400, "unit": "px", "type": "fixed" },
-                        "min": { "value": 100, "unit": "px"}
-                    },
-                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
-                },
-                {
-                    "type": "handleBar",
-                    "sibling1": "preWorldStateContainer",
-                    "sibling2": "postWorldStateContainer"
-                },
-                {
-                    "containerId": "postWorldStateContainer",
+                    "containerId": "topContent",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 },
                 {
-                    "type": "handleBar",
-                    "sibling1": "postWorldStateContainer",
-                    "sibling2": "primitivesContainer"
-                },
+                    "containerId": "bottomContent",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "topContent": {
+            "id": "topContent",
+            "background": "#007acc",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
                 {
                     "containerId": "primitivesContainer",
                     "type": "container",
@@ -171,11 +164,30 @@
                 {
                     "containerId": "outputContainer",
                     "type": "container",
-                    "size": { 
-                        "initial": { "value": 400, "unit": "px", "type": "fixed" },
-                        "min": { "value": 100, "unit": "px"}
-                    },
-                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "bottomContent": {
+            "id": "bottomContent",
+            "background": "#007acc",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                {
+                    "containerId": "preWorldStateContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "preWorldStateContainer",
+                    "sibling2": "postWorldStateContainer"
+                },
+                {
+                    "containerId": "postWorldStateContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
                 }
             ]
         },
