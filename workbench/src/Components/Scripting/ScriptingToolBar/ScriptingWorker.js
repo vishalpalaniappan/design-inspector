@@ -10,32 +10,34 @@ self.onmessage = (event) => {
             description: "Default engine",
         });
 
-        console.log(payload);
-        console.log(engine);
-
         // Create behavior
         const behavior = engine.createBehavior({
             name: "Test Behavior",
             description: "A behavior for testing transformations"
         });
 
-        console.log(behavior);
+        try {
+            behavior.setPreWorldState(payload.initialWorldState);
+            behavior.setPostWorldState(payload.expectedPostWorldState);
+            behavior.addPrimitives(payload.primitives);
+            behavior.setPrimitiveArgs(payload.initialArgs);
+            console.log(behavior);
+            const [updatedWorldState, isValid] =behavior.computeTransformations();
 
-        // Assign initial world state
-        behavior.setPreWorldState(payload.initialWorldState);
-        // Assign expected world state
-        behavior.setPostWorldState(payload.expectedPostWorldState);
-        // Assign primitives
-        behavior.addPrimitives(payload.primitives);
-        // Assign initial arguments
-        behavior.setPrimitiveArgs(payload.initialArgs);
-        // Compute transformations
-        const [updatedWorldState, isValid] =behavior.computeTransformations();
-        // Validate output of computation
-
-        console.log(updatedWorldState, isValid);
-        console.log(behavior);
-
-        self.postMessage({updatedWorldState, isValid});
+            self.postMessage({
+                type: "Success",
+                payload: {
+                    updatedWorldState,
+                    isValid,
+                },
+            });
+        } catch (error) {
+            self.postMessage({
+                type: "Error",
+                payload: {
+                    error: error.message,
+                },
+            });
+        }
     }
 };
