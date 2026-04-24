@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, {useCallback, useEffect, useRef, useState} from "react";
 
 import PropTypes from "prop-types";
@@ -7,6 +8,7 @@ import {useDispatch} from "react-redux";
 import {useDalEngine} from "../../../Providers/GlobalProviders";
 import {selectBehaviorThunk} from "../../../Store/appThunk";
 import {setTransformOutput} from "../../../Store/scriptingSlice/scriptingSlice";
+import {setTransformOutputLog} from "../../../Store/scriptingSlice/scriptingSlice";
 import {useScriptingBehaviors} from "../../../Store/scriptingSlice/useScriptingSelection";
 import {useSelectedTransformationTest} from "../../../Store/scriptingSlice/useScriptingSelection";
 import {useSelectedBehavior} from "../../../Store/useAppSelection";
@@ -32,6 +34,7 @@ export function ScriptingToolBar () {
     const [selectedBehavior, setSelectedBehavior] = useState(null);
     const selectedTransformationTest = useSelectedTransformationTest();
 
+
     useEffect(() => {
         if (behaviors.length > 0 && selectedBehavior) {
             console.log("Selected Behavior:", selectedBehavior);
@@ -52,31 +55,71 @@ export function ScriptingToolBar () {
         }
     }, [behaviors]);
 
+    let logs = [];
+    const addLog = useCallback((message, clear) => {
+        if (clear) {
+            logs = [];
+        } else {
+            const timestamp = new Date().toISOString();
+            logs.push({timestamp, message});
+        }
+        dispatch(setTransformOutputLog([...logs]));
+    }, [dispatch]);
+
     const runTransformation = useCallback((e) => {
+        addLog(null, true);
         // I decided to run transformations in worker for the current iteration.
-        console.log(selectedTransformationTest);
         if (!selectedTransformationTest) return;
         if (!behavior) return;
         if (!engine) return;
 
-        const _initialWorldState = JSON.parse(
-            selectedTransformationTest.initialWorldState
-        );
-        const _expectedPostWorldState = JSON.parse(
-            selectedTransformationTest.expectedPostWorldState
-        );
-        const _initialArgs = JSON.parse(
-            selectedTransformationTest.initialArgs
-        );
-        const _primitives = behavior._primitives.join("\n");
+        addLog("Starting transformation execution.");
 
-        console.log("Running transformation with:", {
-            _initialWorldState,
-            _expectedPostWorldState,
-            _initialArgs,
-            _primitives,
-        });
-        engine.save();
+        let _initialWorldState;
+        let _expectedPostWorldState;
+        let _initialArgs;
+        let _primitives;
+
+        try {
+            _initialWorldState = JSON.parse(selectedTransformationTest.initialWorldState);
+            addLog("Loaded Initial World State.");
+        } catch (error) {
+            addLog("Error parsing initial world state.");
+            return;
+        }
+
+        try {
+            _expectedPostWorldState = JSON.parse(selectedTransformationTest.expectedPostWorldState);
+            addLog("Loaded Expected Post World State.");
+        } catch (error) {
+            addLog("Error parsing expected post world state.");
+            return;
+        }
+
+        try {
+            _initialArgs = JSON.parse(selectedTransformationTest.initialArgs);
+            addLog("Loaded Initial Arguments.");
+        } catch (error) {
+            addLog("Error parsing initial arguments.");
+            return;
+        }
+
+        try {
+            _primitives = behavior._primitives.join("\n");
+            addLog("Loaded Primitives.");
+        } catch (error) {
+            addLog("Error loading primitives.");
+            return;
+        }
+
+        try {
+            engine.save();
+            addLog("Saved Engine State.");
+        } catch (error) {
+            addLog("Error saving engine state.");
+            return;
+        }
+
         try {
             workerRef.current.postMessage({
                 type: "RUN_TRANSFORMATION",
@@ -87,8 +130,10 @@ export function ScriptingToolBar () {
                     initialArgs: _initialArgs,
                 },
             });
+            addLog("Transformation running.");
         } catch (error) {
-            console.error("Error running transformation:", error);
+            addLog("Error running transformation.");
+            return;
         }
     }, [selectedTransformationTest, engine, behavior]);
 
@@ -103,9 +148,12 @@ export function ScriptingToolBar () {
             setResult(event.data);
             if (event.data.type === "Success") {
                 console.log("Transformation result:", event.data.payload);
+                addLog("Transformation succeeded. See output state for details.");
                 dispatch(setTransformOutput(event.data.payload.updatedWorldState));
             } else if (event.data.type === "Error") {
                 console.error("Transformation error:", event.data.payload.error);
+                addLog("Transformation failed.");
+                addLog(`Error: ${event.data.payload.error}`);
             }
         };
 

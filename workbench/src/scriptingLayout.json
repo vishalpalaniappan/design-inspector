@@ -305,6 +305,7 @@
         },
         "transformationOutput": {
             "id": "transformationOutput",
+            "component": "TransformationOutputLogViewer",
             "menuBar": {
                 "showClose": false,
                 "title": "Transformation Log"

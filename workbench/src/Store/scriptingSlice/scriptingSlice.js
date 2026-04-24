@@ -1,4 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
+import { addTraceThunk } from "../appThunk";
 
 const scriptingSlice = createSlice({
     name: "scripting",
@@ -11,7 +12,7 @@ const scriptingSlice = createSlice({
             computedPostWorldState: "",
         },
         transformOutput: null,
-        transformOutputLog: null,
+        transformOutputLog: [],
         scriptingCounter: 0,
     },
     reducers: {
@@ -29,6 +30,9 @@ const scriptingSlice = createSlice({
         setTransformOutputLog(state, action) {
             state.transformOutputLog = action.payload;
         },
+        addTransformOutputLog(state, action) {
+            state.transformOutputLog.push(action.payload);
+        },
         incrementScriptingCounter(state) {
             state.scriptingCounter += 1;
         },
@@ -36,6 +40,7 @@ const scriptingSlice = createSlice({
 });
 
 export const {
+    addTransformOutputLog,
     setScript,
     setTransformOutput,
     setTransformOutputLog,
