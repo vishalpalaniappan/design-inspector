@@ -4,14 +4,16 @@ import PropTypes from "prop-types";
 import {Floppy, Play} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 
+import {useDalEngine} from "../../../Providers/GlobalProviders";
 import {selectBehaviorThunk} from "../../../Store/appThunk";
 import {setTransformOutput} from "../../../Store/scriptingSlice/scriptingSlice";
 import {useScriptingBehaviors} from "../../../Store/scriptingSlice/useScriptingSelection";
-import {useScripts} from "../../../Store/scriptingSlice/useScriptingSelection";
+import {useSelectedTransformationTest} from "../../../Store/scriptingSlice/useScriptingSelection";
+import {useSelectedBehavior} from "../../../Store/useAppSelection";
 
 import "./ScriptingToolBar.scss";
 
-InitialWorldStateEditor.propTypes = {
+ScriptingToolBar.propTypes = {
     close: PropTypes.func.isRequired,
     args: PropTypes.object.isRequired,
 };
@@ -21,12 +23,14 @@ InitialWorldStateEditor.propTypes = {
  * @return {JSX.Element}
  */
 export function ScriptingToolBar () {
+    const behavior = useSelectedBehavior();
+    const {engine} = useDalEngine();
     const dispatch = useDispatch();
-    const {scripts} = useScripts();
     const workerRef = useRef(null);
     const [result, setResult] = useState(null);
     const {behaviors} = useScriptingBehaviors();
     const [selectedBehavior, setSelectedBehavior] = useState(null);
+    const selectedTransformationTest = useSelectedTransformationTest();
 
     useEffect(() => {
         if (behaviors.length > 0 && selectedBehavior) {
@@ -50,29 +54,43 @@ export function ScriptingToolBar () {
 
     const runTransformation = useCallback((e) => {
         // I decided to run transformations in worker for the current iteration.
-        console.log(scripts);
-        if (!scripts?.initialArgs) return;
-        if (!scripts?.expectedPostWorldState) return;
-        if (!scripts?.primitives) return;
-        if (!scripts?.initialWorldState) return;
+        console.log(selectedTransformationTest);
+        if (!selectedTransformationTest) return;
+        if (!behavior) return;
+        if (!engine) return;
 
-        const _initialWorldState = JSON.parse(scripts.initialWorldState);
-        const _expectedPostWorldState = JSON.parse(scripts.expectedPostWorldState);
-        const _initialArgs = JSON.parse(scripts.initialArgs);
+        const _initialWorldState = JSON.parse(
+            selectedTransformationTest.initialWorldState
+        );
+        const _expectedPostWorldState = JSON.parse(
+            selectedTransformationTest.expectedPostWorldState
+        );
+        const _initialArgs = JSON.parse(
+            selectedTransformationTest.initialArgs
+        );
+        const _primitives = behavior._primitives.join("\n");
+
+        console.log("Running transformation with:", {
+            _initialWorldState,
+            _expectedPostWorldState,
+            _initialArgs,
+            _primitives,
+        });
+        engine.save();
         try {
             workerRef.current.postMessage({
                 type: "RUN_TRANSFORMATION",
                 payload: {
                     initialWorldState: _initialWorldState,
                     expectedPostWorldState: _expectedPostWorldState,
-                    primitives: scripts.primitives,
+                    primitives: _primitives,
                     initialArgs: _initialArgs,
                 },
             });
         } catch (error) {
             console.error("Error running transformation:", error);
         }
-    }, [scripts]);
+    }, [selectedTransformationTest, engine, behavior]);
 
 
     useEffect(() => {
