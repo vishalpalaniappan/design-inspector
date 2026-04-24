@@ -57,7 +57,7 @@ export const registry = {
             default: m.default || m.InitialWorldStateEditor,
         })),
     PrimitivesEditor: () =>
-        import("./Components/Scripting/editors/scriptingEditors").then((m) => ({
+        import("./Components/Scripting/primitivesEditor/primitivesEditor").then((m) => ({
             default: m.default || m.PrimitivesEditor,
         })),
     ExpectedPostWorldStateEditor: () =>
