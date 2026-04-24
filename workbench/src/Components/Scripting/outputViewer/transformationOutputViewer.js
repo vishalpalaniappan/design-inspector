@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useRef} from "react";
 import Editor from "@monaco-editor/react";
 
 import {useTransformOutput} from "../../../Store/scriptingSlice/useScriptingSelection";
+import {useSelectedBehavior} from "../../../Store/useAppSelection";
 
 TransformationOutputViewer.propTypes = {
 
@@ -14,13 +15,22 @@ TransformationOutputViewer.propTypes = {
  */
 export function TransformationOutputViewer ({}) {
     const transformOutput = useTransformOutput();
+    const selectedBehavior = useSelectedBehavior();
     const editorRef = useRef(null);
 
     useEffect(() => {
-        if (editorRef.current && transformOutput) {
+        if (editorRef.current && !transformOutput) {
+            editorRef.current.setValue("");
+        } else if (editorRef.current && transformOutput) {
             editorRef.current.setValue(JSON.stringify(transformOutput, null, 2));
         }
     }, [transformOutput]);
+
+    useEffect(() => {
+        if (editorRef.current && selectedBehavior) {
+            editorRef.current.setValue("");
+        }
+    }, [selectedBehavior]);
 
     const handleEditorMount = useCallback((editor, monaco) => {
         editorRef.current = editor;

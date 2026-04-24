@@ -67,6 +67,7 @@ export function ScriptingToolBar () {
     }, [dispatch]);
 
     const runTransformation = useCallback((e) => {
+        dispatch(setTransformOutput(null));
         addLog(null, true);
         // I decided to run transformations in worker for the current iteration.
         if (!selectedTransformationTest) return;
@@ -135,7 +136,7 @@ export function ScriptingToolBar () {
             addLog("Error running transformation.");
             return;
         }
-    }, [selectedTransformationTest, engine, behavior]);
+    }, [selectedTransformationTest, dispatch, engine, behavior]);
 
 
     useEffect(() => {
