@@ -63,9 +63,9 @@ export const useSelectedTransformationTest = () => {
         // if there is no test case, I will create an empty one and return it.
         if (selectedBehavior.getTransformationTests().length === 0) {
             selectedBehavior.addTransformationTest({
-                initialArgs: "asdf",
-                initialWorldState: "asdf",
-                expectedPostWorldState: "asdf",
+                initialArgs: null,
+                initialWorldState: null,
+                expectedPostWorldState: null,
             });
         }
         return selectedBehavior.getTransformationTests()[0];
