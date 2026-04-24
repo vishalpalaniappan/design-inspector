@@ -75,7 +75,7 @@ export function ScriptingToolBar () {
         if (!behavior) return;
         if (!engine) return;
 
-        addLog("Starting transformation execution.");
+        addLog("Initiating transformation");
 
         let _initialWorldState;
         let _expectedPostWorldState;
@@ -123,6 +123,8 @@ export function ScriptingToolBar () {
         }
 
         try {
+            addLog("Firing up engine");
+            addLog("Igniting thrusters - All Systems Go.");
             workerRef.current.postMessage({
                 type: "RUN_TRANSFORMATION",
                 payload: {
@@ -132,7 +134,7 @@ export function ScriptingToolBar () {
                     initialArgs: _initialArgs,
                 },
             });
-            addLog("Transformation running.");
+            addLog("Initiated transformation...Awaiting results.");
         } catch (error) {
             addLog("Error running transformation.");
             return;
