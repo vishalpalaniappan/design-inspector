@@ -86,7 +86,7 @@
                     "containerId": "transformationLogContainer",
                     "type": "container",
                     "size": { 
-                        "initial": { "value": 150, "unit": "px", "type": "fixed" },
+                        "initial": { "value": 300, "unit": "px", "type": "fixed" },
                         "min": { "value": 50, "unit": "px"}
                     }
                 }
