@@ -1,23 +1,14 @@
 // scripting slice thunk
-import {useSelectedBehavior} from "../appSlice/useAppSelection";
-import {setScript} from "./scriptingSlice";
+import {selectScriptingBehaviorId} from "./scriptingSelectors";
 import {incrementScriptingCounter} from "./scriptingSlice";
 
+export const updateTransformationTestThunk = (type, value) => (dispatch, getState, {engine}) => {
+    const state = getState();
+    const behaviorId = selectScriptingBehaviorId(state);
+    const behavior = engine.getNode(behaviorId).getBehavior();
+    const transformationTest = behavior.getTransformationTests();
 
-export const setScriptContent = (scriptType, content) => (dispatch) => {
-    // Do some validation here and throw errror as needed.
-    dispatch(setScript({scriptType, content}));
-};
-
-export const updateTransformationTest = (type, value) => (dispatch, getState, {engine}) => {
-    const selectedBehavior = useSelectedBehavior();
-    if (!selectedBehavior) {
-        console.warn("No behavior selected, cannot update transformation test.");
-        return;
-    };
-    const transformationTest = selectedBehavior.getTransformationTests();
-
-    if (transformationTest.length === 0) {
+    if (!transformationTest) {
         console.warn("No transformation test found for selected behavior, cannot update.");
         return;
     }
@@ -25,13 +16,13 @@ export const updateTransformationTest = (type, value) => (dispatch, getState, {e
     const test = transformationTest[0];
     switch (type) {
         case "initialWorldState":
-            test.setInitialWorldState(value);
+            test.initialWorldState = value;
             break;
         case "expectedPostWorldState":
-            test.setExpectedPostWorldState(value);
+            test.expectedPostWorldState = value;
             break;
         case "initialArgs":
-            test.setInitialArgs(value);
+            test.initialArgs = value;
             break;
         default:
             console.warn(`Unknown transformation test field: ${type}`);
@@ -40,3 +31,22 @@ export const updateTransformationTest = (type, value) => (dispatch, getState, {e
     dispatch(incrementScriptingCounter());
 };
 
+
+export const updateScriptingPrimitiveThunk = (value) => (dispatch, getState, {engine}) => {
+    const state = getState();
+    const behaviorId = selectScriptingBehaviorId(state);
+    const behavior = engine.getNode(behaviorId).getBehavior();
+
+    if (!behavior) {
+        console.warn("No behavior found for selected behavior ID, cannot update primitives.");
+        return;
+    }
+
+    const primitives = value.split("\n")
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0);
+
+    behavior._primitives = primitives;
+
+    dispatch(incrementScriptingCounter());
+};

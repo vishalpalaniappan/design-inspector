@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 
 import Editor from "@monaco-editor/react";
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
-import {setScript} from "../../../Store/scriptingSlice/scriptingSlice";
+import {updateTransformationTestThunk} from "../../../Store/scriptingSlice/scriptingThunk";
+import {useSelectedTransformationTest} from "../../../Store/scriptingSlice/useScriptingSelection";
 
 import "./scriptingEditors.scss";
 
@@ -25,22 +26,28 @@ ScriptingEditor.propTypes = {
  */
 function ScriptingEditor ({type, initial, isJson = true}) {
     const dispatch = useDispatch();
+    const [ready, setReady] = useState(false);
+    const editorRef = useRef(null);
+    const transformationTest = useSelectedTransformationTest();
 
-    const handleEditorMount = (editor, monaco) => {
-        const val = (!isJson) ? initial : JSON.stringify(initial, null, 2);
-        editor.setValue(val || "");
-        dispatch(setScript({
-            content: val,
-            scriptType: type,
-        }));
+    useEffect(() => {
+        if (ready && transformationTest) {
+            if (!(type in transformationTest) || !transformationTest[type]) {
+                editorRef.current.setValue("");
+            } else {
+                editorRef.current.setValue(transformationTest[type]);
+            }
+        }
+    }, [transformationTest, initial, isJson, ready]);
+
+    const handleEditorMount = useCallback((editor, monaco) => {
+        editorRef.current = editor;
         editor.onDidChangeModelContent((e) => {
             const value = editor.getValue();
-            dispatch(setScript({
-                content: value,
-                scriptType: type,
-            }));
+            dispatch(updateTransformationTestThunk(type, value));
         });
-    };
+        setReady(true);
+    }, [dispatch, type]);
 
     return (
         <div style={{width: "100%", height: "100%"}}>
@@ -72,9 +79,6 @@ const expectedPostWorldStateValue = {
     "book": {"name": "value"},
     "book_name": "value",
 };
-const primitivesInitial = `create book
-create book_name
-get book ["name"] book_name `;
 
 export const InitialArgsEditor = (props) => (
     <ScriptingEditor type="initialArgs" {...props} initial={initialArgsValue} />
@@ -82,9 +86,7 @@ export const InitialArgsEditor = (props) => (
 export const InitialWorldStateEditor = (props) => (
     <ScriptingEditor type="initialWorldState" {...props} initial={initialWorldStateValue} />
 );
-export const PrimitivesEditor = (props) => (
-    <ScriptingEditor type="primitives" {...props} initial={primitivesInitial} isJson={false} />
-);
+
 export const ExpectedPostWorldStateEditor = (props) => (
     // eslint-disable-next-line max-len
     <ScriptingEditor type="expectedPostWorldState" {...props} initial={expectedPostWorldStateValue} />
