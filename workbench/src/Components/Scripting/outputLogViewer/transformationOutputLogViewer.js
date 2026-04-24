@@ -46,6 +46,7 @@ export function TransformationOutputLogViewer ({}) {
                     lineNumbers: "off",
                     wordWrap: "on",
                     scrollBeyondLastLine: false,
+                    readOnly: true,
                 }}
             />
         </div>

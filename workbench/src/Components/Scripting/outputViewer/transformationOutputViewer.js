@@ -53,6 +53,7 @@ export function TransformationOutputViewer ({}) {
                     lineNumbers: "off",
                     wordWrap: "on",
                     scrollBeyondLastLine: false,
+                    readOnly: true,
                 }}
             />
         </div>
