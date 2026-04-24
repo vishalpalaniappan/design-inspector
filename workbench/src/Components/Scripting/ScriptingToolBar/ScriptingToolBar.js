@@ -87,6 +87,7 @@ export function ScriptingToolBar () {
             addLog("Loaded Initial World State.");
         } catch (error) {
             addLog("Error parsing initial world state.");
+            addLog(`Error: ${error.message}`);
             return;
         }
 
@@ -95,6 +96,7 @@ export function ScriptingToolBar () {
             addLog("Loaded Expected Post World State.");
         } catch (error) {
             addLog("Error parsing expected post world state.");
+            addLog(`Error: ${error.message}`);
             return;
         }
 
@@ -103,6 +105,7 @@ export function ScriptingToolBar () {
             addLog("Loaded Initial Arguments.");
         } catch (error) {
             addLog("Error parsing initial arguments.");
+            addLog(`Error: ${error.message}`);
             return;
         }
 
@@ -111,6 +114,7 @@ export function ScriptingToolBar () {
             addLog("Loaded Primitives.");
         } catch (error) {
             addLog("Error loading primitives.");
+            addLog(`Error: ${error.message}`);
             return;
         }
 
@@ -119,6 +123,7 @@ export function ScriptingToolBar () {
             addLog("Saved Engine State.");
         } catch (error) {
             addLog("Error saving engine state.");
+            addLog(`Error: ${error.message}`);
             return;
         }
 
@@ -137,6 +142,7 @@ export function ScriptingToolBar () {
             addLog("Initiated transformation...Awaiting results.");
         } catch (error) {
             addLog("Error running transformation.");
+            addLog(`Error: ${error.message}`);
             return;
         }
     }, [selectedTransformationTest, dispatch, engine, behavior]);
