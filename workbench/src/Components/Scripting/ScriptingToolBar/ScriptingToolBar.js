@@ -46,6 +46,7 @@ export function ScriptingToolBar () {
             } else {
                 console.warn(`Behavior with ID ${selectedBehavior} not found.`);
             }
+            addLog(null, true);
         }
     }, [behaviors, selectedBehavior]);
 
