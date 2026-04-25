@@ -3,8 +3,7 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
-import {useDalEngine} from "../../Providers/GlobalProviders";
-import {setSelectedBehavior} from "../../Store/appSlice";
+import {addBehaviorThunk} from "../../Store/appThunk";
 
 import "./AddValue.scss";
 
@@ -17,15 +16,13 @@ AddBehavior.propTypes = {
  * @return {JSX.Element}
  */
 export function AddBehavior ({close}) {
-    const {engine} = useDalEngine();
-
     const dispatch = useDispatch();
-
     const [behavior, setBehavior] = useState("");
     const [description, setDescription] = useState("");
     const [error, setError] = useState(null);
     const [isAtomic, setIsAtomic] = useState(false);
     const [isDesignFork, setIsDesignFork] = useState(false);
+    const [primitives, setPrimitives] = useState("");
 
     const inputRef = useRef(null);
 
@@ -33,7 +30,7 @@ export function AddBehavior ({close}) {
         if (inputRef.current) {
             inputRef.current.focus();
         }
-    }, [engine]);
+    }, []);
 
     const handleSubmit = useCallback(() => {
         if (behavior.trim() === "") {
@@ -41,22 +38,23 @@ export function AddBehavior ({close}) {
             return;
         }
         try {
-            engine.addNode(behavior, description, [], isAtomic, isDesignFork);
-            dispatch(setSelectedBehavior(behavior));
+            dispatch(addBehaviorThunk({
+                name: behavior,
+                description, isAtomic,
+                isDesignFork,
+                primitives: primitives,
+            }));
             close();
         } catch (err) {
             setError(err.toString());
         }
-    }, [engine, behavior, description, close, isAtomic, isDesignFork, dispatch]);
+    }, [behavior, description, close, isAtomic, isDesignFork, primitives, dispatch]);
 
     useEffect(() => {
         const handleKeyDown = (event) => {
             if (event.key === "Escape") {
                 event.preventDefault();
                 close();
-            } else if (event.key === "Enter") {
-                event.preventDefault();
-                handleSubmit();
             }
         };
         document.addEventListener("keydown", handleKeyDown);
@@ -80,6 +78,14 @@ export function AddBehavior ({close}) {
                 <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}></textarea>
+            </div>
+            <div className="value-name-label">
+                <span>Primitive Transformations:</span>
+            </div>
+            <div className="value-name-input">
+                <textarea
+                    value={primitives}
+                    onChange={(e) => setPrimitives(e.target.value)}></textarea>
             </div>
             <div className="value-name-input">
                 <div className="check-box">
