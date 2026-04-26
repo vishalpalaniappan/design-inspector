@@ -27,7 +27,11 @@ export function TransformationOutputLogViewer ({ }) {
         }
     }, [transformOutputLog, ready]);
 
-    const handleBeforeMount = useCallback((monaco) => {
+    const handleEditorMount = useCallback((editor, monaco) => {
+        editorRef.current = editor;
+        editor.onDidChangeModelContent((e) => { });
+        setReady(true);
+
         monaco.languages.register({id: "logLang"});
         monaco.languages.setMonarchTokensProvider("logLang", {
             tokenizer: {
@@ -59,23 +63,16 @@ export function TransformationOutputLogViewer ({ }) {
                 "editor.background": "#1e1e1e",
             },
         });
-    }, []);
-
-    const handleEditorMount = useCallback((editor, monaco) => {
-        editorRef.current = editor;
-        editor.onDidChangeModelContent((e) => { });
-        setReady(true);
+        monaco.editor.setModelLanguage(editor.getModel(), "logLang");
+        monaco.editor.setTheme("logTheme");
     }, [transformOutputLog]);
 
     return (
         <div style={{width: "100%", height: "100%"}}>
             <Editor
-                defaultLanguage="logLang"
-                theme="logTheme"
                 defaultValue=""
                 readOnly={true}
                 onMount={handleEditorMount}
-                beforeMount={handleBeforeMount}
                 options={{
                     minimap: {enabled: false},
                     lineNumbers: "off",

@@ -178,9 +178,7 @@
                 {
                     "containerId": "initialArgs",
                     "type": "container",
-                    "size": { 
-                        "initial": { "value": 400, "unit": "px", "type": "fixed" }
-                    }
+                    "size": { "initial": { "type": "fill" }}
                 },
                 {
                     "type": "handleBar",
