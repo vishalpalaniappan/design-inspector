@@ -8,9 +8,11 @@
             "orientation": "vertical",
             "children": [
                 {
-                    "containerId": "header",
+                    "containerId": "menuBar",
                     "type": "container",
-                    "size": { "initial": { "value": 0, "unit": "px", "type": "fixed" }}
+                    "size": { 
+                        "initial": { "value": 37, "unit": "px", "type": "fixed" }
+                    }
                 },
                 {
                     "containerId": "mainBody",
@@ -41,6 +43,21 @@
                     "size": { "initial": { "value": 40, "unit": "px", "type": "fixed" }},
                     "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }
                 },
+                
+                {
+                    "containerId": "primitivesContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 500, "unit": "px", "type": "fixed" },
+                        "min": { "value": 50, "unit": "px"}
+                    }
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "primitivesContainer",
+                    "sibling2": "contentContainer"
+                },
+
                 {
                     "containerId": "contentContainer",
                     "type": "container",
@@ -65,13 +82,6 @@
             "type": "split",
             "orientation": "vertical",
             "children": [
-                {
-                    "containerId": "menuBar",
-                    "type": "container",
-                    "size": { 
-                        "initial": { "value": 37, "unit": "px", "type": "fixed" }
-                    }
-                },
                 {
                     "containerId": "body",
                     "type": "container",
@@ -175,16 +185,6 @@
                 {
                     "type": "handleBar",
                     "sibling1": "initialArgs",
-                    "sibling2": "primitivesContainer"
-                },
-                {
-                    "containerId": "primitivesContainer",
-                    "type": "container",
-                    "size": { "initial": { "type": "fill" }}
-                },
-                {
-                    "type": "handleBar",
-                    "sibling1": "primitivesContainer",
                     "sibling2": "preWorldStateContainer"
                 },
                 {
