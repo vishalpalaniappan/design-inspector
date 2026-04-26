@@ -283,7 +283,7 @@
             "component": "PrimitivesEditor",
             "menuBar": {
                 "showClose": false,
-                "title": "Primitive Transformations"
+                "title": "Behavioral Script"
             },
             "background": "#222222"
         },
