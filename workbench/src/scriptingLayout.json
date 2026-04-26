@@ -48,7 +48,7 @@
                     "containerId": "primitivesContainer",
                     "type": "container",
                     "size": { 
-                        "initial": { "value": 500, "unit": "px", "type": "fixed" },
+                        "initial": { "value": 450, "unit": "px", "type": "fixed" },
                         "min": { "value": 50, "unit": "px"}
                     }
                 },
