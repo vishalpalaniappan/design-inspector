@@ -95,11 +95,9 @@ export function TraceSelectRow ({trace}) {
 
     const openDebugResult = useCallback(() => {
         let str = "";
-        for (const atomic of trace.debugResults) {
-            str = str + "\n\n";
-            for (const n of atomic) {
-                str = str + n + "\n";
-            }
+        console.log(trace);
+        for (const instance of trace.executableModelOutput) {
+            str = str + JSON.stringify(instance, null, 2) + "\n\n";
         }
         openModal({
             title: "Automated Debug Results",
