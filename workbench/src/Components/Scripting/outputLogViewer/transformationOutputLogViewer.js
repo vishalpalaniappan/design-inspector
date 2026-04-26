@@ -46,25 +46,13 @@ export function TransformationOutputLogViewer ({ }) {
                 ],
             },
         });
-        monaco.editor.defineTheme("logTheme", {
-            base: "vs-dark",
-            inherit: true,
-            rules: [
-                {token: "timestamp", foreground: "6A9FB5"},
-                {token: "logLevel", foreground: "D16969", fontStyle: "bold"},
-                {token: "key", foreground: "9CDCFE"},
-                {token: "string", foreground: "CE9178"},
-                {token: "number", foreground: "B5CEA8"},
-                {token: "delimiter", foreground: "808080"},
-                {token: "text", foreground: "AAB2BF"},
-            ],
-            colors: {
-                "editor.foreground": "#d4d4d4",
-                "editor.background": "#1e1e1e",
-            },
-        });
         monaco.editor.setModelLanguage(editor.getModel(), "logLang");
-        monaco.editor.setTheme("logTheme");
+        /**
+         * TODO: I am setting the theme in the primitives editor and since only
+         * one theme can be applied per loaded monaco runtime, I am setting it
+         * there. I should probably create a central place where I define the
+         * themes so I can track this but I will return to this later.
+         */
     }, [transformOutputLog]);
 
     return (
