@@ -22,7 +22,6 @@ export function AddBehavior ({close}) {
     const [error, setError] = useState(null);
     const [isAtomic, setIsAtomic] = useState(false);
     const [isDesignFork, setIsDesignFork] = useState(false);
-    const [primitives, setPrimitives] = useState("");
 
     const inputRef = useRef(null);
 
@@ -42,13 +41,12 @@ export function AddBehavior ({close}) {
                 name: behavior,
                 description, isAtomic,
                 isDesignFork,
-                primitives: primitives,
             }));
             close();
         } catch (err) {
             setError(err.toString());
         }
-    }, [behavior, description, close, isAtomic, isDesignFork, primitives, dispatch]);
+    }, [behavior, description, close, isAtomic, isDesignFork, dispatch]);
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -78,14 +76,6 @@ export function AddBehavior ({close}) {
                 <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}></textarea>
-            </div>
-            <div className="value-name-label">
-                <span>Primitive Transformations:</span>
-            </div>
-            <div className="value-name-input">
-                <textarea
-                    value={primitives}
-                    onChange={(e) => setPrimitives(e.target.value)}></textarea>
             </div>
             <div className="value-name-input">
                 <div className="check-box">

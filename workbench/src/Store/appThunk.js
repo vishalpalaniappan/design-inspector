@@ -209,7 +209,6 @@ export const addBehaviorThunk = (args) => (dispatch, getState, {engine}) => {
         throw new Error("Behavior name must not be empty.");
     }
     const newNode = engine.addNode(name, description, [], isAtomic, isDesignFork);
-    newNode.getBehavior().addPrimitives(primitives);
     console.log(newNode);
     dispatch(setSelectedBehavior(newNode._uid));
     dispatch(incrementCounter());
