@@ -49,12 +49,12 @@
                 {
                     "type": "handleBar",
                     "sibling1": "contentContainer",
-                    "sibling2": "rightMenuContainer"
+                    "sibling2": "transformOutputMetadataContainer"
                 },
                 {
-                    "containerId": "rightMenuContainer",
+                    "containerId": "transformOutputMetadataContainer",
                     "type": "container",
-                    "size": { "initial": { "value": 250, "unit": "px", "type": "fixed" }},
+                    "size": { "initial": { "value": 500, "unit": "px", "type": "fixed" }},
                     "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
                 }
             ]
@@ -218,30 +218,14 @@
             ]
         },
         
-        "rightMenuContainer": {
-            "id": "rightMenuContainer",
+        "transformOutputMetadataContainer": {
+            "id": "transformOutputMetadataContainer",
             "background": "#252526",
-            "type": "split",
-            "orientation": "vertical",
-            "children": [
-                {
-                    "containerId": "selectedInfoContainer",
-                    "type": "container",
-                    "size": { 
-                        "initial": { "value": 190, "unit": "px", "type": "fixed" }
-                    }
-                },
-                {
-                    "type": "handleBar",
-                    "sibling1": "selectedInfoContainer",
-                    "sibling2": "participantInfoContainer"
-                },
-                {
-                    "containerId": "participantInfoContainer",
-                    "type": "container",
-                    "size": { "initial": { "type": "fill" }}
-                }
-            ]
+            "component": "TransformOutputMeta",
+            "menuBar": {
+                "showClose": false,
+                "title": "Transform Metadata"
+            }
         },
         "menuBar": {
             "id": "menuBar",

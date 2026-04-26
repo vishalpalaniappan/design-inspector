@@ -5,15 +5,15 @@ import Editor from "@monaco-editor/react";
 import {useTransformOutput} from "../../../Store/scriptingSlice/useScriptingSelection";
 import {useSelectedBehavior} from "../../../Store/useAppSelection";
 
-TransformationOutputViewer.propTypes = {
+TransformOutputMeta.propTypes = {
 
 };
 
 /**
- * Transformation output viewer.
+ * Transformation output meta.
  * @return {JSX.Element}
  */
-export function TransformationOutputViewer ({}) {
+export function TransformOutputMeta ({}) {
     const transformOutput = useTransformOutput();
     const selectedBehavior = useSelectedBehavior();
     const editorRef = useRef(null);
@@ -24,15 +24,7 @@ export function TransformationOutputViewer ({}) {
         if (editorRef.current && !transformOutput) {
             editorRef.current.setValue("");
         } else if (editorRef.current && transformOutput) {
-            if ("transform" in transformOutput) {
-                for (const entry of transformOutput.transform) {
-                    if (entry["type"] === "validate") {
-                        editorRef.current.setValue(
-                            JSON.stringify(entry["transformationOutput"], null, 2)
-                        );
-                    }
-                }
-            }
+            editorRef.current.setValue(JSON.stringify(transformOutput, null, 2));
         }
     }, [transformOutput, ready]);
 

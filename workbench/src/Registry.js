@@ -76,4 +76,8 @@ export const registry = {
         import("./Components/Scripting/outputLogViewer/transformationOutputLogViewer").then((m) => ({
             default: m.default || m.TransformationOutputLogViewer,
         })),
+    TransformOutputMeta: () =>
+        import("./Components/Scripting/transformOutputMeta/transformOutputMeta").then((m) => ({
+            default: m.default || m.TransformOutputMeta,
+        })),
 };

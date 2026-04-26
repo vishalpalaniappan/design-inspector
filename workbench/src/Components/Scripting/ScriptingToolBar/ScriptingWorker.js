@@ -19,16 +19,16 @@ self.onmessage = (event) => {
         try {
             behavior.setPreWorldState(payload.initialWorldState);
             behavior.setPostWorldState(payload.expectedPostWorldState);
-            behavior.addPrimitives(payload.primitives);
+            behavior.setScript(payload.primitives);
             behavior.setPrimitiveArgs(payload.initialArgs);
             console.log(behavior);
-            const [updatedWorldState, isValid] =behavior.computeTransformations();
+            const output = behavior.computeTransformations();
+            console.log(output);
 
             self.postMessage({
                 type: "Success",
                 payload: {
-                    updatedWorldState,
-                    isValid,
+                    output,
                 },
             });
         } catch (error) {
