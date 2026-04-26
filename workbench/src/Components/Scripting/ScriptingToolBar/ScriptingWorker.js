@@ -19,11 +19,9 @@ self.onmessage = (event) => {
         try {
             behavior.setPreWorldState(payload.initialWorldState);
             behavior.setPostWorldState(payload.expectedPostWorldState);
-            behavior.setScript(payload.primitives);
+            behavior.setScript(payload.script);
             behavior.setPrimitiveArgs(payload.initialArgs);
-            console.log(behavior);
             const output = behavior.computeTransformations();
-            console.log(output);
 
             self.postMessage({
                 type: "Success",

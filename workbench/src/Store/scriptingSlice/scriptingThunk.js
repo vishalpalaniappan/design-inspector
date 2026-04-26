@@ -44,11 +44,7 @@ export const updateScriptingPrimitiveThunk = (value) => (dispatch, getState, {en
         return;
     }
 
-    const primitives = value.split("\n")
-        .map((line) => line.trim())
-        .filter((line) => line.length > 0);
-
-    behavior._primitives = primitives;
+    behavior.setScript(value);
 
     dispatch(incrementScriptingCounter());
 };

@@ -25,8 +25,7 @@ export function PrimitivesEditor({ }) {
 
     useEffect(() => {
         if (editorRef.current && behavior) {
-            const primitives = behavior._primitives;
-            const primitivesStr = primitives.join("\n");
+            const primitivesStr = behavior._script;
             editorRef.current.setValue(primitivesStr);
         }
     }, [isReady, behavior]);

@@ -80,7 +80,7 @@ export function ScriptingToolBar () {
         let _initialWorldState;
         let _expectedPostWorldState;
         let _initialArgs;
-        let _primitives;
+        let _script;
 
         try {
             _initialWorldState = JSON.parse(selectedTransformationTest.initialWorldState);
@@ -110,10 +110,10 @@ export function ScriptingToolBar () {
         }
 
         try {
-            _primitives = behavior._primitives.join("\n");
-            addLog("Loaded Primitives.");
+            _script = behavior._script;
+            addLog("Loaded Script.");
         } catch (error) {
-            addLog("Error loading primitives.");
+            addLog("Error loading script.");
             addLog(`Error: ${error.message}`);
             return;
         }
@@ -135,7 +135,7 @@ export function ScriptingToolBar () {
                 payload: {
                     initialWorldState: _initialWorldState,
                     expectedPostWorldState: _expectedPostWorldState,
-                    primitives: _primitives,
+                    script: _script,
                     initialArgs: _initialArgs,
                 },
             });
