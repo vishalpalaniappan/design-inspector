@@ -199,18 +199,16 @@ export const selectBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}
  * @param {String} args.description Description of the behavior.
  * @param {Boolean} args.isAtomic Is the behavior atomic?
  * @param {Boolean} args.isDesignFork Is the behavior a fork in the design?
- * @param {String} args.primitives A string of primitives.
  * @returns {Function} Thunk function.
  */
 // eslint-disable-next-line max-len
 export const addBehaviorThunk = (args) => (dispatch, getState, {engine}) => {
-    const {name, description, isAtomic, isDesignFork, primitives} = args;
+    const {name, description, isAtomic, isDesignFork} = args;
     if (!name || name.trim() === "") {
         throw new Error("Behavior name must not be empty.");
     }
     const newNode = engine.addNode(name, description, [], isAtomic, isDesignFork);
-    console.log(newNode);
-    dispatch(setSelectedBehavior(newNode._uid));
+    dispatch(setSelectedBehavior(newNode.getBehavior().getName()));
     dispatch(incrementCounter());
 };
 
