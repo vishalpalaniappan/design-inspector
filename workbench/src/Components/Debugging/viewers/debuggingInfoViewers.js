@@ -60,9 +60,6 @@ function DebuggingInfoViewer ({type, isJson = true}) {
 
     const handleEditorMount = useCallback((editor, monaco) => {
         editorRef.current = editor;
-        editor.onDidChangeModelContent((e) => {
-            const value = editor.getValue();
-        });
         setReady(true);
     }, [type]);
 
@@ -79,6 +76,7 @@ function DebuggingInfoViewer ({type, isJson = true}) {
                     lineNumbers: "off",
                     wordWrap: "on",
                     scrollBeyondLastLine: false,
+                    readOnly: true,
                 }}
             />
         </div>
