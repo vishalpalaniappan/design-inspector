@@ -88,4 +88,20 @@ export const registry = {
         import("./Components/Debugging/TraceBehaviorSelector/TraceBehaviorSelector").then((m) => ({
             default: m.default || m.TraceBehaviorSelector,
         })),
+    DebuggerBehaviorInitialArgs: () =>
+        import("./Components/Debugging/viewers/debuggingInfoViewers").then((m) => ({
+            default: m.default || m.DebuggerBehaviorInitialArgs,
+        })),
+    DebuggerBehaviorInitialWorldState: () =>
+        import("./Components/Debugging/viewers/debuggingInfoViewers").then((m) => ({
+            default: m.default || m.DebuggerBehaviorInitialWorldState,
+        })),
+    DebuggerBehaviorExpectedPostWorldState: () =>
+        import("./Components/Debugging/viewers/debuggingInfoViewers").then((m) => ({
+            default: m.default || m.DebuggerBehaviorExpectedPostWorldState,
+        })),
+    DebuggerBehaviorTransformOutput: () =>
+        import("./Components/Debugging/viewers/debuggingInfoViewers").then((m) => ({
+            default: m.default || m.DebuggerBehaviorTransformOutput,
+        })),
 };

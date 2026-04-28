@@ -31,6 +31,7 @@ export function TraceBehaviorSelector () {
             const trace = traceValues.find((t) => t.uid === selectedTraceId);
             if (trace) {
                 setBehaviors(trace.debugger.processedTrace);
+                console.log(trace);
             }
         }
     }, [selectedTraceId, traces]);

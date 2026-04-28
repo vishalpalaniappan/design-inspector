@@ -253,7 +253,7 @@
         },
         "initialArgs": {
             "id": "initialArgs",
-            "component": "InitialArgsEditor",
+            "component": "DebuggerBehaviorInitialArgs",
             "menuBar": {
                 "showClose": false,
                 "title": "Arguments"
@@ -262,7 +262,7 @@
         },
         "preWorldStateContainer": {
             "id": "preWorldStateContainer",
-            "component": "InitialWorldStateEditor",
+            "component": "DebuggerBehaviorInitialWorldState",
             "menuBar": {
                 "showClose": false,
                 "title": "Initial World State"
@@ -271,7 +271,7 @@
         },
         "expectedPostWorldStateEditor": {
             "id": "expectedPostWorldStateEditor",
-            "component": "ExpectedPostWorldStateEditor",
+            "component": "DebuggerBehaviorExpectedPostWorldState",
             "menuBar": {
                 "showClose": false,
                 "title": "Expected Post Transformation World State"
@@ -280,7 +280,7 @@
         },
         "outputContainer": {
             "id": "outputContainer",
-            "component": "TransformationOutputViewer",
+            "component": "DebuggerBehaviorTransformOutput",
             "menuBar": {
                 "showClose": false,
                 "title": "Transformations Output"

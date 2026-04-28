@@ -20,8 +20,9 @@ DebuggingInfoViewer.propTypes = {
  *
  * @return {JSX.Element}
  */
-function DebuggingInfoViewer ({type, initial, isJson = true}) {
+function DebuggingInfoViewer ({type, isJson = true}) {
     const selectedTraceId = useSelectedTraceId();
+    const editorRef = useRef(null);
     const [ready, setReady] = useState(false);
 
     const handleEditorMount = useCallback((editor, monaco) => {
@@ -29,8 +30,9 @@ function DebuggingInfoViewer ({type, initial, isJson = true}) {
         editor.onDidChangeModelContent((e) => {
             const value = editor.getValue();
         });
+        editorRef.current.setValue('{"val": "Test value"}');
         setReady(true);
-    }, [dispatch, type]);
+    }, [type]);
 
     return (
         <div style={{width: "100%", height: "100%"}}>
@@ -52,14 +54,14 @@ function DebuggingInfoViewer ({type, initial, isJson = true}) {
 }
 
 export const DebuggerBehaviorInitialArgs = (props) => (
-    <DebuggingInfoViewer type="arguments" {...props} initial={initialArgsValue} />
+    <DebuggingInfoViewer type="arguments" {...props} />
 );
 export const DebuggerBehaviorInitialWorldState = (props) => (
-    <DebuggingInfoViewer type="preParticipants" {...props} initial={initialWorldStateValue} />
+    <DebuggingInfoViewer type="preParticipants" {...props} />
 );
 export const DebuggerBehaviorExpectedPostWorldState = (props) => (
     // eslint-disable-next-line max-len
-    <DebuggingInfoViewer type="postParticipants" {...props} initial={expectedPostWorldStateValue} />
+    <DebuggingInfoViewer type="postParticipants" {...props} />
 );
 export const DebuggerBehaviorTransformOutput = (props) => (
     <DebuggingInfoViewer type="transformOutput" {...props} />
