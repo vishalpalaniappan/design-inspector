@@ -33,8 +33,20 @@ function DebuggingInfoViewer ({type, isJson = true}) {
         if (ready && selectedTraceId && traces) {
             const traceValues = Object.values(traces);
             const trace = traceValues.find((t) => t.uid === selectedTraceId);
-            console.log(trace, selectedTraceEntryIndex);
-            if (trace) {
+            if (!trace) {
+                console.warn(`Trace with id ${selectedTraceId} not found`);
+                return;
+            };
+            if (type === "transformOutput") {
+                // Transformation output is saved in the executableModelOutput
+                // in the validation step of the transform section.
+                const entry = trace.executableModelOutput[selectedTraceEntryIndex];
+                if ("transform" in entry.output) {
+                    const validate = entry.output.transform.find((v) => v.type === "validate");
+                    const output = validate ? validate.transformationOutput : "";
+                    editorRef.current.setValue(JSON.stringify(output, null, 2));
+                }
+            } else if (trace) {
                 const entry = trace.debugger.processedTrace[selectedTraceEntryIndex];
                 if (type in entry) {
                     const value = entry[type];
