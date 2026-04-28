@@ -46,29 +46,17 @@ function DebuggingInfoViewer ({type, initial, isJson = true}) {
     );
 }
 
-// These variables are for testing and will be removed soon.
-const initialArgsValue = {
-    "initialValue": {"name": "value"},
-};
-
-const initialWorldStateValue = {};
-
-const expectedPostWorldStateValue = {
-    "book": {"name": "value"},
-    "book_name": "value",
-};
-
-export const InitialArgsEditor = (props) => (
+export const DebuggerBehaviorInitialArgs = (props) => (
     <DebuggingInfoViewer type="initialArgs" {...props} initial={initialArgsValue} />
 );
-export const InitialWorldStateEditor = (props) => (
+export const DebuggerBehaviorInitialWorldState = (props) => (
     <DebuggingInfoViewer type="initialWorldState" {...props} initial={initialWorldStateValue} />
 );
 
-export const ExpectedPostWorldStateEditor = (props) => (
+export const DebuggerBehaviorExpectedPostWorldState = (props) => (
     // eslint-disable-next-line max-len
     <DebuggingInfoViewer type="expectedPostWorldState" {...props} initial={expectedPostWorldStateValue} />
 );
-export const TransformOutputEditor = (props) => (
+export const DebuggerBehaviorTransformOutput = (props) => (
     <DebuggingInfoViewer type="transformOutput" {...props} />
 );
