@@ -43,4 +43,6 @@ If root cause can't be identified, I will allow the user to modify the semantics
 enable the design to learn. As part of that, the trace id will automatically get added to the invariant.
 
 If the root cause is identified, I will create a summary container which has the failure and the root cause.
-I will establish the nuances of this as I continue implementing later today when I return to my computer.
+I will establish the nuances of this as I continue implementing, I do see a cool way to use the behavioral
+control graph to visualize the execution but I think I will start with just a boring visualization
+and then I will expand it to something cooler later.
