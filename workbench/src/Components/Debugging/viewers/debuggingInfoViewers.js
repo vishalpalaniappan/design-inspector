@@ -53,7 +53,7 @@ function DebuggingInfoViewer ({type, isJson = true}) {
                 const b = engine.graphs.getAllBehaviors().find(
                     (b) => b.getName() === entry.behavior
                 );
-                console.log(b);
+                editorRef.current.setValue(b ? b._script : "");
             } else {
                 const entry = trace.debugger.processedTrace[selectedTraceEntryIndex];
                 if (type in entry) {
