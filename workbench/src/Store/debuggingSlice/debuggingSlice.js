@@ -3,17 +3,17 @@ import {createSlice} from "@reduxjs/toolkit";
 const debuggingSlice = createSlice({
     name: "debugging",
     initialState: {
-        selectedTraceEntry: null,
+        setSelectedTraceEntryIndex: null,
     },
     reducers: {
-        setSelectedTraceEntry: (state, action) => {
-            state.selectedTraceEntry = action.payload;
+        setSelectedTraceEntryIndex: (state, action) => {
+            state.selectedTraceEntryIndex = action.payload;
         },
     },
 });
 
 export const {
-    setSelectedTraceEntry,
+    setSelectedTraceEntryIndex,
 } = debuggingSlice.actions;
 
 export default debuggingSlice.reducer;

@@ -3,12 +3,12 @@ import {useMemo} from "react";
 
 import {useSelector} from "react-redux";
 
-import {selectSelectedTraceEntry} from "./debuggingSelectors";
+import {selectSelectedTraceEntryIndex} from "./debuggingSelectors";
 
 
-export const useSelectedTraceEntry = () => {
-    const selectedTraceEntry = useSelector(selectSelectedTraceEntry);
+export const useSelectedTraceEntryIndex = () => {
+    const selectedTraceEntryIndex = useSelector(selectSelectedTraceEntryIndex);
     return useMemo(() => {
-        return selectedTraceEntry;
-    }, [selectedTraceEntry]);
+        return selectedTraceEntryIndex;
+    }, [selectedTraceEntryIndex]);
 };

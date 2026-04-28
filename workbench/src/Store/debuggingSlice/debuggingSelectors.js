@@ -1,3 +1,3 @@
 // debugging slice selectors
-export const selectSelectedTraceEntry = (state) => state.debugging.selectedTraceEntry;
+export const selectSelectedTraceEntryIndex = (state) => state.debugging.selectedTraceEntryIndex;
 export const selectSelectedTraceId = (state) => state.app.selectedTraceId;

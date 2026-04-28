@@ -4,7 +4,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
-import {setSelectedTraceEntryThunk} from "../../../Store/debuggingSlice/debuggingThunk";
+import {setSelectedTraceEntryIndexThunk} from "../../../Store/debuggingSlice/debuggingThunk";
 import {useTraces} from "../../../Store/useAppSelection";
 import {useSelectedTraceId} from "../../../Store/useAppSelection";
 
@@ -28,13 +28,13 @@ export function TraceBehaviorSelector () {
             const traceValues = Object.values(traces);
             const trace = traceValues.find((t) => t.uid === selectedTraceId);
             setBehaviors(trace.debugger.processedTrace);
-            dispatch(setSelectedTraceEntryThunk(0));
+            dispatch(setSelectedTraceEntryIndexThunk(0));
         }
     }, [selectedTraceId, dispatch, traces]);
 
     const selectTraceEntry = useCallback((entryIndex) => {
         // Index as identifier because array is constant (order and length)
-        dispatch(setSelectedTraceEntryThunk(entryIndex));
+        dispatch(setSelectedTraceEntryIndexThunk(entryIndex));
     }, [dispatch]);
 
     return (
