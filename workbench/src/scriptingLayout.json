@@ -47,7 +47,10 @@
                 {
                     "containerId": "contentContainer",
                     "type": "container",
-                    "size": { "initial": { "type": "fill" }}
+                    "size": { 
+                        "initial": { "value": 500, "unit": "px", "type": "fixed" },
+                        "min": { "value": 50, "unit": "px"}
+                    }
                 },
                 {
                     "type": "handleBar",
@@ -58,10 +61,7 @@
                 {
                     "containerId": "primitivesContainer",
                     "type": "container",
-                    "size": { 
-                        "initial": { "value": 500, "unit": "px", "type": "fixed" },
-                        "min": { "value": 50, "unit": "px"}
-                    }
+                    "size": { "initial": { "type": "fill" }}
                 },
                 {
                     "type": "handleBar",
@@ -71,8 +71,7 @@
                 {
                     "containerId": "transformOutputMetadataContainer",
                     "type": "container",
-                    "size": { "initial": { "value": 500, "unit": "px", "type": "fixed" }},
-                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }
+                    "size": { "initial": { "type": "fill" }}
                 }
             ]
         },
