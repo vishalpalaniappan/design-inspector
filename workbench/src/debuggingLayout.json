@@ -289,7 +289,7 @@
         },
         "behaviorScriptContainer": {
             "id": "behaviorScriptContainer",
-            "component": "PrimitivesEditor",
+            "component": "DebuggerBehaviorScript",
             "menuBar": {
                 "showClose": false,
                 "title": "Behavior Script"

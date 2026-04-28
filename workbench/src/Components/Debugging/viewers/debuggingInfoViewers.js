@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import Editor from "@monaco-editor/react";
 import PropTypes from "prop-types";
 
+import {useDalEngine} from "../../../Providers/GlobalProviders";
 import {useSelectedTraceEntryIndex} from "../../../Store/debuggingSlice/useDebuggingSelection";
 import {useTraces} from "../../../Store/useAppSelection";
 import {useSelectedTraceId} from "../../../Store/useAppSelection";
@@ -27,6 +28,7 @@ function DebuggingInfoViewer ({type, isJson = true}) {
     const traces = useTraces();
     const editorRef = useRef(null);
     const [ready, setReady] = useState(false);
+    const {engine} = useDalEngine();
 
 
     useEffect(() => {
@@ -46,7 +48,13 @@ function DebuggingInfoViewer ({type, isJson = true}) {
                     const output = validate ? validate.transformationOutput : "";
                     editorRef.current.setValue(JSON.stringify(output, null, 2));
                 }
-            } else if (trace) {
+            } else if (type === "script") {
+                const entry = trace.executableModelOutput[selectedTraceEntryIndex];
+                const b = engine.graphs.getAllBehaviors().find(
+                    (b) => b.getName() === entry.behavior
+                );
+                console.log(b);
+            } else {
                 const entry = trace.debugger.processedTrace[selectedTraceEntryIndex];
                 if (type in entry) {
                     const value = entry[type];
@@ -56,7 +64,7 @@ function DebuggingInfoViewer ({type, isJson = true}) {
                 }
             }
         }
-    }, [selectedTraceId, ready, type, traces, selectedTraceEntryIndex]);
+    }, [selectedTraceId, engine, ready, type, traces, selectedTraceEntryIndex]);
 
     const handleEditorMount = useCallback((editor, monaco) => {
         editorRef.current = editor;
@@ -95,4 +103,7 @@ export const DebuggerBehaviorExpectedPostWorldState = (props) => (
 );
 export const DebuggerBehaviorTransformOutput = (props) => (
     <DebuggingInfoViewer type="transformOutput" {...props} />
+);
+export const DebuggerBehaviorScript = (props) => (
+    <DebuggingInfoViewer type="script" {...props} />
 );
