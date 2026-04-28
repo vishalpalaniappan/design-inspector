@@ -11,8 +11,6 @@ import {useSelectedTraceId} from "../../../Store/useAppSelection";
 import "./TraceBehaviorSelector.scss";
 
 TraceBehaviorSelector.propTypes = {
-    close: PropTypes.func.isRequired,
-    args: PropTypes.object.isRequired,
 };
 
 /**
@@ -29,12 +27,10 @@ export function TraceBehaviorSelector () {
         if (selectedTraceId && traces) {
             const traceValues = Object.values(traces);
             const trace = traceValues.find((t) => t.uid === selectedTraceId);
-            if (trace) {
-                setBehaviors(trace.debugger.processedTrace);
-                console.log(trace);
-            }
+            setBehaviors(trace.debugger.processedTrace);
+            dispatch(setSelectedTraceEntryThunk(0));
         }
-    }, [selectedTraceId, traces]);
+    }, [selectedTraceId, dispatch, traces]);
 
     const selectTraceEntry = useCallback((entryIndex) => {
         // Index as identifier because array is constant (order and length)
