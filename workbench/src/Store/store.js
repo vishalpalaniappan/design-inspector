@@ -2,13 +2,13 @@ import {configureStore} from "@reduxjs/toolkit";
 
 import engine from "../Providers/DalEngine";
 import appReducer from "./appSlice";
-import debuggingSlice from "./debuggingSlice/debuggingSlice";
+import debuggingReducer from "./debuggingSlice/debuggingSlice";
 import scriptingReducer from "./scriptingSlice/scriptingSlice";
 
 export const store = configureStore({
     reducer: {
         app: appReducer,
-        debugging: debuggingSlice,
+        debugging: debuggingReducer,
         scripting: scriptingReducer,
     },
     middleware: (getDefaultMiddleware) =>
