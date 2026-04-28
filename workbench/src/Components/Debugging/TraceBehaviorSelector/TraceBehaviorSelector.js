@@ -21,6 +21,7 @@ TraceBehaviorSelector.propTypes = {
 export function TraceBehaviorSelector () {
     const selectedTraceId = useSelectedTraceId();
     const traces = useTraces();
+    const dispatch = useDispatch();
     const [behaviors, setBehaviors] = useState([]);
 
     useEffect(() => {
@@ -33,11 +34,18 @@ export function TraceBehaviorSelector () {
             }
         }
     }, [selectedTraceId, traces]);
+    const selectTraceEntry = (entry) => {
+        console.log("Selected trace entry:", entry);
+        // Set selected trace entry in store here
+        // dispatch(setSelectedTraceEntryThunk(entry));
+    };
     return (
         <div className="traceBehaviorSelector">
             {behaviors.map((entry, index) =>
                 <div key={index} className="traceBehaviorSelectorItem">
-                    <span className="traceBehaviorSelectorName">{entry.behavior}</span>
+                    <span className="traceBehaviorSelectorName"
+                        onClick={() => selectTraceEntry(entry)}>{entry.behavior}
+                    </span>
                 </div>
             )}
         </div>
