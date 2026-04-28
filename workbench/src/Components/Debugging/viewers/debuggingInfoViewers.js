@@ -49,12 +49,14 @@ function DebuggingInfoViewer ({type, isJson = true}) {
                     editorRef.current.setValue(JSON.stringify(output, null, 2));
                 }
             } else if (type === "script") {
+                // Script is in the behavior, so we find it and get the script.
                 const entry = trace.executableModelOutput[selectedTraceEntryIndex];
                 const b = engine.graphs.getAllBehaviors().find(
                     (b) => b.getName() === entry.behavior
                 );
                 editorRef.current.setValue(b ? b._script : "");
             } else {
+                // For other types, we look into the processed trace entry.
                 const entry = trace.debugger.processedTrace[selectedTraceEntryIndex];
                 if (type in entry) {
                     const value = entry[type];
