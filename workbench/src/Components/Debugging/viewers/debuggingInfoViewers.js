@@ -2,8 +2,9 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 
 import Editor from "@monaco-editor/react";
 import PropTypes from "prop-types";
-import {useDispatch} from "react-redux";
 
+import {useSelectedTraceEntry} from "../../../Store/debuggingSlice/useDebuggingSelection";
+import {useTraces} from "../../../Store/useAppSelection";
 import {useSelectedTraceId} from "../../../Store/useAppSelection";
 
 import "./debuggingInfoViewers.scss";
@@ -21,16 +22,35 @@ DebuggingInfoViewer.propTypes = {
  * @return {JSX.Element}
  */
 function DebuggingInfoViewer ({type, isJson = true}) {
+    const selectedTraceEntry = useSelectedTraceEntry();
     const selectedTraceId = useSelectedTraceId();
+    const traces = useTraces();
     const editorRef = useRef(null);
     const [ready, setReady] = useState(false);
+
+
+    useEffect(() => {
+        if (ready && selectedTraceId && traces) {
+            const traceValues = Object.values(traces);
+            const trace = traceValues.find((t) => t.uid === selectedTraceId);
+            console.log(trace, selectedTraceEntry);
+            if (trace) {
+                const entry = trace.debugger.processedTrace[selectedTraceEntry];
+                if (type in entry) {
+                    const value = entry[type];
+                    editorRef.current.setValue(
+                        isJson ? JSON.stringify(value, null, 2) : String(value)
+                    );
+                }
+            }
+        }
+    }, [selectedTraceId, ready, type, traces, selectedTraceEntry]);
 
     const handleEditorMount = useCallback((editor, monaco) => {
         editorRef.current = editor;
         editor.onDidChangeModelContent((e) => {
             const value = editor.getValue();
         });
-        editorRef.current.setValue('{"val": "Test value"}');
         setReady(true);
     }, [type]);
 
