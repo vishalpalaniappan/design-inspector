@@ -274,7 +274,7 @@
             "component": "DebuggerBehaviorExpectedPostWorldState",
             "menuBar": {
                 "showClose": false,
-                "title": "Expected Post Transformation World State"
+                "title": "Implementation Post Transform World"
             },
             "background": "#222222"
         },
@@ -283,7 +283,7 @@
             "component": "DebuggerBehaviorTransformOutput",
             "menuBar": {
                 "showClose": false,
-                "title": "Transformations Output"
+                "title": "Computed Post Transform World"
             },
             "background": "#222222"
         },
