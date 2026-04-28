@@ -1,9 +1,10 @@
 /* eslint-disable max-len */
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
+import {setSelectedTraceEntryThunk} from "../../../Store/debuggingSlice/debuggingThunk";
 import {useTraces} from "../../../Store/useAppSelection";
 import {useSelectedTraceId} from "../../../Store/useAppSelection";
 
@@ -30,21 +31,24 @@ export function TraceBehaviorSelector () {
             const trace = traceValues.find((t) => t.uid === selectedTraceId);
             if (trace) {
                 setBehaviors(trace.debugger.processedTrace);
-                console.log(trace.debugger.processedTrace);
             }
         }
     }, [selectedTraceId, traces]);
-    const selectTraceEntry = (entry) => {
-        console.log("Selected trace entry:", entry);
-        // Set selected trace entry in store here
-        // dispatch(setSelectedTraceEntryThunk(entry));
-    };
+
+    const selectTraceEntry = useCallback((entryIndex) => {
+        // I'm using index as an identifier because the processed
+        // trace array isn't going to change in length or order.
+        dispatch(setSelectedTraceEntryThunk(entryIndex));
+    }, [dispatch]);
+
     return (
         <div className="traceBehaviorSelector">
             {behaviors.map((entry, index) =>
-                <div key={index} className="traceBehaviorSelectorItem">
-                    <span className="traceBehaviorSelectorName"
-                        onClick={() => selectTraceEntry(entry)}>{entry.behavior}
+                <div key={index}
+                    className="traceBehaviorSelectorItem"
+                    onClick={() => selectTraceEntry(index)}>
+                    <span className="traceBehaviorSelectorName">
+                        {entry.behavior}
                     </span>
                 </div>
             )}
