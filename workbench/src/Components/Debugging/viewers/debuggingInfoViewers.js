@@ -4,6 +4,8 @@ import Editor from "@monaco-editor/react";
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
+import {useSelectedTraceId} from "../../../Store/useAppSelection";
+
 import "./debuggingInfoViewers.scss";
 
 DebuggingInfoViewer.propTypes = {
@@ -15,10 +17,13 @@ DebuggingInfoViewer.propTypes = {
 /**
  * Debugging info viewer.
  * @param {Object} props
- * 
+ *
  * @return {JSX.Element}
  */
 function DebuggingInfoViewer ({type, initial, isJson = true}) {
+    const selectedTraceId = useSelectedTraceId();
+    const [ready, setReady] = useState(false);
+
     const handleEditorMount = useCallback((editor, monaco) => {
         editorRef.current = editor;
         editor.onDidChangeModelContent((e) => {
@@ -47,15 +52,14 @@ function DebuggingInfoViewer ({type, initial, isJson = true}) {
 }
 
 export const DebuggerBehaviorInitialArgs = (props) => (
-    <DebuggingInfoViewer type="initialArgs" {...props} initial={initialArgsValue} />
+    <DebuggingInfoViewer type="arguments" {...props} initial={initialArgsValue} />
 );
 export const DebuggerBehaviorInitialWorldState = (props) => (
-    <DebuggingInfoViewer type="initialWorldState" {...props} initial={initialWorldStateValue} />
+    <DebuggingInfoViewer type="preParticipants" {...props} initial={initialWorldStateValue} />
 );
-
 export const DebuggerBehaviorExpectedPostWorldState = (props) => (
     // eslint-disable-next-line max-len
-    <DebuggingInfoViewer type="expectedPostWorldState" {...props} initial={expectedPostWorldStateValue} />
+    <DebuggingInfoViewer type="postParticipants" {...props} initial={expectedPostWorldStateValue} />
 );
 export const DebuggerBehaviorTransformOutput = (props) => (
     <DebuggingInfoViewer type="transformOutput" {...props} />
