@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import ServerContext from "../../Providers/ServerContext";
 import {setScriptingMode} from "../../Store/appSlice";
 import {setDesignMode} from "../../Store/appSlice";
+import {setDebuggingMode} from "../../Store/appSlice";
 import {useStatusMsg} from "../../Store/useAppSelection";
 import {useAppMode} from "../../Store/useAppSelection";
 
@@ -55,6 +56,8 @@ export function StatusBar () {
             dispatch(setDesignMode());
         } else if (value === 2) {
             dispatch(setScriptingMode());
+        } else if (value === 3) {
+            dispatch(setDebuggingMode());
         }
     };
 
@@ -76,6 +79,7 @@ export function StatusBar () {
                     }>
                         <option value={1}>Design</option>
                         <option value={2}>Behavioral Scripting</option>
+                        <option value={3}>Debugging</option>
                     </select>
                 </div>
             </div>

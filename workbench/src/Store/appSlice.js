@@ -6,7 +6,7 @@ const appSlice = createSlice({
         activeTab: null,
         counter: 0,
         lastSaved: null,
-        appMode: 1, // 1 = design,  2 = debugging
+        appMode: 1, // 1 = design,  2 = scripting, 3 = debugging
         designLoaded: false,
         hasEntryPoint: false,
         selectedBehavior: null,
@@ -65,6 +65,9 @@ const appSlice = createSlice({
         setScriptingMode (state) {
             state.appMode = 2;
         },
+        setDebuggingMode (state) {
+            state.appMode = 3;
+        },
         setSelectedMapping (state, action) {
             state.selectedMapping = action.payload;
         },
@@ -90,6 +93,7 @@ export const {
     setStatusMsg,
     setLastSaved,
     setScriptingMode,
+    setDebuggingMode,
     setSelectedGraph,
     setSelectedInvariant,
     incrementCounter,

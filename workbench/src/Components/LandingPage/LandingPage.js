@@ -7,8 +7,10 @@ import debuggingLayout from "../../debuggingLayout.json";
 import designLayout from "../../designLayout.json";
 import {registry} from "../../Registry";
 import scriptingLayout from "../../scriptingLayout.json";
+import {setDesignMode} from "../../Store/appSlice";
+import {setScriptingMode} from "../../Store/appSlice";
+import {setDebuggingMode} from "../../Store/appSlice";
 import {setDesignLoaded} from "../../Store/appSlice";
-import {setDesignMode, setScriptingMode} from "../../Store/appSlice";
 import {useDesignLoaded} from "../../Store/useAppSelection";
 import {useAppMode} from "../../Store/useAppSelection";
 import {LoadDesign} from "./LoadDesign/LoadDesign";
@@ -44,6 +46,8 @@ export function LandingPage () {
             dispatch(setScriptingMode());
         } else if (designMode && designMode === "design") {
             dispatch(setDesignMode());
+        } else if (designMode && designMode === "debugging") {
+            dispatch(setDebuggingMode());
         }
         setReady(true);
     }, [dispatch]);
@@ -59,6 +63,10 @@ export function LandingPage () {
             dispatch(setDesignLoaded(false));
             setChosenLayout(scriptingLayout);
             params.set("mode", "scripting");
+        } else if (appMode === 3) {
+            dispatch(setDesignLoaded(false));
+            setChosenLayout(debuggingLayout);
+            params.set("mode", "debugging");
         } else {
             console.warn("Unknown app mode:", appMode);
             dispatch(setDesignLoaded(false));
