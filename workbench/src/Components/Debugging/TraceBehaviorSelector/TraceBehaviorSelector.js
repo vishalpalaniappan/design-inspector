@@ -36,8 +36,7 @@ export function TraceBehaviorSelector () {
     }, [selectedTraceId, traces]);
 
     const selectTraceEntry = useCallback((entryIndex) => {
-        // I'm using index as an identifier because the processed
-        // trace array isn't going to change in length or order.
+        // Index as identifier because array is constant (order and length)
         dispatch(setSelectedTraceEntryThunk(entryIndex));
     }, [dispatch]);
 
