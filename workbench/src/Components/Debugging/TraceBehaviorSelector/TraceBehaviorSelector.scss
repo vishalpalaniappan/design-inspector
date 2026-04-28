@@ -1,0 +1,15 @@
+.traceBehaviorSelector {
+    display: flex;
+    flex-direction: column;
+}
+
+.traceBehaviorSelectorItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px;
+    color:white;
+    cursor: pointer;
+    background-color: #1d1d1d; /* light */
+    border-bottom: 1px solid #555; /* dark */
+}

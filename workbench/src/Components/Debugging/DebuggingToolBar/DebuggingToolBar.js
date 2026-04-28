@@ -25,7 +25,10 @@ export function DebuggingToolBar () {
 
     useEffect(() => {
         if (traces) {
-            console.log(traces);
+            const values = Object.values(traces);
+            if (values.length > 0) {
+                dispatch(setSelectedTraceIdThunk(values[0].uid));
+            }
         }
     }, [traces]);
 

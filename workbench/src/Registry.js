@@ -84,4 +84,8 @@ export const registry = {
         import("./Components/Debugging/DebuggingToolBar/DebuggingToolBar").then((m) => ({
             default: m.default || m.DebuggingToolBar,
         })),
+    TraceBehaviorSelector: () =>
+        import("./Components/Debugging/TraceBehaviorSelector/TraceBehaviorSelector").then((m) => ({
+            default: m.default || m.TraceBehaviorSelector,
+        })),
 };

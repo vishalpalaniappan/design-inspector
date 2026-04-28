@@ -229,6 +229,7 @@
         },
         "traceBehaviorContainer": {
             "id": "traceBehaviorContainer",
+            "component": "TraceBehaviorSelector",
             "menuBar": {
                 "showClose": false,
                 "title": "Trace Inspector"
