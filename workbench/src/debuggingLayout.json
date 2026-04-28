@@ -237,7 +237,7 @@
         },
         "menuBar": {
             "id": "menuBar",
-            "component": "ScriptingToolBar",
+            "component": "DebuggingToolBar",
             "background": "#4f3b55"
         },
         "footer": {

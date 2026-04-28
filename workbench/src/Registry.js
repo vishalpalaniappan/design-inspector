@@ -80,4 +80,8 @@ export const registry = {
         import("./Components/Scripting/transformOutputMeta/transformOutputMeta").then((m) => ({
             default: m.default || m.TransformOutputMeta,
         })),
+    DebuggingToolBar: () =>
+        import("./Components/Debugging/DebuggingToolBar/DebuggingToolBar").then((m) => ({
+            default: m.default || m.DebuggingToolBar,
+        })),
 };
