@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 
 import {setSelectedTraceEntryIndexThunk} from "../../../Store/debuggingSlice/debuggingThunk";
+import {useSelectedTraceEntryIndex} from "../../../Store/debuggingSlice/useDebuggingSelection";
 import {useTraces} from "../../../Store/useAppSelection";
 import {useSelectedTraceId} from "../../../Store/useAppSelection";
 
@@ -19,6 +20,7 @@ TraceBehaviorSelector.propTypes = {
  */
 export function TraceBehaviorSelector () {
     const selectedTraceId = useSelectedTraceId();
+    const selectedTraceEntryIndex = useSelectedTraceEntryIndex();
     const traces = useTraces();
     const dispatch = useDispatch();
     const [behaviors, setBehaviors] = useState([]);
@@ -37,11 +39,22 @@ export function TraceBehaviorSelector () {
         dispatch(setSelectedTraceEntryIndexThunk(entryIndex));
     }, [dispatch]);
 
+    const getStyle = useCallback((index) => {
+        if (index === selectedTraceEntryIndex) {
+            return {
+                backgroundColor: "#694636",
+                borderBottom: "none",
+            };
+        }
+        return {};
+    }, [selectedTraceEntryIndex]);
+
     return (
         <div className="traceBehaviorSelector">
             {behaviors.map((entry, index) =>
                 <div key={index}
                     className="traceBehaviorSelectorItem"
+                    style={getStyle(index)}
                     onClick={() => selectTraceEntry(index)}>
                     <span className="traceBehaviorSelectorName">
                         {entry.behavior}

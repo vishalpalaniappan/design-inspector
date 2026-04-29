@@ -11,5 +11,8 @@
     color:white;
     cursor: pointer;
     background-color: #1d1d1d;
-    border-bottom: 1px solid #555;
+}
+
+.traceBehaviorSelectorItem:hover {
+    background-color: #414141;
 }
