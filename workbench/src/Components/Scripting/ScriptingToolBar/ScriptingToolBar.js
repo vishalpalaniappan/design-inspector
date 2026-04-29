@@ -34,6 +34,9 @@ export function ScriptingToolBar () {
     const [selectedBehavior, setSelectedBehavior] = useState(null);
     const selectedTransformationTest = useSelectedTransformationTest();
 
+    // TODO: Investigate why worker stopped responding or receiving messages tomorrow.
+    // Only change I can think of was upgrading the engine package, I think I will revert
+    // that version and then check and go from there.
 
     useEffect(() => {
         if (behaviors.length > 0 && selectedBehavior) {
