@@ -45,8 +45,10 @@ function DebuggingInfoViewer ({type, isJson = true}) {
                 const entry = trace.executableModelOutput[selectedTraceEntryIndex];
                 if ("transform" in entry.output) {
                     const validate = entry.output.transform.find((v) => v.type === "validate");
-                    const output = validate ? validate.transformationOutput : "";
-                    editorRef.current.setValue(JSON.stringify(output, null, 2));
+                    const output = validate ? validate.transformationOutput : null;
+                    editorRef.current.setValue(
+                        output ? JSON.stringify(output, null, 2) : ""
+                    );
                 }
             } else if (type === "transformOutputMetadata") {
                 const entry = trace.executableModelOutput[selectedTraceEntryIndex];
