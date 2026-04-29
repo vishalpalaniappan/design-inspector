@@ -37,6 +37,23 @@ export function RootCauseContainer () {
         }
     }, [selectedTraceId, traces]);
     return (
-        <div></div>
+        <div>
+            {
+                failures && failures.map((f, index) => (
+                    <div className="failureContainer" key={index}>
+                        <div key={index} className="failureLabel">
+                            Failure: {f.behavior}
+                        </div>
+                        {
+                            f.rootCauses && f.rootCauses.map((rc, rcIndex) => (
+                                <div key={rcIndex} className="rootCauseLabel">
+                                    - Root Cause: {rc.behavior}
+                                </div>
+                            ))
+                        }
+                    </div>
+                ))
+            }
+        </div>
     );
 }
