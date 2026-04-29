@@ -32,7 +32,7 @@ function DebuggingInfoViewer ({type, isJson = true}) {
 
     useEffect(() => {
         if (ready && selectedTraceId && traces) {
-            if (!selectedTraceEntryIndex) return;
+            if (selectedTraceEntryIndex === null || selectedTraceEntryIndex === undefined) return;
             const traceValues = Object.values(traces);
             const trace = traceValues.find((t) => t.uid === selectedTraceId);
             if (!trace) {
