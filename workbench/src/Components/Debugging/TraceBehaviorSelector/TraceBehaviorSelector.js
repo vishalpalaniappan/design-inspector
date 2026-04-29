@@ -24,6 +24,7 @@ export function TraceBehaviorSelector () {
     const traces = useTraces();
     const dispatch = useDispatch();
     const [behaviors, setBehaviors] = useState([]);
+    const [selectedBehavior, setSelectedBehavior] = useState(null);
 
     /**
      * TODO:
@@ -44,6 +45,12 @@ export function TraceBehaviorSelector () {
         }
     }, [selectedTraceId, dispatch, traces]);
 
+    useEffect(() => {
+        if (behaviors.length > 0 && selectedTraceEntryIndex !== null) {
+            setSelectedBehavior(behaviors[selectedTraceEntryIndex]);
+        }
+    }, [selectedTraceEntryIndex, behaviors]);
+
     const selectTraceEntry = useCallback((entryIndex) => {
         // Index as identifier because array is constant (order and length)
         dispatch(setSelectedTraceEntryIndexThunk(entryIndex));
@@ -59,15 +66,28 @@ export function TraceBehaviorSelector () {
         return {};
     }, [selectedTraceEntryIndex]);
 
+    const getBehaviorStyle = useCallback((index) => {
+        const behavior = behaviors[index];
+        if (behavior.failure) {
+            return {
+                backgroundColor: "#6b0500",
+                borderBottom: "none",
+            };
+        }
+    }, [traces, behaviors, selectedTraceEntryIndex, selectedBehavior]);
+
     return (
         <div className="traceBehaviorSelector">
             {behaviors.map((entry, index) =>
                 <div className="traceBehaviorRow" key={index}>
                     {
-                        <div style={getSelectedStyle(index)} className="traceBehaviorIndicator" />
+                        <div
+                            style={getSelectedStyle(index)}
+                            className="traceBehaviorIndicator" />
                     }
                     <div key={index}
                         className="traceBehaviorSelectorItem"
+                        style={getBehaviorStyle(index)}
                         onClick={() => selectTraceEntry(index)}>
                         <span className="traceBehaviorSelectorName">
                             {entry.behavior}
