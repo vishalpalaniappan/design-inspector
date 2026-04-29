@@ -19,6 +19,7 @@ RootCauseContainer.propTypes = {
  */
 export function RootCauseContainer () {
     const selectedTraceId = useSelectedTraceId();
+    const [failures, setFailures] = useState([]);
     const traces = useTraces();
 
 
@@ -30,7 +31,9 @@ export function RootCauseContainer () {
                 console.warn(`Trace with id ${selectedTraceId} not found`);
                 return;
             }
-            console.log(trace);
+            const failures = trace.debugger._failures;
+            setFailures(failures);
+            console.log(failures);
         }
     }, [selectedTraceId, traces]);
     return (
