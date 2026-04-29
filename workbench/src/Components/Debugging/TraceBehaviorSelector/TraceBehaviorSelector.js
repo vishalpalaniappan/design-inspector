@@ -25,6 +25,16 @@ export function TraceBehaviorSelector () {
     const dispatch = useDispatch();
     const [behaviors, setBehaviors] = useState([]);
 
+    /**
+     * TODO:
+     * Notes for myself to continue
+     * 1. Create color scheme to indicate semantic validity of behaviors.
+     * 2. Create color scheme to indicate if behavior failed.
+     * 3. Add subtitles which include number of violations and transform validity.
+     * 4. Add container for failure and root cause identification through invariant violation.
+     * 5. If none exists, then learning.
+     */
+
     useEffect(() => {
         if (selectedTraceId && traces) {
             const traceValues = Object.values(traces);
