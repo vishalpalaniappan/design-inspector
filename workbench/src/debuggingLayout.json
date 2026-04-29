@@ -45,7 +45,7 @@
                 },
 
                 {
-                    "containerId": "traceBehaviorContainer",
+                    "containerId": "behaviorAnalaysisContainer",
                     "type": "container",
                     "size": { 
                         "initial": { "value": 300, "unit": "px", "type": "fixed" },
@@ -54,7 +54,7 @@
                 },
                 {
                     "type": "handleBar",
-                    "sibling1": "traceBehaviorContainer",
+                    "sibling1": "behaviorAnalaysisContainer",
                     "sibling2": "contentContainer"
                 },
 
@@ -118,7 +118,7 @@
             "background": "#252526"
         },
         "traceViewer": {
-            "id": "traceViewer",
+            "id": "traceViewer",    
             "component":"TraceSelector",
             "background": "#252526"
         },
@@ -227,12 +227,44 @@
                 "title": "Transform Metadata"
             }
         },
+        "behaviorAnalaysisContainer": {
+            "id": "behaviorAnalaysisContainer",
+            "background": "#007acc",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "traceBehaviorContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "traceBehaviorContainer",
+                    "sibling2": "rootCauseContainer"
+                },
+                {
+                    "containerId": "rootCauseContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
         "traceBehaviorContainer": {
             "id": "traceBehaviorContainer",
             "component": "TraceBehaviorSelector",
             "menuBar": {
                 "showClose": false,
-                "title": "Trace Inspector"
+                "title": "Behavior Inspector"
+            },
+            "background": "#1e1e1e"
+        },
+        "rootCauseContainer": {
+            "id": "rootCauseContainer",
+            "component": "RootCauseContainer",
+            "menuBar": {
+                "showClose": false,
+                "title": "Root Cause(s)"
             },
             "background": "#1e1e1e"
         },
