@@ -35,6 +35,7 @@ function DebuggingInfoViewer ({type, isJson = true}) {
         if (ready && selectedTraceId && traces) {
             const traceValues = Object.values(traces);
             const trace = traceValues.find((t) => t.uid === selectedTraceId);
+            console.log(trace);
             if (!trace) {
                 console.warn(`Trace with id ${selectedTraceId} not found`);
                 return;
@@ -48,6 +49,9 @@ function DebuggingInfoViewer ({type, isJson = true}) {
                     const output = validate ? validate.transformationOutput : "";
                     editorRef.current.setValue(JSON.stringify(output, null, 2));
                 }
+            } else if (type === "transformOutputMetadata") {
+                const entry = trace.executableModelOutput[selectedTraceEntryIndex];
+                editorRef.current.setValue(JSON.stringify(entry, null, 2));
             } else if (type === "script") {
                 // Script is in the behavior, so we find it and get the script.
                 const entry = trace.executableModelOutput[selectedTraceEntryIndex];
@@ -108,4 +112,7 @@ export const DebuggerBehaviorTransformOutput = (props) => (
 );
 export const DebuggerBehaviorScript = (props) => (
     <DebuggingInfoViewer type="script" {...props} />
+);
+export const DebuggerTransformOutputMetadata = (props) => (
+    <DebuggingInfoViewer type="transformOutputMetadata" {...props} />
 );

@@ -221,7 +221,7 @@
         "transformOutputMetadataContainer": {
             "id": "transformOutputMetadataContainer",
             "background": "#252526",
-            "component": "TransformOutputMeta", 
+            "component": "DebuggerTransformOutputMetadata", 
             "menuBar": {
                 "showClose": false,
                 "title": "Transform Metadata"

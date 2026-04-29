@@ -108,4 +108,8 @@ export const registry = {
         import("./Components/Debugging/viewers/debuggingInfoViewers").then((m) => ({
             default: m.default || m.DebuggerBehaviorScript,
         })),
+    DebuggerTransformOutputMetadata: () =>
+        import("./Components/Debugging/viewers/debuggingInfoViewers").then((m) => ({
+            default: m.default || m.DebuggerTransformOutputMetadata,
+        })),
 };
