@@ -34,19 +34,6 @@ export function ScriptingToolBar () {
     const [selectedBehavior, setSelectedBehavior] = useState(null);
     const selectedTransformationTest = useSelectedTransformationTest();
 
-    // TODO: Investigate why worker stopped responding or receiving messages tomorrow.
-    /**
-     * Notes for myself:
-     * - Its not a engine version issue. I remove all functionality in the worker and just
-     * pinged it for a response but nothing.
-     * - When worker is created it errs with undefined values, I don't think it is even
-     * reaching the worker, I will check the network to see if the file is being loaded.
-     * - I will revisit the commit where I know it was working and then work forwards if I can't
-     * identify any obvious causes.
-     * - This highlights a need for some sort of testing to catch regressions but I am moving
-     * through this to explore all the functionality, I will add all of that in my next iteration.
-     */
-
     useEffect(() => {
         if (behaviors.length > 0 && selectedBehavior) {
             console.log("Selected Behavior:", selectedBehavior);
