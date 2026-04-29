@@ -73,7 +73,6 @@ export function TraceBehaviorSelector () {
 
     const getBehaviorStyle = useCallback((index) => {
         const behavior = behaviors[index];
-        console.log(behavior);
         if (behavior.output.implementationFailure) {
             return {
                 backgroundColor: "#2d1f1f",
@@ -98,7 +97,7 @@ export function TraceBehaviorSelector () {
                         <div className="traceBehaviorSelectorName">
                             {entry.behavior}
                         </div>
-                        { !entry.output?.transformValidFlag &&
+                        { (!entry.output?.transformValidFlag && !entry.output?.transformFailure) &&
                             <div className="traceBehaviorTransformValidity">
                                 {"Invalid Computed Transformation"}
                             </div>
