@@ -49,7 +49,7 @@ export function TraceBehaviorSelector () {
         dispatch(setSelectedTraceEntryIndexThunk(entryIndex));
     }, [dispatch]);
 
-    const getStyle = useCallback((index) => {
+    const getSelectedStyle = useCallback((index) => {
         if (index === selectedTraceEntryIndex) {
             return {
                 backgroundColor: "#694636",
@@ -64,7 +64,7 @@ export function TraceBehaviorSelector () {
             {behaviors.map((entry, index) =>
                 <div className="traceBehaviorRow" key={index}>
                     {
-                        <div style={getStyle(index)} className="traceBehaviorIndicator" />
+                        <div style={getSelectedStyle(index)} className="traceBehaviorIndicator" />
                     }
                     <div key={index}
                         className="traceBehaviorSelectorItem"
