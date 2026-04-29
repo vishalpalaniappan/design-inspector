@@ -63,7 +63,7 @@ function DebuggingInfoViewer ({type, isJson = true}) {
             } else {
                 // For other types, we look into the processed trace entry.
                 const entry = trace.processedTraces[selectedTraceEntryIndex];
-                if (type in entry) {
+                if (entry && type in entry) {
                     const value = entry[type];
                     editorRef.current.setValue(
                         isJson ? JSON.stringify(value, null, 2) : String(value)
