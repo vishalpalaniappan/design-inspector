@@ -52,13 +52,17 @@ export function TraceBehaviorSelector () {
     return (
         <div className="traceBehaviorSelector">
             {behaviors.map((entry, index) =>
-                <div key={index}
-                    className="traceBehaviorSelectorItem"
-                    style={getStyle(index)}
-                    onClick={() => selectTraceEntry(index)}>
-                    <span className="traceBehaviorSelectorName">
-                        {entry.behavior}
-                    </span>
+                <div className="traceBehaviorRow" key={index}>
+                    {
+                        <div style={getStyle(index)} className="traceBehaviorIndicator" />
+                    }
+                    <div key={index}
+                        className="traceBehaviorSelectorItem"
+                        onClick={() => selectTraceEntry(index)}>
+                        <span className="traceBehaviorSelectorName">
+                            {entry.behavior}
+                        </span>
+                    </div>
                 </div>
             )}
         </div>

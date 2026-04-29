@@ -3,16 +3,26 @@
     flex-direction: column;
 }
 
-.traceBehaviorSelectorItem {
+.traceBehaviorSelector >.traceBehaviorRow {
+    display: flex;
+    flex-direction: row;
+    width:100%;
+}
+
+.traceBehaviorSelector > .traceBehaviorRow:hover {
+    background-color: #242424;
+}
+
+.traceBehaviorSelector > .traceBehaviorRow > .traceBehaviorIndicator {
+    width: 8px;
+}
+
+.traceBehaviorSelector > .traceBehaviorRow > .traceBehaviorSelectorItem {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 10px 10px;
     color:white;
     cursor: pointer;
-    background-color: #1d1d1d;
-}
-
-.traceBehaviorSelectorItem:hover {
-    background-color: #414141;
+    flex: 1;
 }
