@@ -30,9 +30,9 @@ function DebuggingInfoViewer ({type, isJson = true}) {
     const [ready, setReady] = useState(false);
     const {engine} = useDalEngine();
 
-
     useEffect(() => {
         if (ready && selectedTraceId && traces) {
+            if (!selectedTraceEntryIndex) return;
             const traceValues = Object.values(traces);
             const trace = traceValues.find((t) => t.uid === selectedTraceId);
             if (!trace) {
