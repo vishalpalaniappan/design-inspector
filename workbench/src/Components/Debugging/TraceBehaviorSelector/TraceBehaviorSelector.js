@@ -40,7 +40,12 @@ export function TraceBehaviorSelector () {
         if (selectedTraceId && traces) {
             const traceValues = Object.values(traces);
             const trace = traceValues.find((t) => t.uid === selectedTraceId);
-            setBehaviors(trace.debugger.processedTrace);
+            console.log(trace);
+            if (!trace || !trace.executableModelOutput) {
+                console.warn(`Trace with id ${selectedTraceId} not found or has no executableModelOutput`);
+                return;
+            };
+            setBehaviors(trace.executableModelOutput);
             dispatch(setSelectedTraceEntryIndexThunk(0));
         }
     }, [selectedTraceId, dispatch, traces]);
@@ -68,9 +73,10 @@ export function TraceBehaviorSelector () {
 
     const getBehaviorStyle = useCallback((index) => {
         const behavior = behaviors[index];
-        if (behavior.failure) {
+        console.log(behavior);
+        if (behavior.output.implementationFailure) {
             return {
-                backgroundColor: "#6b0500",
+                backgroundColor: "#2d1f1f",
                 borderBottom: "none",
             };
         }
@@ -89,9 +95,19 @@ export function TraceBehaviorSelector () {
                         className="traceBehaviorSelectorItem"
                         style={getBehaviorStyle(index)}
                         onClick={() => selectTraceEntry(index)}>
-                        <span className="traceBehaviorSelectorName">
+                        <div className="traceBehaviorSelectorName">
                             {entry.behavior}
-                        </span>
+                        </div>
+                        { !entry.output?.transformValidFlag &&
+                            <div className="traceBehaviorTransformValidity">
+                                {"Invalid Computed Transformation"}
+                            </div>
+                        }
+                        { !entry.output?.invariantsRespectedFlag &&
+                            <div className="traceBehaviorInvariantViolations">
+                                {"World state violated invariants."}
+                            </div>
+                        }
                     </div>
                 </div>
             )}

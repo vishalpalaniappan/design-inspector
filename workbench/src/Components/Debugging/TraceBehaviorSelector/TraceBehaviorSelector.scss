@@ -9,6 +9,10 @@
     width:100%;
 }
 
+.traceBehaviorSelector >.traceBehaviorRow:nth-child(odd) {
+    background-color: #212121;
+}
+
 .traceBehaviorSelector > .traceBehaviorRow:hover {
     background-color: #242424;
 }
@@ -17,12 +21,24 @@
     width: 8px;
 }
 
+
 .traceBehaviorSelector > .traceBehaviorRow > .traceBehaviorSelectorItem {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 10px;
+    font-size: 13px;
+    padding: 15px 10px;
+    gap: 3px;
     color:white;
     cursor: pointer;
     flex: 1;
+    flex-direction: column;
+}
+
+.traceBehaviorSelector > .traceBehaviorRow > .traceBehaviorSelectorItem > .traceBehaviorTransformValidity {
+    font-size: 12px;
+    color: #ff9494;
+}
+
+.traceBehaviorSelector > .traceBehaviorRow > .traceBehaviorSelectorItem > .traceBehaviorInvariantViolations {
+    font-size: 12px;
+    color: #ff9494;
 }
