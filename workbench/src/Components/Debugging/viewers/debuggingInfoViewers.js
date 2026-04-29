@@ -35,7 +35,6 @@ function DebuggingInfoViewer ({type, isJson = true}) {
         if (ready && selectedTraceId && traces) {
             const traceValues = Object.values(traces);
             const trace = traceValues.find((t) => t.uid === selectedTraceId);
-            console.log(trace);
             if (!trace) {
                 console.warn(`Trace with id ${selectedTraceId} not found`);
                 return;
