@@ -55,13 +55,16 @@ export function RootCauseContainer () {
                             Failure: {f.behavior}
                         </div>
                         {
-                            f.rootCauses && f.rootCauses.map((rc, rcIndex) => (
+                            (f?.rootCauses && f.rootCauses.length > 0) ? f.rootCauses.map((rc, rcIndex) => (
                                 <div key={rcIndex} onClick={() => selectBehavior(rc)}>
                                     <div className="rootCauseLabel">Root Cause</div>
                                     <div key={rcIndex} className="rootCauseLabel" >Behavior: {rc.behavior}</div>
                                     <div className="rootCauseLabel">Invariant Violation: {rc.details.message}</div>
                                 </div>
-                            ))
+                            )) :
+                                <div>
+                                    <div className="rootCauseLabel">No root cause found. The design must learn new semantics to explain its observations.</div>
+                                </div>
                         }
                     </div>
                 ))
