@@ -28,12 +28,13 @@ export function TraceBehaviorSelector () {
 
     /**
      * TODO:
-     * Notes for myself to continue
-     * 1. Create color scheme to indicate semantic validity of behaviors.
-     * 2. Create color scheme to indicate if behavior failed.
-     * 3. Add subtitles which include number of violations and transform validity.
-     * 4. Add container for failure and root cause identification through invariant violation.
-     * 5. If none exists, then learning.
+     * I have moved to grouping the behaviors by the atomic design path
+     * that they belong to. However, I am still flattening it into one list here
+     * and then rendering it onto the screen but I need to move away from this.
+     * In the future, I want to show atomic executions visually overlayed on top
+     * of the design, so this will be relevant for that. So I need to update
+     * setSelectedTraceEntryIndexThunk to take a atomic index and then a entry
+     * index to select the relevant behavior.
      */
 
     useEffect(() => {
