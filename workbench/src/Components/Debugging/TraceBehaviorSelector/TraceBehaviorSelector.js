@@ -35,6 +35,10 @@ export function TraceBehaviorSelector () {
      * of the design, so this will be relevant for that. So I need to update
      * setSelectedTraceEntryIndexThunk to take a atomic index and then a entry
      * index to select the relevant behavior.
+     *
+     * This will also allow me to let them select atomic paths at a higher level and
+     * drill down into a single paths behaviors. This will make it much easier for
+     * me to work with larger traces genereated by larger designs.
      */
 
     useEffect(() => {
