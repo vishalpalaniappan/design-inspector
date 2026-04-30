@@ -1,7 +1,9 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 
 import Editor from "@monaco-editor/react";
+import {useDispatch} from "react-redux";
 
+import {setTransformOutput} from "../../../Store/scriptingSlice/scriptingSlice";
 import {useTransformOutput} from "../../../Store/scriptingSlice/useScriptingSelection";
 import {useSelectedBehavior} from "../../../Store/useAppSelection";
 
@@ -14,6 +16,7 @@ TransformOutputMeta.propTypes = {
  * @return {JSX.Element}
  */
 export function TransformOutputMeta ({}) {
+    const dispatch = useDispatch();
     const transformOutput = useTransformOutput();
     const selectedBehavior = useSelectedBehavior();
     const editorRef = useRef(null);
@@ -37,8 +40,9 @@ export function TransformOutputMeta ({}) {
     const handleEditorMount = useCallback((editor, monaco) => {
         editorRef.current = editor;
         editor.onDidChangeModelContent((e) => {});
+        dispatch(setTransformOutput(null));
         setReady(true);
-    }, [transformOutput]);
+    }, [dispatch]);
 
     return (
         <div style={{width: "100%", height: "100%"}}>
