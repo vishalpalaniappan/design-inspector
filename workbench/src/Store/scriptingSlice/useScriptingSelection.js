@@ -12,7 +12,7 @@ export const useTransformOutput = () => {
     const transformOutput = useSelector(selectTransformOutput);
     const counter = useSelector(selectScriptingCounter);
     return useMemo(() => {
-        return transformOutput;
+        return transformOutput?.output;
     }, [transformOutput, counter]);
 };
 
