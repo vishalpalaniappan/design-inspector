@@ -56,10 +56,10 @@ export function RootCauseContainer () {
                         </div>
                         {
                             f.rootCauses && f.rootCauses.map((rc, rcIndex) => (
-                                <div key={rcIndex} className="rootCauseLabel" onClick={() => selectBehavior(rc)}>
-                                    <div>Root Cause</div>
-                                    <div>Behavior: {rc.behavior}</div>
-                                    <div>Invariant Violation: {rc.details.message}</div>
+                                <div key={rcIndex} onClick={() => selectBehavior(rc)}>
+                                    <div className="rootCauseLabel">Root Cause</div>
+                                    <div key={rcIndex} className="rootCauseLabel" >Behavior: {rc.behavior}</div>
+                                    <div className="rootCauseLabel">Invariant Violation: {rc.details.message}</div>
                                 </div>
                             ))
                         }
