@@ -93,17 +93,17 @@ export function TraceBehaviorSelector () {
                                 <div className="traceBehaviorSelectorName">
                                     {entry.behavior}
                                 </div>
-                                { (!entry.output?.transformValidFlag && !entry.output?.transformFailure) &&
+                                { (entry.output?.transformValidFlag === false && !entry.output?.transformFailure === false) &&
                                     <div className="traceBehaviorTransformValidity">
                                         {"Invalid Implementation."}
                                     </div>
                                 }
-                                { !entry.output?.invariantsRespectedFlag &&
+                                { (entry.output?.invariantsRespectedFlag === false) &&
                                     <div className="traceBehaviorInvariantViolations">
                                         {"World state violated invariants."}
                                     </div>
                                 }
-                                { entry.output?.implementationFailure &&
+                                { (entry.output?.implementationFailure === true) &&
                                     <div className="traceBehaviorImplementationFailure">
                                         {"Execution Failure."}
                                     </div>
