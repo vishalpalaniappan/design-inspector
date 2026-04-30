@@ -34,17 +34,20 @@ function DebuggingInfoViewer ({type, isJson = true}) {
         if (ready && selectedTraceId && traces) {
             if (selectedTraceEntryIndex === null || selectedTraceEntryIndex === undefined) return;
             const ind = selectedTraceEntryIndex;
-            const traceValues = Object.values(traces);
-            const trace = traceValues.find((t) => t.uid === selectedTraceId);
+            const trace = Object.values(traces).find((t) => t.uid === selectedTraceId);
             if (!trace) {
                 console.warn(`Trace with id ${selectedTraceId} not found`);
                 return;
             };
-            const transformOutputs = trace.debugger._executableSemanticModelOutputs;
+
+            // Result of the semantic validator used to populate the UI. It
+            // contains both the inputs and the outputs.
+            const computedResult = trace.debugger._executableSemanticModelOutputs;
+
             if (type === "transformOutput") {
                 // Transformation output is saved in the executableModelOutput
                 // in the validation step of the transform section.
-                const entry = transformOutputs[ind.atomicIndex][ind.entryIndex];
+                const entry = computedResult[ind.atomicIndex][ind.entryIndex];
                 if ("transform" in entry.output) {
                     const validate = entry.output.transform.find((v) => v.type === "validate");
                     const output = validate ? validate.transformationOutput : null;
@@ -53,18 +56,18 @@ function DebuggingInfoViewer ({type, isJson = true}) {
                     );
                 }
             } else if (type === "transformOutputMetadata") {
-                const entry = transformOutputs[ind.atomicIndex][ind.entryIndex];
+                const entry = computedResult[ind.atomicIndex][ind.entryIndex];
                 editorRef.current.setValue(JSON.stringify(entry, null, 2));
             } else if (type === "script") {
                 // Script is in the behavior, so we find it and get the script.
-                const entry = transformOutputs[ind.atomicIndex][ind.entryIndex];
+                const entry = computedResult[ind.atomicIndex][ind.entryIndex];
                 const b = engine.graphs.getAllBehaviors().find(
                     (b) => b.getName() === entry.behavior
                 );
                 editorRef.current.setValue(b ? b._script : "");
             } else {
                 // For other types, we look into the processed trace entry.
-                const entry = transformOutputs[ind.atomicIndex][ind.entryIndex].input;
+                const entry = computedResult[ind.atomicIndex][ind.entryIndex].input;
                 if (entry && type in entry) {
                     const value = entry[type];
                     editorRef.current.setValue(
