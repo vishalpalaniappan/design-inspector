@@ -33,8 +33,7 @@ export function TraceBehaviorSelector () {
      */
     useEffect(() => {
         if (selectedTraceId && traces) {
-            const traceValues = Object.values(traces);
-            const trace = traceValues.find((t) => t.uid === selectedTraceId);
+            const trace = Object.values(traces).find((t) => t.uid === selectedTraceId);
             if (!trace) {
                 console.warn(`Trace with id ${selectedTraceId} not found or has no executableModelOutput`);
                 return;
