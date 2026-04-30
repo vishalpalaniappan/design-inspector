@@ -57,7 +57,9 @@ export function RootCauseContainer () {
                         {
                             f.rootCauses && f.rootCauses.map((rc, rcIndex) => (
                                 <div key={rcIndex} className="rootCauseLabel" onClick={() => selectBehavior(rc)}>
-                                    - Root Cause: {rc.behavior}
+                                    <div>Root Cause</div>
+                                    <div>Behavior: {rc.behavior}</div>
+                                    <div>Invariant Violation: {rc.details.message}</div>
                                 </div>
                             ))
                         }
