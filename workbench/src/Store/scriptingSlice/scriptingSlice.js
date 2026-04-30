@@ -1,5 +1,4 @@
 import {createSlice} from "@reduxjs/toolkit";
-import { addTraceThunk } from "../appThunk";
 
 const scriptingSlice = createSlice({
     name: "scripting",
