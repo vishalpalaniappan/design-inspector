@@ -57,7 +57,7 @@ function DebuggingInfoViewer ({type, isJson = true}) {
                 }
             } else if (type === "transformOutputMetadata") {
                 const entry = computedResult[ind.atomicIndex][ind.entryIndex];
-                editorRef.current.setValue(JSON.stringify(entry, null, 2));
+                editorRef.current.setValue(JSON.stringify(entry, null, 4));
             } else if (type === "script") {
                 // Script is in the behavior, so we find it and get the script.
                 const entry = computedResult[ind.atomicIndex][ind.entryIndex];
