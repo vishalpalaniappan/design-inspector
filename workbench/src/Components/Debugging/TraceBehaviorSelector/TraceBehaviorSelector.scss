@@ -11,10 +11,6 @@
     width:100%;
 }
 
-.traceBehaviorSelector >.traceBehaviorRow:nth-child(odd) {
-    background-color: #212121;
-}
-
 .traceBehaviorSelector > .traceBehaviorRow:hover {
     background-color: #242424;
 }
@@ -42,6 +38,5 @@
 
 .traceBehaviorSelector > .traceAtomicSeparator {
     background-color: #434343;
-    height: 2px;
-    min-height: 2px;
+    height: 1px;
 }   
