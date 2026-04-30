@@ -11,7 +11,7 @@ import {useSelectedTraceId} from "../../../Store/useAppSelection";
 
 import "./TraceBehaviorSelector.scss";
 
-TraceBehaviorSelector.propTypes = {
+TraceBehaviorSelector.PropTypes = {
 };
 
 /**
@@ -85,7 +85,7 @@ export function TraceBehaviorSelector () {
         const behavior = behaviors[atomicIndex][index];
         if (behavior.output.implementationFailure) {
             return {
-                backgroundColor: "#2d1f1f",
+                backgroundColor: "#6e2c2c",
                 borderBottom: "none",
             };
         }
