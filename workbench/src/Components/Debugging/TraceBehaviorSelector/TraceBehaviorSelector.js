@@ -94,33 +94,36 @@ export function TraceBehaviorSelector () {
     return (
         <div className="traceBehaviorSelector">
             {behaviors.map((atomic, atomicIndex) => {
-                return atomic.map((entry, index) => {
-                    return <div className="traceBehaviorRow" key={index}>
-                        {
-                            <div
-                                style={getSelectedStyle(atomicIndex, index)}
-                                className="traceBehaviorIndicator" />
-                        }
-                        <div key={index}
-                            className="traceBehaviorSelectorItem"
-                            style={getBehaviorStyle(atomicIndex, index)}
-                            onClick={() => selectTraceEntry(atomicIndex, index)}>
-                            <div className="traceBehaviorSelectorName">
-                                {entry.behavior}
+                return <React.Fragment key={atomicIndex}>
+                    {atomic.map((entry, index) => {
+                        return <div className="traceBehaviorRow" key={index}>
+                            {
+                                <div
+                                    style={getSelectedStyle(atomicIndex, index)}
+                                    className="traceBehaviorIndicator" />
+                            }
+                            <div key={index}
+                                className="traceBehaviorSelectorItem"
+                                style={getBehaviorStyle(atomicIndex, index)}
+                                onClick={() => selectTraceEntry(atomicIndex, index)}>
+                                <div className="traceBehaviorSelectorName">
+                                    {entry.behavior}
+                                </div>
+                                { (!entry.output?.transformValidFlag && !entry.output?.transformFailure) &&
+                                    <div className="traceBehaviorTransformValidity">
+                                        {"Invalid Implementation."}
+                                    </div>
+                                }
+                                { !entry.output?.invariantsRespectedFlag &&
+                                    <div className="traceBehaviorInvariantViolations">
+                                        {"World state violated invariants."}
+                                    </div>
+                                }
                             </div>
-                            { (!entry.output?.transformValidFlag && !entry.output?.transformFailure) &&
-                                <div className="traceBehaviorTransformValidity">
-                                    {"Invalid Implementation."}
-                                </div>
-                            }
-                            { !entry.output?.invariantsRespectedFlag &&
-                                <div className="traceBehaviorInvariantViolations">
-                                    {"World state violated invariants."}
-                                </div>
-                            }
-                        </div>
-                    </div>;
-                });
+                        </div>;
+                    })}
+                    <div className="traceAtomicSeparator" />
+                </React.Fragment>;
             })}
         </div>
     );
