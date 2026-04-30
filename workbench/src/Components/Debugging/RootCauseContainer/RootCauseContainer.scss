@@ -13,10 +13,25 @@
     cursor: pointer;
 }
 
+.rootCauseContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.rootCauseContainer:hover {
+    background-color: #252525;
+}
+
 .rootCauseLabel {
     font-size: 13px;
     padding:4px 10px;
     color:white;
-    background-color: #2d2d2d;
     cursor: pointer;
+}
+
+.noRootCauseLabel {
+    font-size: 13px;
+    padding:4px 10px;
+    color:white;
 }
