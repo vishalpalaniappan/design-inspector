@@ -70,22 +70,18 @@ export function TraceBehaviorSelector () {
         }));
     }, [dispatch]);
 
-    const getSelectedStyle = useCallback((atomicIndex, index) => {
-        const i = selectedTraceEntryIndex;
-        if (i && atomicIndex === i.atomicIndex && index === i.entryIndex) {
-            return {
-                backgroundColor: "#694636",
-                borderBottom: "none",
-            };
-        }
-        return {};
-    }, [selectedTraceEntryIndex]);
-
     const getBehaviorStyle = useCallback((atomicIndex, index) => {
         const behavior = behaviors[atomicIndex][index];
         if (behavior.output.implementationFailure) {
             return {
-                backgroundColor: "#6e2c2c",
+                backgroundColor: "#510909",
+                borderBottom: "none",
+            };
+        }
+        const i = selectedTraceEntryIndex;
+        if (i && atomicIndex === i.atomicIndex && index === i.entryIndex) {
+            return {
+                backgroundColor: "#522b19",
                 borderBottom: "none",
             };
         }
@@ -97,11 +93,6 @@ export function TraceBehaviorSelector () {
                 return <React.Fragment key={atomicIndex}>
                     {atomic.map((entry, index) => {
                         return <div className="traceBehaviorRow" key={index}>
-                            {
-                                <div
-                                    style={getSelectedStyle(atomicIndex, index)}
-                                    className="traceBehaviorIndicator" />
-                            }
                             <div key={index}
                                 className="traceBehaviorSelectorItem"
                                 style={getBehaviorStyle(atomicIndex, index)}

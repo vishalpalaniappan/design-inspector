@@ -19,11 +19,6 @@
     background-color: #242424;
 }
 
-.traceBehaviorSelector > .traceBehaviorRow > .traceBehaviorIndicator {
-    width: 8px;
-}
-
-
 .traceBehaviorSelector > .traceBehaviorRow > .traceBehaviorSelectorItem {
     display: flex;
     font-size: 13px;
@@ -36,12 +31,12 @@
 }
 
 .traceBehaviorSelector > .traceBehaviorRow > .traceBehaviorSelectorItem > .traceBehaviorTransformValidity {
-    font-size: 12px;
+    font-size: 14px;
     color: #ff9494;
 }
 
 .traceBehaviorSelector > .traceBehaviorRow > .traceBehaviorSelectorItem > .traceBehaviorInvariantViolations {
-    font-size: 12px;
+    font-size: 14px;
     color: #ff9494;
 }
 
