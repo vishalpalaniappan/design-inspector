@@ -33,16 +33,18 @@ function DebuggingInfoViewer ({type, isJson = true}) {
     useEffect(() => {
         if (ready && selectedTraceId && traces) {
             if (selectedTraceEntryIndex === null || selectedTraceEntryIndex === undefined) return;
+            const ind = selectedTraceEntryIndex;
             const traceValues = Object.values(traces);
             const trace = traceValues.find((t) => t.uid === selectedTraceId);
             if (!trace) {
                 console.warn(`Trace with id ${selectedTraceId} not found`);
                 return;
             };
+            const outputs = trace.debugger._executableSemanticModelOutputs;
             if (type === "transformOutput") {
                 // Transformation output is saved in the executableModelOutput
                 // in the validation step of the transform section.
-                const entry = trace.executableModelOutput[selectedTraceEntryIndex];
+                const entry = outputs[ind.atomicIndex][ind.entryIndex];
                 if ("transform" in entry.output) {
                     const validate = entry.output.transform.find((v) => v.type === "validate");
                     const output = validate ? validate.transformationOutput : null;
@@ -51,18 +53,19 @@ function DebuggingInfoViewer ({type, isJson = true}) {
                     );
                 }
             } else if (type === "transformOutputMetadata") {
-                const entry = trace.executableModelOutput[selectedTraceEntryIndex];
+                const entry = outputs[ind.atomicIndex][ind.entryIndex];
                 editorRef.current.setValue(JSON.stringify(entry, null, 2));
             } else if (type === "script") {
                 // Script is in the behavior, so we find it and get the script.
-                const entry = trace.executableModelOutput[selectedTraceEntryIndex];
+                const entry = outputs[ind.atomicIndex][ind.entryIndex];
                 const b = engine.graphs.getAllBehaviors().find(
                     (b) => b.getName() === entry.behavior
                 );
                 editorRef.current.setValue(b ? b._script : "");
             } else {
                 // For other types, we look into the processed trace entry.
-                const entry = trace.processedTraces[selectedTraceEntryIndex];
+                console.log(trace);
+                const entry = trace.debugger.processedTraces[ind.atomicIndex][ind.entryIndex];
                 if (entry && type in entry) {
                     const value = entry[type];
                     editorRef.current.setValue(

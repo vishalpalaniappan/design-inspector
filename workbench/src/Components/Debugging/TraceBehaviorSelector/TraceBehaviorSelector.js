@@ -45,29 +45,41 @@ export function TraceBehaviorSelector () {
         if (selectedTraceId && traces) {
             const traceValues = Object.values(traces);
             const trace = traceValues.find((t) => t.uid === selectedTraceId);
-            console.log(trace);
-            if (!trace || !trace.executableModelOutput) {
+            if (!trace) {
                 console.warn(`Trace with id ${selectedTraceId} not found or has no executableModelOutput`);
                 return;
             };
-            setBehaviors(trace.executableModelOutput);
-            dispatch(setSelectedTraceEntryIndexThunk(0));
+            if (!trace?.debugger._executableSemanticModelOutputs) {
+                console.warn("The executable model outputs were not found in the debugger");
+                return;
+            };
+            const atomicBehavioralTraces = trace.debugger._executableSemanticModelOutputs;
+            setBehaviors(atomicBehavioralTraces);
+            dispatch(setSelectedTraceEntryIndexThunk({
+                atomicIndex: 0,
+                entryIndex: 0,
+            }));
         }
     }, [selectedTraceId, dispatch, traces]);
 
     useEffect(() => {
         if (behaviors.length > 0 && selectedTraceEntryIndex !== null) {
-            setSelectedBehavior(behaviors[selectedTraceEntryIndex]);
+            const i = selectedTraceEntryIndex;
+            setSelectedBehavior(behaviors[i.atomicIndex][i.entryIndex]);
         }
     }, [selectedTraceEntryIndex, behaviors]);
 
-    const selectTraceEntry = useCallback((entryIndex) => {
+    const selectTraceEntry = useCallback((atomicIndex, entryIndex) => {
         // Index as identifier because array is constant (order and length)
-        dispatch(setSelectedTraceEntryIndexThunk(entryIndex));
+        dispatch(setSelectedTraceEntryIndexThunk({
+            atomicIndex,
+            entryIndex,
+        }));
     }, [dispatch]);
 
-    const getSelectedStyle = useCallback((index) => {
-        if (index === selectedTraceEntryIndex) {
+    const getSelectedStyle = useCallback((atomicIndex, index) => {
+        const i = selectedTraceEntryIndex;
+        if (i && atomicIndex === i.atomicIndex && index === i.entryIndex) {
             return {
                 backgroundColor: "#694636",
                 borderBottom: "none",
@@ -76,8 +88,8 @@ export function TraceBehaviorSelector () {
         return {};
     }, [selectedTraceEntryIndex]);
 
-    const getBehaviorStyle = useCallback((index) => {
-        const behavior = behaviors[index];
+    const getBehaviorStyle = useCallback((atomicIndex, index) => {
+        const behavior = behaviors[atomicIndex][index];
         if (behavior.output.implementationFailure) {
             return {
                 backgroundColor: "#2d1f1f",
@@ -88,33 +100,35 @@ export function TraceBehaviorSelector () {
 
     return (
         <div className="traceBehaviorSelector">
-            {behaviors.map((entry, index) =>
-                <div className="traceBehaviorRow" key={index}>
-                    {
-                        <div
-                            style={getSelectedStyle(index)}
-                            className="traceBehaviorIndicator" />
-                    }
-                    <div key={index}
-                        className="traceBehaviorSelectorItem"
-                        style={getBehaviorStyle(index)}
-                        onClick={() => selectTraceEntry(index)}>
-                        <div className="traceBehaviorSelectorName">
-                            {entry.behavior}
+            {behaviors.map((atomic, atomicIndex) => {
+                return atomic.map((entry, index) => {
+                    return <div className="traceBehaviorRow" key={index}>
+                        {
+                            <div
+                                style={getSelectedStyle(atomicIndex, index)}
+                                className="traceBehaviorIndicator" />
+                        }
+                        <div key={index}
+                            className="traceBehaviorSelectorItem"
+                            style={getBehaviorStyle(atomicIndex, index)}
+                            onClick={() => selectTraceEntry(atomicIndex, index)}>
+                            <div className="traceBehaviorSelectorName">
+                                {entry.behavior}
+                            </div>
+                            { (!entry.output?.transformValidFlag && !entry.output?.transformFailure) &&
+                                <div className="traceBehaviorTransformValidity">
+                                    {"Invalid Implementation."}
+                                </div>
+                            }
+                            { !entry.output?.invariantsRespectedFlag &&
+                                <div className="traceBehaviorInvariantViolations">
+                                    {"World state violated invariants."}
+                                </div>
+                            }
                         </div>
-                        { (!entry.output?.transformValidFlag && !entry.output?.transformFailure) &&
-                            <div className="traceBehaviorTransformValidity">
-                                {"Invalid Implementation."}
-                            </div>
-                        }
-                        { !entry.output?.invariantsRespectedFlag &&
-                            <div className="traceBehaviorInvariantViolations">
-                                {"World state violated invariants."}
-                            </div>
-                        }
-                    </div>
-                </div>
-            )}
+                    </div>;
+                });
+            })}
         </div>
     );
 }
