@@ -27,20 +27,10 @@ export function TraceBehaviorSelector () {
     const [selectedBehavior, setSelectedBehavior] = useState(null);
 
     /**
-     * TODO:
-     * I have moved to grouping the behaviors by the atomic design path
-     * that they belong to. However, I am still flattening it into one list here
-     * and then rendering it onto the screen but I need to move away from this.
-     * In the future, I want to show atomic executions visually overlayed on top
-     * of the design, so this will be relevant for that. So I need to update
-     * setSelectedTraceEntryIndexThunk to take a atomic index and then a entry
-     * index to select the relevant behavior.
-     *
-     * This will also allow me to let them select atomic paths at a higher level and
-     * drill down into a single paths behaviors. This will make it much easier for
-     * me to work with larger traces genereated by larger designs.
+     * TODO: I am not implementing it now but the UI can provide
+     * a higher level selected of atomic execution groups and then
+     * drill down into the behaviors based on the selected group.
      */
-
     useEffect(() => {
         if (selectedTraceId && traces) {
             const traceValues = Object.values(traces);
@@ -70,7 +60,11 @@ export function TraceBehaviorSelector () {
     }, [selectedTraceEntryIndex, behaviors]);
 
     const selectTraceEntry = useCallback((atomicIndex, entryIndex) => {
-        // Index as identifier because array is constant (order and length)
+        /**
+         * 2-d Array with first dimension being atomic execution index
+         * and the second is the entry index, I save both to access the
+         * selected behavior.
+         */
         dispatch(setSelectedTraceEntryIndexThunk({
             atomicIndex,
             entryIndex,
