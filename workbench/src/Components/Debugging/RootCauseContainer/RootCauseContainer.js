@@ -2,7 +2,9 @@
 import React, {useEffect, useState} from "react";
 
 import PropTypes from "prop-types";
+import {useDispatch} from "react-redux";
 
+import {setSelectedTraceEntryIndexThunk} from "../../../Store/debuggingSlice/debuggingThunk";
 import {useTraces} from "../../../Store/useAppSelection";
 import {useSelectedTraceId} from "../../../Store/useAppSelection";
 
@@ -18,10 +20,18 @@ RootCauseContainer.propTypes = {
  * @return {JSX.Element}
  */
 export function RootCauseContainer () {
+    const dispatch = useDispatch();
     const selectedTraceId = useSelectedTraceId();
     const [failures, setFailures] = useState([]);
     const traces = useTraces();
 
+    const selectBehavior = (behavior) => {
+        console.log("Selected behavior:", behavior);
+        dispatch(setSelectedTraceEntryIndexThunk({
+            atomicIndex: Number(behavior.index.atomicIndex),
+            entryIndex: Number(behavior.index.entryIndex),
+        }));
+    };
 
     useEffect(() => {
         if (selectedTraceId && traces) {
@@ -41,12 +51,12 @@ export function RootCauseContainer () {
             {
                 failures && failures.map((f, index) => (
                     <div className="failureContainer" key={index}>
-                        <div key={index} className="failureLabel">
+                        <div key={index} className="failureLabel" onClick={() => selectBehavior(f)}>
                             Failure: {f.behavior}
                         </div>
                         {
                             f.rootCauses && f.rootCauses.map((rc, rcIndex) => (
-                                <div key={rcIndex} className="rootCauseLabel">
+                                <div key={rcIndex} className="rootCauseLabel" onClick={() => selectBehavior(rc)}>
                                     - Root Cause: {rc.behavior}
                                 </div>
                             ))

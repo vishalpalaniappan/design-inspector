@@ -71,13 +71,6 @@ export function TraceBehaviorSelector () {
     }, [dispatch]);
 
     const getBehaviorStyle = useCallback((atomicIndex, index) => {
-        const behavior = behaviors[atomicIndex][index];
-        if (behavior.output.implementationFailure) {
-            return {
-                backgroundColor: "#510909",
-                borderBottom: "none",
-            };
-        }
         const i = selectedTraceEntryIndex;
         if (i && atomicIndex === i.atomicIndex && index === i.entryIndex) {
             return {
@@ -108,6 +101,11 @@ export function TraceBehaviorSelector () {
                                 { !entry.output?.invariantsRespectedFlag &&
                                     <div className="traceBehaviorInvariantViolations">
                                         {"World state violated invariants."}
+                                    </div>
+                                }
+                                { entry.output?.implementationFailure &&
+                                    <div className="traceBehaviorImplementationFailure">
+                                        {"Execution Failure."}
                                     </div>
                                 }
                             </div>
