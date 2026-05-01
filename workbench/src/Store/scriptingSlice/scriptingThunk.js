@@ -10,7 +10,7 @@ export const updateTransformationTestThunk = (type, value) => (dispatch, getStat
     const behavior = engine.getNode(behaviorId).getBehavior();
     const transformationTest = behavior.getTransformationTests();
 
-    if (!transformationTest) {
+    if (!Array.isArray(transformationTest) || transformationTest.length === 0) {
         console.warn("No transformation test found for selected behavior, cannot update.");
         return;
     }
