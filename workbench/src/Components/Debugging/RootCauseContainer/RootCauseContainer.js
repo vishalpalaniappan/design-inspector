@@ -35,17 +35,20 @@ export function RootCauseContainer () {
 
     useEffect(() => {
         if (selectedTraceId && traces) {
+            setFailures([]);
             const traceValues = Object.values(traces);
             const trace = traceValues.find((t) => t.uid === selectedTraceId);
             if (!trace) {
                 console.warn(`Trace with id ${selectedTraceId} not found`);
                 return;
             }
-            const failures = trace.debugger._failures;
-            setFailures(failures);
-            console.log(failures);
+            if (trace?.debugger?._failures) {
+                const failures = trace.debugger._failures;
+                setFailures(failures);
+            }
         }
     }, [selectedTraceId, traces]);
+
     return (
         <div>
             {
