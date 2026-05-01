@@ -40,6 +40,13 @@ function DebuggingInfoViewer ({type, isJson = true}) {
                 return;
             };
 
+            if (!trace?.debugger?._executableSemanticModelOutputs) {
+                // eslint-disable-next-line max-len
+                console.warn("The result of the semantic validator used to populate the UI was not found in the debugger");
+                editorRef.current.setValue("");
+                return;
+            }
+
             // Result of the semantic validator used to populate the UI. It
             // contains both the inputs and the outputs.
             const computedResult = trace.debugger._executableSemanticModelOutputs;
