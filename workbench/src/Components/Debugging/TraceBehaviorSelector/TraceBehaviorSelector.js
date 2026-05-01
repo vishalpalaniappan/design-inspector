@@ -94,7 +94,7 @@ export function TraceBehaviorSelector () {
                                 <div className="traceBehaviorSelectorName">
                                     {entry.behavior}
                                 </div>
-                                { (entry.output?.transformValidFlag === false && !entry.output?.transformFailure === false) &&
+                                { (entry.output?.transformValidFlag === true && entry.output?.transformFailure === true) &&
                                     <div className="traceBehaviorTransformValidity">
                                         {"Invalid Implementation."}
                                     </div>
