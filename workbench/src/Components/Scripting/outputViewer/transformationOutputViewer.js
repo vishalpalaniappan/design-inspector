@@ -25,13 +25,12 @@ export function TransformationOutputViewer ({}) {
             editorRef.current.setValue("");
         } else if (editorRef.current && transformOutput) {
             if ("transform" in transformOutput) {
-                for (const entry of transformOutput.transform) {
-                    if (entry["type"] === "validate") {
-                        editorRef.current.setValue(
-                            JSON.stringify(entry["transformationOutput"], null, 2)
-                        );
-                    }
-                }
+                const validateEntry = transformOutput.transform.find(
+                    (entry) => entry.type === "validate"
+                );
+                editorRef.current.setValue(
+                    validateEntry ? JSON.stringify(validateEntry.transformationOutput, null, 2) : ""
+                );
             }
         }
     }, [transformOutput, ready]);
