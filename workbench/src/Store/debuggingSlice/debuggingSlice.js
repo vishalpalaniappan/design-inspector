@@ -3,7 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const debuggingSlice = createSlice({
     name: "debugging",
     initialState: {
-        setSelectedTraceEntryIndex: null,
+        selectedTraceEntryIndex: null,
     },
     reducers: {
         setSelectedTraceEntryIndex: (state, action) => {
