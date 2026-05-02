@@ -191,4 +191,18 @@ export class  WSMessageHandler {
         this.terminal.on("stop", this.handleEntryPointFinished);
         this.terminal.start();
     }
+
+    onTerminalRunDesign = async (msg) => {
+        /**
+         * Run the design using the terminal. After some thinking
+         * I decided to load the node script using relative paths
+         * from the playground and the design. So the command will
+         * look like:
+         * 
+         * node ../tools/design-runtime/index.js ../workspace/design.dal
+         * 
+         * This will produce a log file in the playground that will
+         * be saved into the engine (where it will be debugged).
+         */
+    }
 }
