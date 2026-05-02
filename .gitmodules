@@ -2,3 +2,7 @@
 	path = server/tools/instrumenter
 	url = https://github.com/vishalpalaniappan/design-instrumenter.git
 	branch = instrument-pre-post-participant
+[submodule "server/tools/design-runtime"]
+	path = server/tools/design-runtime
+	url = https://github.com/vishalpalaniappan/design-runtime-node.git
+	branch = implement-runtime
