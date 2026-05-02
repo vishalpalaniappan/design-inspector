@@ -8,7 +8,7 @@
             "orientation": "vertical",
             "children": [
                 {
-                    "containerId": "implementationToolBarContainer",
+                    "containerId": "mainToolBar",
                     "type": "container",
                     "size": { "initial": { "value": 37, "unit": "px", "type": "fixed" }}
                 },
@@ -300,9 +300,9 @@
             "component": "GraphMenuBar",
             "background": "#222222"
         },
-        "implementationToolBarContainer": {
-            "id": "implementationToolBarContainer",
-            "component": "ImplementationToolbar",
+        "mainToolBar": {
+            "id": "mainToolBar",
+            "component": "MainToolbar",
             "background": "#222222"
         }
     }

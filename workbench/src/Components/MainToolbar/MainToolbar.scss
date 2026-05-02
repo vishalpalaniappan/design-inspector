@@ -1,7 +1,7 @@
 $status-bar-background-color: #3b4e55;
 $darkened-status-bar-color: #2e3b44;
 
-.implementationToolBar {
+.mainToolBar {
     height: 100%;
     display: flex;
     padding: 0 10px;
@@ -13,24 +13,24 @@ $darkened-status-bar-color: #2e3b44;
     background-color: $status-bar-background-color;
 }
 
-.implementationToolBar>.implementationToolBarLeft {
+.mainToolBar>.mainToolBarLeft {
     display: flex;
     align-items: center;
     gap: 10px;
     height: 100%;
 }
 
-.implementationToolBar>.implementationToolBarLeft>.implementationToolBarGroup {
+.mainToolBar>.mainToolBarLeft>.mainToolBarGroup {
     margin-right: 10px;
 }
 
-.implementationToolBar>.implementationToolBarLeft>.implementationToolBarGroup>.implementationToolBarLabel {
+.mainToolBar>.mainToolBarLeft>.mainToolBarGroup>.mainToolBarLabel {
     font-size: 13px;
     margin-right: 5px;
     color:rgb(255, 255, 255);
 }
 
-.implementationToolBar>.implementationToolBarLeft>.implementationToolBarGroup>select {
+.mainToolBar>.mainToolBarLeft>.mainToolBarGroup>select {
     background-color: $status-bar-background-color;
     color: white;
     border: none;
@@ -40,11 +40,11 @@ $darkened-status-bar-color: #2e3b44;
     padding: 0 2px;
 }
 
-.implementationToolBar>.implementationToolBarLeft>.implementationToolBarGroup>select:hover {
+.mainToolBar>.mainToolBarLeft>.mainToolBarGroup>select:hover {
     background-color: $darkened-status-bar-color;
 }
 
-.implementationToolBar>.implementationToolBarRight {
+.mainToolBar>.mainToolBarRight {
     display: flex;
     align-items: center;
     gap: 10px;
