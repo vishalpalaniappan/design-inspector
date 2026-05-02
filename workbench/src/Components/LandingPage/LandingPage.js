@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 import {LayoutManager} from "ui-layout-manager-dev";
 
 import debuggingLayout from "../../debuggingLayout.json";
-import designLayout from "../../designLayout.json";
+import implementationLayout from "../../implementationLayout.json";
 import {registry} from "../../Registry";
 import scriptingLayout from "../../scriptingLayout.json";
 import {setDesignMode} from "../../Store/appSlice";
@@ -35,7 +35,7 @@ export function LandingPage () {
     const appMode = useAppMode();
     const dispatch = useDispatch();
 
-    const [chosenLayout, setChosenLayout] = useState(designLayout);
+    const [chosenLayout, setChosenLayout] = useState(implementationLayout);
 
     const registryList = useCallback(() => registry, []);
 
@@ -57,7 +57,7 @@ export function LandingPage () {
         const params = new URLSearchParams(window.location.search);
         if (appMode === 1) {
             dispatch(setDesignLoaded(false));
-            setChosenLayout(designLayout);
+            setChosenLayout(implementationLayout);
             params.set("mode", "design");
         } else if (appMode === 2) {
             dispatch(setDesignLoaded(false));
