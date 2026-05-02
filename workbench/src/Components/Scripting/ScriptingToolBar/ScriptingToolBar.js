@@ -171,6 +171,10 @@ export function ScriptingToolBar () {
         };
     }, []);
 
+    const runDesign = useCallback(() => {
+        // Implement logic to run the entire design here.
+    }, []);
+
     return (
         // eslint-disable-next-line max-len
         <div className="scriptingToolBar">
@@ -189,11 +193,16 @@ export function ScriptingToolBar () {
                 </select>
             </div>
             <div className="scriptingToolBarRight">
-                <span>Compute Transformations</span>
+                <span>Compute Behavior:</span>
                 <Play
                     size={20}
                     style={{"color": "white", "cursor": "pointer"}}
                     onClick={runTransformation} />
+                <span>Run Design:</span>
+                <Play
+                    size={20}
+                    style={{"color": "white", "cursor": "pointer"}}
+                    onClick={runDesign} />
             </div>
         </div>
     );
