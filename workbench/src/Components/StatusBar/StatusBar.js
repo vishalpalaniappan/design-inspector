@@ -77,8 +77,8 @@ export function StatusBar () {
                     <select value={appMode} onChange={
                         (event) => selectMode(event)
                     }>
-                        <option value={1}>Design</option>
-                        <option value={2}>Behavioral Scripting</option>
+                        <option value={1}>Implementation</option>
+                        <option value={2}>Design</option>
                         <option value={3}>Debugging</option>
                     </select>
                 </div>

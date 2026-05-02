@@ -116,4 +116,8 @@ export const registry = {
         import("./Components/Debugging/RootCauseContainer/RootCauseContainer").then((m) => ({
             default: m.default || m.RootCauseContainer,
         })),
+    ImplementationToolbar: () =>
+        import("./Components/ImplementationToolbar/ImplementationToolbar").then((m) => ({
+            default: m.default || m.ImplementationToolbar,
+        })),
 };
