@@ -199,10 +199,15 @@ export class  WSMessageHandler {
          * from the playground and the design. So the command will
          * look like:
          * 
-         * node ../tools/design-runtime/index.js ../workspace/design.dal
+         * node ../tools/design-runtime/src/index.js ../workspace/demo2.dal
          * 
          * This will produce a log file in the playground that will
          * be saved into the engine (where it will be debugged).
+         * 
+         * Note: 
+         * I've tested the command above and was able to succefully generate
+         * the log file from the executed design. So this approach works
+         * with minimal overhead, I am going to implement this approach.
          */
     }
 }
