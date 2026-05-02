@@ -4,7 +4,7 @@ import instrumentationRunner from '../runners/instrumentationRunner.js';
 import unzipper from "unzipper";
 import fs from 'fs/promises';
 
-async function loadDesignInPlayground(engine) {
+async function loadImplementationInPlayground(engine) {
     // Get files from engine.
     const files = engine.getFiles();
 
@@ -34,4 +34,4 @@ async function loadDesignInPlayground(engine) {
 }
 
 
-export default loadDesignInPlayground;
+export default loadImplementationInPlayground;
