@@ -6,7 +6,7 @@ const appSlice = createSlice({
         activeTab: null,
         counter: 0,
         lastSaved: null,
-        appMode: 1, // 1 = implementation,  2 = design, 3 = debugging
+        appMode: 1, // 1 = design,  2 = implementation, 3 = debugging
         designLoaded: false,
         hasEntryPoint: false,
         selectedBehavior: null,
@@ -60,10 +60,10 @@ const appSlice = createSlice({
             state.counter = (state.counter + 1) % 100000;
         },
         setImplementationMode (state) {
-            state.appMode = 1;
+            state.appMode = 2;
         },
         setDesignMode (state) {
-            state.appMode = 2;
+            state.appMode = 1;
         },
         setDebuggingMode (state) {
             state.appMode = 3;

@@ -57,12 +57,12 @@ export function LandingPage () {
         const params = new URLSearchParams(window.location.search);
         if (appMode === 1) {
             dispatch(setDesignLoaded(false));
-            setChosenLayout(implementationLayout);
-            params.set("mode", "implementation");
-        } else if (appMode === 2) {
-            dispatch(setDesignLoaded(false));
             setChosenLayout(scriptingLayout);
             params.set("mode", "design");
+        } else if (appMode === 2) {
+            dispatch(setDesignLoaded(false));
+            setChosenLayout(implementationLayout);
+            params.set("mode", "implementation");
         } else if (appMode === 3) {
             dispatch(setDesignLoaded(false));
             setChosenLayout(debuggingLayout);
