@@ -15,7 +15,7 @@
                     }
                 },
                 {
-                    "containerId": "mainBody",
+                    "containerId": "bodyHorizontalSplit",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 },
@@ -31,8 +31,8 @@
             "id": "header",
             "background": "#3c3c3c"
         },
-        "mainBody": {
-            "id": "mainBody",
+        "bodyHorizontalSplit": {
+            "id": "bodyHorizontalSplit",
             "background": "#3c3c3c",
             "type": "split",
             "orientation": "horizontal",
@@ -42,6 +42,60 @@
                     "type": "container",
                     "size": { "initial": { "value": 40, "unit": "px", "type": "fixed" }},
                     "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }
+                },
+                {
+                    "containerId": "bodyVerticalSplit",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "bodyVerticalSplit": {
+            "id": "bodyVerticalSplit",
+            "background": "#3c3c3c",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "mainBody",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "mainBody",
+                    "sibling2": "terminalContainer"
+                },
+                {
+                    "containerId": "terminalContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 200, "unit": "px", "type": "fixed" },
+                        "min": { "value": 100, "unit": "px"}
+                    },
+                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
+                }
+            ]
+            
+        },
+        "mainBody": {
+            "id": "mainBody",
+            "background": "#3c3c3c",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                {
+                    "containerId": "designLayoutContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 500, "unit": "px", "type": "fixed" },
+                        "min": { "value": 50, "unit": "px"}
+                    }
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "designLayoutContainer",
+                    "sibling2": "contentContainer"
                 },
 
                 {
@@ -101,6 +155,43 @@
                 }
             ]
         },
+        "designLayoutContainer": {
+            "id": "designLayoutContainer",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                {
+                    "containerId": "toolbarContainer",
+                    "type": "container",
+                    "size": { "initial": { "value": 40, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 100, "condition": "lessThan", "relative": "parent" }
+                },
+                {
+                    "containerId": "FlowVerticalContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ],
+            "background": "#1e1e1e"
+        },
+        "FlowVerticalContainer": {
+            "id": "FlowVerticalContainer",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "FlowContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+
+                },
+                {
+                    "containerId": "graphMenuContainer",
+                    "type": "container",
+                    "size": { "initial": { "value": 30, "unit": "px", "type": "fixed" }}
+                }
+            ]
+        },
         "transformationLogContainer": {
             "id": "transformationLogContainer",
             "type": "split",
@@ -117,6 +208,19 @@
         "traceViewer": {
             "id": "traceViewer",
             "component":"TraceSelector",
+            "background": "#252526"
+        },
+        "terminalContainer": {
+            "id": "terminalContainer",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                {
+                    "containerId": "terminal",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ],
             "background": "#252526"
         },
         "terminal": {
@@ -302,6 +406,21 @@
             "id": "participantInfoContainer",
             "component": "NodeInfo",
             "background": "#1e1e1e"
+        },
+        "toolbarContainer": {
+            "id": "toolbarContainer",
+            "component": "ToolBar",
+            "background": "#1e1e1e"
+        },
+        "FlowContainer": {
+            "id": "FlowContainer",
+            "component": "BehavioralControlGraph",
+            "background": "#1e1e1e"
+        },
+        "graphMenuContainer": {
+            "id": "graphMenuContainer",
+            "component": "GraphMenuBar",
+            "background": "#222222"
         }
     }
 }
