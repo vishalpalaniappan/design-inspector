@@ -4,7 +4,7 @@ import {CircleFill} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 
 import ServerContext from "../../Providers/ServerContext";
-import {setScriptingMode} from "../../Store/appSlice";
+import {setImplementationMode} from "../../Store/appSlice";
 import {setDesignMode} from "../../Store/appSlice";
 import {setDebuggingMode} from "../../Store/appSlice";
 import {useStatusMsg} from "../../Store/useAppSelection";
@@ -53,9 +53,9 @@ export function StatusBar () {
     const selectMode = (event) => {
         const value = parseInt(event.target.value);
         if (value === 1 && appMode !== 1) {
-            dispatch(setDesignMode());
+            dispatch(setImplementationMode());
         } else if (value === 2) {
-            dispatch(setScriptingMode());
+            dispatch(setDesignMode());
         } else if (value === 3) {
             dispatch(setDebuggingMode());
         }

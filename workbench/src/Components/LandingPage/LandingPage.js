@@ -8,7 +8,7 @@ import implementationLayout from "../../implementationLayout.json";
 import {registry} from "../../Registry";
 import scriptingLayout from "../../scriptingLayout.json";
 import {setDesignMode} from "../../Store/appSlice";
-import {setScriptingMode} from "../../Store/appSlice";
+import {setImplementationMode} from "../../Store/appSlice";
 import {setDebuggingMode} from "../../Store/appSlice";
 import {setDesignLoaded} from "../../Store/appSlice";
 import {useDesignLoaded} from "../../Store/useAppSelection";
@@ -42,8 +42,8 @@ export function LandingPage () {
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const designMode = params.get("mode");
-        if (designMode && designMode === "scripting") {
-            dispatch(setScriptingMode());
+        if (designMode && designMode === "implementation") {
+            dispatch(setImplementationMode());
         } else if (designMode && designMode === "design") {
             dispatch(setDesignMode());
         } else if (designMode && designMode === "debugging") {
@@ -58,11 +58,11 @@ export function LandingPage () {
         if (appMode === 1) {
             dispatch(setDesignLoaded(false));
             setChosenLayout(implementationLayout);
-            params.set("mode", "design");
+            params.set("mode", "implementation");
         } else if (appMode === 2) {
             dispatch(setDesignLoaded(false));
             setChosenLayout(scriptingLayout);
-            params.set("mode", "scripting");
+            params.set("mode", "design");
         } else if (appMode === 3) {
             dispatch(setDesignLoaded(false));
             setChosenLayout(debuggingLayout);

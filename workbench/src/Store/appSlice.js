@@ -59,10 +59,10 @@ const appSlice = createSlice({
         incrementCounter(state) {
             state.counter = (state.counter + 1) % 100000;
         },
-        setDesignMode (state) {
+        setImplementationMode (state) {
             state.appMode = 1;
         },
-        setScriptingMode (state) {
+        setDesignMode (state) {
             state.appMode = 2;
         },
         setDebuggingMode (state) {
@@ -92,7 +92,7 @@ export const {
     setActiveTab,
     setStatusMsg,
     setLastSaved,
-    setScriptingMode,
+    setImplementationMode,
     setDebuggingMode,
     setSelectedGraph,
     setSelectedInvariant,
