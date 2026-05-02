@@ -193,6 +193,26 @@ export const selectBehaviorThunk = (behaviorId) => (dispatch, getState, {engine}
 };
 
 /**
+ * Adds a behavior to the engine.
+ * @param {Object} args Arguments for adding a behavior, including:
+ * @param {String} args.name Name of the behavior.
+ * @param {String} args.description Description of the behavior.
+ * @param {Boolean} args.isAtomic Is the behavior atomic?
+ * @param {Boolean} args.isDesignFork Is the behavior a fork in the design?
+ * @returns {Function} Thunk function.
+ */
+// eslint-disable-next-line max-len
+export const addBehaviorThunk = (args) => (dispatch, getState, {engine}) => {
+    const {name, description, isAtomic, isDesignFork} = args;
+    if (!name || name.trim() === "") {
+        throw new Error("Behavior name must not be empty.");
+    }
+    const newNode = engine.addNode(name, description, [], isAtomic, isDesignFork);
+    dispatch(setSelectedBehavior(newNode.getBehavior().getName()));
+    dispatch(incrementCounter());
+};
+
+/**
  * Deletes a behavior given its ID, removes its mapping from files,
  * and updates the selected behavior and participant.
  * @param {String} behaviorId String ID of the behavior to delete.

@@ -1,5 +1,5 @@
 {
-    "title": "Workbench Layout Configuration A",
+    "title": "ImplementationLayout",
     "layoutRoot": "root",
     "containers": {
         "root": {
@@ -8,9 +8,9 @@
             "orientation": "vertical",
             "children": [
                 {
-                    "containerId": "header",
+                    "containerId": "mainToolBar",
                     "type": "container",
-                    "size": { "initial": { "value": 0, "unit": "px", "type": "fixed" }}
+                    "size": { "initial": { "value": 37, "unit": "px", "type": "fixed" }}
                 },
                 {
                     "containerId": "mainBody",
@@ -298,6 +298,11 @@
         "graphMenuContainer": {
             "id": "graphMenuContainer",
             "component": "GraphMenuBar",
+            "background": "#222222"
+        },
+        "mainToolBar": {
+            "id": "mainToolBar",
+            "component": "MainToolbar",
             "background": "#222222"
         }
     }

@@ -4,8 +4,9 @@ import {CircleFill} from "react-bootstrap-icons";
 import {useDispatch} from "react-redux";
 
 import ServerContext from "../../Providers/ServerContext";
-import {setDebuggingMode} from "../../Store/appSlice";
+import {setImplementationMode} from "../../Store/appSlice";
 import {setDesignMode} from "../../Store/appSlice";
+import {setDebuggingMode} from "../../Store/appSlice";
 import {useStatusMsg} from "../../Store/useAppSelection";
 import {useAppMode} from "../../Store/useAppSelection";
 
@@ -49,16 +50,16 @@ export function StatusBar () {
         setConnectionColor({color: connectionColorMap[connectionStatus] || "red"});
     }, [connectionStatus]);
 
-    // TODO: Temporarily disabled mode switch functionality
-    // will reintroduce in future when debugging UI is developed.
-    // const selectMode = (event) => {
-    //     const value = parseInt(event.target.value);
-    //     if (value === 1 && appMode !== 1) {
-    //         dispatch(setDesignMode());
-    //     } else if (value === 2) {
-    //         dispatch(setDebuggingMode());
-    //     }
-    // };
+    const selectMode = (event) => {
+        const value = parseInt(event.target.value);
+        if (value === 1 && appMode !== 1) {
+            dispatch(setDesignMode());
+        } else if (value === 2) {
+            dispatch(setImplementationMode());
+        } else if (value === 3) {
+            dispatch(setDebuggingMode());
+        }
+    };
 
     return (
         <div className="status-bar">
@@ -72,14 +73,15 @@ export function StatusBar () {
             </div>
             <div className="status-right">
                 <div className="status-message">{message}</div>
-                {/* <div className="status-bar-select">
+                <div className="status-bar-select">
                     <select value={appMode} onChange={
                         (event) => selectMode(event)
-                        }>
+                    }>
                         <option value={1}>Design</option>
-                        <option value={2}>Debugging</option>
+                        <option value={2}>Implementation</option>
+                        <option value={3}>Debugging</option>
                     </select>
-                </div> */}
+                </div>
             </div>
         </div>
     );
